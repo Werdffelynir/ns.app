@@ -12,6 +12,7 @@
      */
     var o = App.namespace('Controller.Main');
 
+
     /**
      * Construct call first when this controller run
      */
@@ -23,6 +24,7 @@
          */
         Dom.loaded(documentLoaded);
     };
+    
 
     function documentLoaded(){
 
@@ -30,7 +32,5 @@
         console.log(App.Controller);
 
     }
-
-
 
 })(Application, Dom, Tpl);

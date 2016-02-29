@@ -21,9 +21,10 @@
     };
 
     Inc.prototype.require = function(path){
-        if(typeof path === 'string')
+        if(typeof path === 'string'){
             this.options.sources.push(path);
-        else if(path instanceof Array) {
+
+        } else if(path instanceof Array) {
             var self = this;
             path.forEach(function(_path){self.options.sources.push(_path)});
         }

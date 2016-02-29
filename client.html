@@ -1,15 +1,33 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" manifest="example.appcache">
 <head>
     <meta charset="UTF-8">
-    <title>aj demo simple</title>
+    <title>JavaScript Application</title>
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/client.css">
     <script src="js/inc.js"></script>
     <script src="js/app/init.js"></script>
 </head>
 <body>
 
 <div id="page">
-    <div class="container"></div>
+	<div id="header">
+		<div class="logo">specPLACE</div>
+		<a href="#">JavaScript Application</a>
+	</div>
+
+    <div id="container"></div>
+
+	<div id="footer">
+		<div class="tbl">
+			<div class="tbl_cell">
+				<p>SK DevLab 2016</p>
+			</div>
+			<div class="tbl_cell width10 txt_right">
+				<p>special</p><p>PLACE</p>
+			</div>
+		</div>
+	</div>
 </div>
 
 </body>
