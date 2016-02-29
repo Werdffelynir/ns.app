@@ -8,13 +8,13 @@
 
         /**
          * Internal application core object
-         * @type {{}}
+         * @type core {{}}
          */
         core = {},
 
         /**
          * Application prototype object
-         * @type {{}}
+         * @type appProto {{*}}
          * @prototype Application
          */
         appProto = {
@@ -41,23 +41,22 @@
          * @returns {Application}
          */
         app = function (property) {
+
             if (!(this instanceof Application)) return new Application(property);
-            var self = this;
-            Util.each(
-                Util.objMerge(Util.objClone(this.propertyDefault), property),
-                function(k,v){self[k]=v}
-            );
+
+            Util.each(Util.objMerge(Util.objClone(this.propertyDefault), property),
+                function (key, value) {app[key] = value});
+
+
         };
 
     app.namespacesStack = {};
     app.namespace = function (namespace, reload) {
+
         var path = namespace.split('.');
         if (path.length >= 2) {
             var n = Util.ucfirst(path[0].trim()),
                 m = Util.ucfirst(path[1].trim());
-            if(typeof app[n] !== 'object') app[n] = {has:app.callbackHasUnit(n)};
-            if(typeof app[n][m] !== 'object' || !!reload) app[n][m] = app.namespaceConfig(m, {name: m, type: n, permission: 1});
-            return app[n][m];
 
             /*var ns = path[0].trim().toLowerCase(),
                 nsUcf = Util.ucfirst(ns),
@@ -102,7 +101,8 @@
         return source;
     };
 
-    /*app.namespaceRefresh = function () {
+
+    app.namespaceRefresh = function () {
         app.namespace.forEach(function(name){
             name = Util.ucfirst(name);
             app.namespacesStack[name] = {has:app.callbackHasUnit(name)};
@@ -110,7 +110,7 @@
 
             console.log(name, app.namespaceRegistered);
         });
-    };*/
+    };
 
 /*
     */

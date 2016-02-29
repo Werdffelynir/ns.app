@@ -8,42 +8,43 @@
 
     var
         property = {
-            url: '/place/',
             name: 'Space Place Application',
+            url: '/place/',
             data: {},
-            path: '/place/',
+            basePath: basePath,
             namespace: [
                 'Controller','Components','Action','Module','Template'
             ]
         },
 
+        /**
+         * Connection of library scripts.
+         * The high level of application depending
+         * @type {*|Function|Inc}
+         */
         inc = new Inc();
 
-    inc.require([
-    /**
-     * Dependence
+    /** ****************************************************************************************************************
+     * Dependence on the application of these scripts
      */
-        property.url + 'js/app/libs/aj.js',
-        property.url + 'js/app/libs/dom.js',
-        property.url + 'js/app/libs/tpl.js',
-        property.url + 'js/app/libs/util.js',
-
+    inc.require(property.basePath+'js/app/libs/aj.js');
+    inc.require(property.basePath+'js/app/libs/dom.js');
+    inc.require(property.basePath+'js/app/libs/tpl.js');
+    inc.require(property.basePath+'js/app/libs/util.js');
     /**
      * Base Application
      */
-        property.url + 'js/app/application.js'
-    ]);
+    inc.require(property.basePath+'js/app/application.js');
 
     inc.onerror = function(errorInfo){ console.error("ErrorInfo: ", errorInfo) };
+
+
     inc.onload = function(list){
-        console.log(list);
         /**
          *
          * @type {*|Application}
          */
         App = new Application(property);
-
-
 
         /**
          * Connection of application scripts parts.
@@ -56,22 +57,15 @@
         /**
          * Application Parts: Controller
          */
-        incApp.require([
-            App.url+'js/app/controller/main.js',
-            App.url+'js/app/controller/login.js',
-            App.url+'js/app/controller/possessing.js'
-        ]);
-        //incApp.require(App.basePath+'js/app/controller/main.js');
-        //incApp.require(App.basePath+'js/app/controller/login.js');
-        //incApp.require(App.basePath+'js/app/controller/possessing.js');
+        incApp.require(App.basePath+'js/app/controller/main.js');
+        incApp.require(App.basePath+'js/app/controller/login.js');
+        incApp.require(App.basePath+'js/app/controller/possessing.js');
 
 
         /**
          * Application Parts: Action
          */
-        incApp.require([
-            App.basePath+'js/app/action/form.login.js'
-        ]);
+        incApp.require(App.basePath+'js/app/action/form.login.js');
 
         /**
          * Processing loading results or errors
