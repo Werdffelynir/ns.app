@@ -10,7 +10,7 @@
      * Register controller
      * Using depending on the base application
      */
-    var o = App.namespace('Controller.Main');
+    var o = App.register('Controller.Main');
 
     /**
      * Construct call first when this controller run

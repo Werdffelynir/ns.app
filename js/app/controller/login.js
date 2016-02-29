@@ -1,6 +1,6 @@
 
 /**
- * Controller main.js
+ * Controller login.js
  * @namespace Main
  */
 
@@ -10,7 +10,7 @@
      * Register controller
      * Using depending on the base application
      */
-    var o = App.namespace('Controller.Main');
+    var o = App.namespace('Controller.Login');
 
     /**
      * Construct call first when this controller run
@@ -27,7 +27,7 @@
     function documentLoaded(){
 
         console.log('Controller main.js is Loaded');
-        console.log(App.Controller);
+        //console.log(App.Controller);
 
     }
 
