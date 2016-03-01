@@ -1,39 +1,8 @@
 #!/usr/local/bin/php
 <?php
 
-// php sapi2 commanda opt1 opt2 opt3 opt4 --i -h
-//print_r($argv);
-/*
-Array
-(
-    [0] => sapi2
-    [1] => commanda
-    [2] => opt1
-    [3] => opt2
-    [4] => opt3
-    [5] => opt4
-    [6] => --i
-    [7] => -h
-)
-*/
-//print_r($argc);
-/*
-8
-*/
-/*
-start:
 
-print("Введите номер записи и нажмите Enter. \n Номер записи: ");
-$stdin = fopen("php://stdin", "r");
-$record_num = fgets($stdin);
-fclose($stdin);
-print_r("Введите номер: " . $record_num);
-
-goto start;
-*/
-
-
-$udata = ['name'=>'не указано','age'=>'не указано','password'=>'не указано'];
+$udata = ['name'=>'не указано','email'=>'не указано','password'=>'не указано'];
 //function input(&$udata, $text, $field){}
 //input($udata, "name", "");
 
@@ -44,19 +13,28 @@ $stdin = fopen("php://stdin", "r");
 $udata['name'] = trim(fgets($stdin));
 fclose($stdin);
 
-print("Ваш возраст: ");
+print("Ваш email: ");
 $stdin = fopen("php://stdin", "r");
-$udata['age'] = trim(fgets($stdin));
+$udata['email'] = trim(fgets($stdin));
 fclose($stdin);
 
-print("Ваш пароль: ");
+print("Теперь пароль: ");
+goto repassStep; repass:
+print("Оопа-па пароли не совпадают! Введите новый пароль еще раз \n Пароль: ");
+repassStep:
+
 $stdin = fopen("php://stdin", "r");
 $udata['password'] = trim(fgets($stdin));
 fclose($stdin);
 
-print("\nПроверте и подтвердите введеных данных:");
+print("Повторите пароль: ");
+$stdin = fopen("php://stdin", "r");
+if(trim(fgets($stdin)) !== $udata['password']) goto repass;
+fclose($stdin);
+
+print("\nВсе верно?:");
 print("\n - Имя: ".$udata['name']);
-print("\n - Возраст: ".$udata['age']);
+print("\n - Возраст: ".$udata['email']);
 print("\n - Пароль: ".$udata['password']);
 
 print("\nЕсли все верно, ");
