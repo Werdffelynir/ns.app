@@ -2,6 +2,11 @@
 (function(Inc){
 
     /**
+     * Locker
+     */
+    if( window.App ) return;
+
+    /**
      * Javascript include, scripts-modules of application
      * @type {Inc}
      */

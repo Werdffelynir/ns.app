@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>JavaScript Application</title>
-    <!--<link rel="stylesheet" href="css/grid.css">-->
-    <!--<link rel="stylesheet" href="css/client.css">-->
-
     <script type="application/javascript" src="js/applibrary/inc.js"></script>
-
 </head>
 <body>
 
@@ -125,8 +121,12 @@
 
         render({
             titl: 'Inside head:',
-            text: '<pre>' + document.head.innerHTML + '</pre>'
-        }, '<h3>{{titl}}</h3>'+'<p>{{text}}</p>', true);
+            text: document.head.innerHTML
+                    .replace(/(<script|<link)/gm,"\n$1")
+                    .replace(/</gm,"&lt;")
+                    .replace(/>/gm,"&gt;")
+                    .replace(/ +/gm," ")
+        }, '<h3>{{titl}}</h3>'+'<pre>{{text}}</pre>', true);
     }
 
 

@@ -40,12 +40,23 @@ a:hover{
 	font-family: "Ubuntu Condensed", "Ubuntu", "sans", "sans-serif";
 }
 #container.log h3{
-	margin-top: 5px;
+	margin-top: 10px;
 	border-bottom: 2px solid #8d9000;
 	color: #dfeb2c;
-	font-size: 120%;
+	font-size: 125%;
 }
 #container.log p{
+	line-height: 20px;
 	margin-left: 20px;
-	color: #8d9000;
+	color: #dfeb2c;
+	font-size: 105%;
+	font-family: cursive, monospace, "Ubuntu Mono";
+}
+#container.log pre{
+	width: 100%;
+	padding: 10px;
+	display: inline-block;
+	background-color: #1f1f1f;
+	color: #ddea27;
+	font-family: cursive, monospace, "Ubuntu Mono";
 }
