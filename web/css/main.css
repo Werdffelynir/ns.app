@@ -1,0 +1,257 @@
+html,
+body {
+    height: 100%;
+    color: #555;
+}
+
+.wrap {
+    height: auto;
+    background-color: #dddddd;
+}
+
+.wrap > .container {
+    padding: 70px 15px 20px;
+}
+
+.footer > div {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.footer {
+    height: 60px;
+    background-color: #FFFFFF;
+    border-top: 1px solid #ddd;
+}
+
+.header {
+    background-color: #ffffff;
+}
+
+.header > div {
+    width: 86%;
+    margin: 0 auto;
+}
+
+.header > .tbl:first-child {
+    height: 112px;
+}
+
+.header > .tbl:first-child > .tbl_cell:first-child {
+    width: 60%
+}
+
+.header > .tbl > .tbl_cell:last-child > .tbl {
+    text-align: center;
+}
+
+#menu ul {
+    list-style: none;
+    margin-bottom: 0px;
+}
+
+#menu ul li {
+    display: inline;
+}
+
+#menu > ul > li > a > span {
+    margin-right: 5px;
+}
+
+#menu ul li a {
+    display: inline-block;
+    padding: 14px 12px 12px 46px;
+    margin-right: 30px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: #555;
+}
+#menu ul>li>ul>li a {
+    display: block;
+    padding: 12px 6px 9px 36px;
+    margin-right: 30px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: #555;
+}
+
+/*#menu ul li a:hover {*/
+    /*background-color: #57C0ED;*/
+    /*color: #fff;*/
+/*}*/
+
+.navigation > .tbl_cell:first-child {
+    width: 85%;
+}
+
+.navigation > .tbl_cell:nth-child(2) > div:first-child {
+    width: 36px;
+    height: 36px;
+    background-color: #57C0ED;
+}
+
+.navigation > .tbl_cell:nth-child(2) {
+    position: relative;
+    vertical-align: bottom;
+}
+
+.search > input {
+    width: 360px;
+    height: 40px;
+    padding: 5px;
+}
+
+.navigation > .tbl_cell:nth-child(2) > .search {
+    position: absolute;
+    top: 46px;
+    left: -320px;
+}
+
+.help {
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    width: 200px;
+    height: 40px;
+    position: fixed;
+    right: -78px;
+    top: 40%;
+}
+
+.help > .tbl_cell:first-child {
+    background-color: #fff;
+    padding: 5px;
+}
+
+.help > .tbl_cell:last-child {
+    background-color: #57C0ED;
+    color: #fff;
+    padding: 5px;
+    text-align: center;
+}
+
+.container {
+    min-height: 460px;
+}
+#menu>ul>li:before{
+    position: absolute;
+
+}
+#menu>ul>li:nth-child(1)>a{
+    background: url('/images/my_cart.png') no-repeat 0 5px;
+    background-position: 0px 8px;
+
+}
+#menu>ul>li:nth-child(2)>a{
+    background: url("/images/platezhki.png") no-repeat 0 5px;
+    background-position: 5px 8px;
+}
+#menu>ul>li:nth-child(3)>a{
+    background: url("/images/depozity.png") no-repeat 0 5px;
+background-position: 0px -3px;
+}
+#menu>ul>li:nth-child(4)>a{
+    background: url("/images/credity.png") no-repeat 0 5px;
+    background-position: 0px -3px;
+}
+#menu>ul>li:nth-child(5)>a{
+    background: url("/images/moi_platezhki.png") no-repeat 0 5px;
+    background-position: 5px 1px;
+}
+#menu>ul>li:nth-child(1)>a:hover{
+    background: url('/images/my_cart_hover.png') no-repeat 0 5px;
+    background-position: 0px 8px;
+    background-color: #57C0ED;
+    color: #fff;
+    z-index: 9;
+}
+#menu>ul>li:nth-child(2)>a:hover{
+    background: url("/images/platezhki_hover.png") no-repeat 0 5px;
+    background-position: 5px 8px;
+    background-color: #57C0ED;
+    color: #fff;
+    z-index: 9;
+}
+
+#menu>ul>li:nth-child(3)>a:hover{
+    background: url("/images/depozity_hover.png") no-repeat 0 5px;
+    background-position: 0px -3px;
+    background-color: #57C0ED;
+    color: #fff;
+    z-index: 9;
+}
+#menu>ul>li:nth-child(4)>a:hover{
+    background: url("/images/credity_hover.png") no-repeat 0 5px;
+    background-position: 0px -3px;
+    background-color: #57C0ED;
+    color: #fff;
+    z-index: 9;
+}
+#menu>ul>li:nth-child(5)>a:hover{
+    background: url("/images/moi_platezhki_hover.png") no-repeat 0 5px;
+    background-position: 5px 1px;
+    background-color: #57C0ED;
+    color: #fff;
+    z-index: 9;
+}
+.search_button{
+    cursor: pointer;
+}
+.dropdown-menu {
+    margin: 16px 0 0;
+    background-color: #57C0ED;
+}
+.dropdown-menu> li a{
+    color: #ffffff!important;
+}
+.dropdown-menu> li a:hover{
+    background-color: #4DA9D0;
+}
+.container>.content{
+    width:85%;
+    margin:0 auto;
+    color:#000;
+}
+.container>.content>.title{
+    font-size: 20px;
+}
+.container>.content>.tbl>.tbl_cell{
+
+    vertical-align: top;
+    width: 49%;
+}
+.container>.content>.tbl>.tbl_cell:first-child{
+    min-height:160px;
+}
+.container>.content>.tbl>.tbl_cell>div{
+    padding: 25px 15px;
+    margin: 0 3px 1px;
+}
+.container>.content>.tbl>.tbl_cell>div{
+    background-color: #ffffff;
+}
+.container>.content>.tbl>.tbl_cell>div:nth-child(3){
+    text-align: center;
+}
+.form_login{
+    width:50%;
+    margin: 12% auto;
+}
+.form_login .qrcode{
+
+}
+.form_login .qrcode img{
+    border: 15px solid #fff;
+}
+a.knopka, button {
+    color: #fff; /* цвет текста */
+    text-decoration: none; /* убирать подчёркивание у ссылок */
+    user-select: none; /* убирать выделение текста */
+    background: rgb(87,192,237); /* фон кнопки */
+    padding: .7em 1.5em; /* отступ от текста */
+    outline: none; /* убирать контур в Mozilla */
+}
+a.knopka:hover, button:hover { background: rgb(94,206,252); } /* при наведении курсора мышки */
+a.knopka:active, button:active { background: rgb(77,169,208); } /* при нажатии */
