@@ -92,12 +92,12 @@
 
     inc.logError = function(text){
         if(_self && _self.options.debug){
-            console.error('Inc script error! ' + text);
+            console.error('Inc throw error: ' + text);
         }
     };
     inc.log = function(text){
         if(_self && _self.options.debug){
-            console.log('Inc script error! ' + text);
+            console.log('Inc: ' + text);
         }
     };
 

@@ -6,17 +6,34 @@
      */
     if( window.App ) return;
 
-    /**
-     * Javascript include, scripts-modules of application
-     * @type {Inc}
-     */
-    var appinc,
+    var
+        /**
+         *
+         * @type {boolean}
+         */
+        DEBUG = true,
+
+        /**
+         *
+         * @type {{force: boolean, chain: boolean, debug: boolean}}
+         */
+        incOption = {
+            force: false,
+            chain: true,
+            debug: DEBUG
+        },
+
+        /**
+         * Javascript include, scripts-modules of application
+         * @type {Inc}
+         */
+        appinc,
 
         /**
          * Javascript include, scripts-library of application
          * @type {Inc}
          */
-        libinc = new Inc(),
+        libinc = new Inc(incOption),
 
         /**
          * Configuration
@@ -34,6 +51,7 @@
             path: '/',
             name: 'Developer Space',
             data: {},
+            debug: DEBUG,
             namespaces: [
                 'Controller','Action','Module'
             ]
@@ -48,6 +66,7 @@
         [
             '../../js/applibrary/dom.js',
             '../../js/applibrary/tpl.js',
+            '../../js/applibrary/util.js',
             '../../js/app/application.js'
         ],
 
@@ -64,7 +83,7 @@
              * The high level of application depending
              * @type {*|Function|Inc}
              */
-            appinc = new Inc();
+            appinc = new Inc(incOption);
 
             /**
              * Application Parts: Controller
@@ -123,22 +142,21 @@
      * @param error
      */
     function applicationError(error){
-        console.log('error: ',error);
+        App.logError(function(title){
+            console.error(title + 'loading script is fail. Error: ', error);
+        });
     }
-
 
     /**
      * Загрузка всех компонентов закончена
      * @param list  список загруженных скриптов
      */
     function applicationStart(list){
-        console.log('Application run ...');
+        App.log('run...');
 
         var process =  App.Controller.Processing;
 
         process.construct();
-
-
     }
 
 })(Inc);

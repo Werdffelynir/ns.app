@@ -94,6 +94,8 @@
                 app.instance = this;
 
             this.namespace = app.namespace;
+            this.logError = app.logError;
+            this.log = app.log;
             this.start(prop);
         };
 
@@ -136,6 +138,26 @@
                 inst[n][m].init.call(inst[n][m])
             }*/
             return inst.namespaces[n][m];
+        }
+    };
+
+    app.logError = function(text){
+        if(app.instance && app.instance.debug){
+            var _title = 'Application throw error: ';
+            if(typeof text === 'function')
+                text.call(app.instance, _title);
+            else
+                console.error(_title + text);
+        }
+    };
+
+    app.log = function(text){
+        if(app.instance && app.instance.debug){
+            var _title = 'Application: ';
+            if(typeof text === 'function')
+                text.call(app.instance, _title);
+            else
+                console.log(_title + text);
         }
     };
 
