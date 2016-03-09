@@ -1,7 +1,6 @@
-
 /**
  * Controller possessing.js
- * @namespace Main
+ * @namespace App.Controller.Possessing
  */
 
 (function(App, Dom, Tpl){

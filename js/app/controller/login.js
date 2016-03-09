@@ -1,7 +1,6 @@
-
 /**
  * Controller login.js
- * @namespace Main
+ * @namespace App.Controller.Login
  */
 
 (function(App, Dom, Tpl){
@@ -27,7 +26,6 @@
     function documentLoaded(){
 
         console.log('Controller main.js is Loaded');
-        //console.log(App.Controller);
 
     }
 

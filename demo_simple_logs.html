@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en" manifest="example.appcache">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Application</title>
+    <!--<link rel="stylesheet" href="css/grid.css">-->
+    <!--<link rel="stylesheet" href="css/client.css">-->
+
+    <script type="application/javascript" src="js/applibrary/inc.js"></script>
+
+</head>
+<body>
+
+<div id="page">
+	<div id="header">
+		<div class="logo">namespace Application</div>
+		<a href="#">JavaScript library</a>
+	</div>
+
+    <div id="container">
+
+    </div>
+
+	<div id="footer">
+		<div class="tbl">
+			<div class="tbl_cell">
+				<p>SK DevLab 2016</p>
+			</div>
+			<div class="tbl_cell width10 txt_right">
+				<p>special</p><p>PLACE</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+
+    var render = function (params, tpl, append) {
+        var elem = document.querySelector(render.selector);
+        tpl = tpl || elem.textContent;
+        if(typeof params === 'object'){
+            for(var k in params)
+                tpl = tpl.replace(new RegExp('{{'+k+'}}', 'gi'), params[k]);
+            if(!!append) elem.innerHTML += tpl;
+            else elem.innerHTML = tpl;
+        }
+    };
+    render.selector = '#container';
+    document.querySelector(render.selector).className = 'log';
+
+
+
+
+    var options = {
+        force: false,
+        chain: true,
+        debug: true
+    };
+    var inc = new Inc(options);
+
+    /*
+    inc.script('js/script1.js');
+    inc.script('js/script2.js');
+    inc.script('js/script3.js');
+     */
+    inc.style('css/grid.css');
+    inc.style('css/grid.css');
+    inc.style('css/grid.css');
+    inc.style('css/client.css');
+    inc.style('css/client.css');
+    inc.style('css/client.css');
+    inc.style('css/client.css');
+
+    inc.require([
+        //{id:'superScript',src:'js/script1.js'},
+        'js/applibrary/aj.js',
+        'js/applibrary/dom.js',
+        'js/applibrary/tpl.js',
+        'js/applibrary/util.js'
+    ], complete, error);
+
+    inc.onload = load;
+    inc.onremove = remove;
+    //inc.oncomplete = complete;
+    //inc.onerror = error;
+
+    inc.start();
+
+    function load(item){
+        var tag = item.tagName.toLowerCase();
+
+        render({
+            titl: 'Event onload item:',
+            text: ' - loaded id: ' + tag + '#' + item.id
+        }, '<h3>{{titl}}</h3>'+'<p>{{text}}</p>', true);
+    }
+
+    function remove(item){
+        render({
+            titl: 'Event onremove item:',
+            text: ' - removed id: ' + item.tagName.toLowerCase() + '#' + item.id
+        }, '<h3>{{titl}}</h3>'+'<p>{{text}}</p>', true);
+    }
+
+
+    function complete(items){
+        render({
+            titl_c: 'Event oncomplete. All resources is loaded.',
+            text_c: 'items count: ' + items.length,
+            list_c: (function(){
+                var t = '';
+                Inc.each(items, function(i, k){
+                    if(i instanceof HTMLElement)
+                        t += i.tagName.toLowerCase()+'#'+k+' ... load complete<br>';
+                });
+                return t;
+            })()
+        }, '<h3>{{titl_c}}</h3>'+'<p>{{text_c}}</p>'+'<p>{{list_c}}</p>', true);
+
+
+        var id = inc.encodeId('js/applibrary/aj.js');
+        inc.remove(id, true);
+
+
+        render({
+            titl: 'Inside head:',
+            text: '<pre>' + document.head.innerHTML + '</pre>'
+        }, '<h3>{{titl}}</h3>'+'<p>{{text}}</p>', true);
+    }
+
+
+    function error(item){
+        render({
+            titl: 'Event error, in: ' + item.id,
+            text: 'some error ...'
+        }, '<h3>{{titl}}</h3>'+'<p>{{text}}</p>', true);
+    }
+
+</script>
+</body>
+</html>

@@ -32,3 +32,20 @@ a:hover{
 	font-weight: bold;
 	text-shadow: 0px 0px 1px #A1A1A1;
 }
+
+
+#container.log{
+	padding: 10px;
+	background-color: #333333;
+	font-family: "Ubuntu Condensed", "Ubuntu", "sans", "sans-serif";
+}
+#container.log h3{
+	margin-top: 5px;
+	border-bottom: 2px solid #8d9000;
+	color: #dfeb2c;
+	font-size: 120%;
+}
+#container.log p{
+	margin-left: 20px;
+	color: #8d9000;
+}

@@ -1,25 +1,40 @@
 (function(Inc){
 
-    /** ****************************************************************************************************************
-     * Alias of Application instance
+    /** ***************************************************
+     * Global alias of Application instance
      * @type {Application}
      */
     window.App = null;
 
-    var
-        property = {
-            url: '/place/',
-            name: 'Space Place Application',
+    /**
+     * Configuration
+     * added as property of Application
+     * @prop config.url         base url
+     * @prop config.name        application name
+     * @prop config.data        data provider
+     * @prop config.path        base path
+     * @prop config.namespaces  registered namespaces
+     *
+     * @type {{url: string, name: string, data: {}, path: string, namespaces: string[]}}
+     */
+    var property = {
+            url: '/',
+            name: 'Space Application',
             data: {},
-            path: '/place/',
-            namespace: [
+            path: '/',
+            namespaces: [
                 'Controller','Components','Action','Module','Template'
             ]
         },
-
+        /**
+         * Javascript include
+         * @type {*|Function|Inc}
+         */
         inc = new Inc();
+
     /**
-     * Dependence library
+     * The high level of application depending
+     * Connection of dependence library scripts
      * And Base Application
      */
     inc.require([
@@ -30,50 +45,62 @@
         property.url + 'js/app/application.js'
     ]);
 
+    /**
+     * Error connection with library handler
+     * @param errorInfo
+     */
     inc.onerror = function(errorInfo){ console.error("ErrorInfo: ", errorInfo) };
 
+    /**
+     * Loaded library handler
+     * @param list
+     */
     inc.onload = function(list){
+
         /**
          * @type {*|Application}
          */
-        App = new Application(property);
+        window.App = Application.run(property);
 
         /**
          * Connection of application scripts parts.
          * The high level of application depending
          * @type {*|Function|Inc}
          */
-        var
-            incApp = new Inc();
+        var inc = new Inc();
 
         /**
          * Application Parts: Controller
          */
-        incApp.require([
-            App.url+'js/app/controller/main.js',
-            App.url+'js/app/controller/login.js',
-            App.url+'js/app/controller/possessing.js'
+        inc.require([
+            property.url+'js/app/controller/main.js',
+            property.url+'js/app/controller/login.js',
+            property.url+'js/app/controller/possessing.js'
         ]);
 
         /**
-         * Application Parts: Action
+         * Application Parts: Actions
          */
-        incApp.require([
-            App.basePath+'js/app/action/form.login.js'
+        inc.require([
+            property.url+'js/app/action/form.js'
         ]);
+
+        /**
+         * Application Parts: Controller
+         */
 
         /**
          * Processing loading results or errors
          * @type {onErrorApplication}
          * @type {onLoadedApplication}
          */
-        incApp.onerror = onErrorApplication;
-        incApp.onload = onLoadedApplication;
+        inc.onerror = onErrorApplication;
+        inc.onload = onLoadedApplication;
 
         /**
          * Start connecting and downloading application units parts scripts
          */
-        incApp.init();
+        inc.init();
     };
 
     /**
@@ -81,21 +108,21 @@
      */
     inc.init();
 
-
-    /** ****************************************************************************************************************
-     * Вся работа ведется тута
+    /** ***************************************************
+     * Работа начинается тута
      */
 
     /**
-     *
-     * @param list
+     * Ошибка загрузки компонентов приложения
+     * @param errorInfo
      */
-    function onErrorApplication(list){
+    function onErrorApplication(errorInfo){
 
     }
+
     /**
-     *
-     * @param list
+     * Загрузка всех компонентов закончена
+     * @param list  список загруженных скриптов
      */
     function onLoadedApplication(list){
 

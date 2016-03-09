@@ -1,297 +1,94 @@
-/**
- * Created by ProStation on 28.02.2016.
- */
+
 (function (Inc, Util) {
 
+    var proto = {
+            version:'0.0.2',
+            namespaces:{},
+            isInit:false,
+            node:{},
+            has: function(namespace, name){
+                var inst = app.instance,
+                    has = function (has) {
+                        return !!(inst.namespaces[namespace] &&  inst.namespaces[namespace][has])
+                    };
+                if (name) return has(name);
+                else return has;
+            },
 
-    var
-
-        /**
-         * Internal application core object
-         * @type {{}}
-         */
-        core = {},
-
-        /**
-         * Application prototype object
-         * @type {{}}
-         * @prototype Application
-         */
-        appProto = {
-            /**
-             * Default settings of Application instance property
-             */
-            propertyDefault: {
-                name: 'Application',
-                basePath: '',
-                url: window.location.origin,
-                node: {},
-                namespace: ['Controller', 'Action', 'Module']
+            label: function(obj, options) {
+                var source = !!window[obj] ? window[obj] : {};
+                if(typeof source === 'function')
+                    Util.objMergeNotExists(source.prototype, options);
+                else if(typeof source === 'object')
+                    Util.objMergeNotExists(source, options);
+                return source;
             },
 
             /**
-             * Change to true when Application initialized
-             */
-            isInit: false
+             * Run application, insert properties into application instance
+             * @param properties
+             * @returns {{Application}}
+             **/
+            start: function(properties){
+                var inst = app.instance;
+
+                for(var name in properties){
+                    if(name == 'namespaces'){
+                        properties[name].map(function(o){
+                            inst[o] = inst.namespaces[o] = {has: inst.has(o)};
+                        });
+                    }else
+                        inst[name] = properties[name];
+
+                    inst.isInit = true;
+                }
+                return inst;
+            }
         },
 
-        /**
-         * Application constructor
-         * @param property
-         * @returns {Application}
-         */
-        app = function (property) {
-            if (!(this instanceof Application)) return new Application(property);
-            var self = this;
-            Util.each(
-                Util.objMerge(Util.objClone(this.propertyDefault), property),
-                function(k,v){self[k]=v}
-            );
+        app = function(prop){
+            if (!(this instanceof Application))
+                return new Application(prop);
+
+            if(!app.instance)
+                app.instance = this;
+
+            this.namespace = app.namespace;
+            this.start(prop);
         };
 
-    app.namespacesStack = {};
-    app.namespace = function (namespace, reload) {
-        var path = namespace.split('.');
-        if (path.length >= 2) {
-            var n = Util.ucfirst(path[0].trim()),
-                m = Util.ucfirst(path[1].trim());
-            if(typeof app[n] !== 'object') app[n] = {has:app.callbackHasUnit(n)};
-            if(typeof app[n][m] !== 'object' || !!reload) app[n][m] = app.namespaceConfig(m, {name: m, type: n, permission: 1});
-            return app[n][m];
+    app.instance = null;
 
-            /*var ns = path[0].trim().toLowerCase(),
-                nsUcf = Util.ucfirst(ns),
-                unit = path[1].trim().toLowerCase(),
-                unitUcf = Util.ucfirst(unit);*/
+    /**
+     * Create object with namespace
+     * @param namespace  "Controller.Name" or "Action.Name"
+     * @param reload     bool, if true reload object
+     * @returns {*}
+     */
+    app.namespace = function(namespace, reload){
 
-            /*if(typeof app.namespaceRegistered[ns] !== 'object') {
-                app.namespaceRegistered[ns] = {has:app.callbackHasUnit(unit)};
-                if(typeof app[nsUcf] !== 'object') app[nsUcf] = app.namespaceRegistered[ns];
-            }*/
+        var inst = app.instance,
+            path = namespace.split('.');
 
-            /*if (!app.namespaceRegistered[ns][unit] || reload){
-                app.namespaceRegistered[ns][unit] = app.namespaceConfig(unit, {name: unit, type: ns, permission: 1});
-                if(typeof app[Util.ucfirst(ns)] !== 'object') app[Util.ucfirst(ns)] = {};
-            }*/
+        if (inst.isInit && path.length >= 2) {
+            var n = path[0].trim(),
+                m = path[1].trim();
 
-            //return app.namespaceRegistered[unit];
+            if (typeof inst.namespaces[n] !== 'object')
+                inst.namespaces[n] = {has: inst.has(n)};
+            if (typeof inst[n] !== 'object')
+                inst[n] = inst.namespaces[n];
+
+            if (typeof inst.namespaces[n][m] !== 'object' || !!reload)
+                inst.namespaces[n][m] = inst.label(m, {_app_:{name:m,permission:1}});
+            inst[n][m] = inst.namespaces[n][m];
+
+            return inst.namespaces[n][m];
         }
     };
-    app.callbackHasUnit = function (namespace, name) {
-        var has = (function (has) {
-            return !!(app.namespaceRegistered &&
-            app.namespaceRegistered[namespace] &&
-            app.namespaceRegistered[namespace][has])
-        });
-        if (name) return has(name);
-        else return has;
-    };
-    app.namespaceConfig = function (unit, options) {
-
-        var source = !!window[unit] ? window[unit] : {},
-            nsOption = {
-                _namespace: {name: unit, permission: 1},
-                init: function(){},
-                construct: function(){}};
-
-        Util.objMerge(nsOption._namespace, options);
-
-        if(typeof source === 'function') Util.objMergeNotExists(source.prototype, nsOption);
-        else if(typeof source === 'object') Util.objMergeNotExists(source, nsOption);
-
-        return source;
-    };
-
-    /*app.namespaceRefresh = function () {
-        app.namespace.forEach(function(name){
-            name = Util.ucfirst(name);
-            app.namespacesStack[name] = {has:app.callbackHasUnit(name)};
-
-
-            console.log(name, app.namespaceRegistered);
-        });
-    };*/
-
-/*
-    */
-
-
-//             controller: {has: core.stackHas('controller')},
-    /*core.prototype.appointUnit = function(){
-     var self = this;
-     this.namespace.forEach(function(name){
-     self.unit[name.toLowerCase()] = {};
-     });
-     };*/
-
-
-    /*core.prototype.appointing = function(){
-     var self = this;
-     this.namespace.forEach(function(name){
-     self.unit[name.toLowerCase()] = {};
-     });
-     };*/
-
-
-    /* core.construct = function(namespace){
-     console.log(namespace);
-     namespace.forEach(function(name){
-     core.unit[name.toLowerCase()] = {};
-     });
-     return core;
-     };*/
-    /*core.unit.has = function (ns, name) {
-     var has = (function (has) {return !!(core.unit && core.unit[ns] && core.unit[ns][has])});
-     if (name) return has(name);
-     else return has;
-     };
-     core.stackCreate = function () {
-     var _stack = {};
-     return {
-     controller: {has: core.stackHas('controller')},
-     components: {has: core.stackHas('components')},
-     action: {has: core.stackHas('action')},
-     module: {has: core.stackHas('module')}
-     }
-     };*/
-
-
-
-
-    /** Application.register
-     *******************************************************
-     * Registers the all unit modules parts: Controller, Action, Module and other
-     *
-     **/
-
-
-    /**
-     *
-     * @param namespace
-     * @param reload
-     * @returns {*}
-     */
-
-
-    /**
-     *
-     * @param nsName
-     * @param replace
-     * @returns {*}
-
-     app.register = function(nsName, replace){
-        var path = nsName.split('.');
-
-        if(path.length >= 2){
-            var ns      = path[0].trim(),
-                name    = path[1].trim(),
-                unit    = app.unit[ns];
-
-            if(!unit[name] || replace)
-                unit[name] = app.register.config(name, {name:name, type:ns, permission:1});
-
-            return unit[name];
-
-        }else{}
-    };
-     */
-    /**
-     *
-     * @param registrar
-     * @param config
-     * @returns {*}
-     */
-    /*app.register.config = function (registrar, config){
-     var source = !!window[registrar] ? window[registrar] : {},
-     refConfig = {
-     _registry: {name: registrar, permission: 1},
-     init: function(){}, construct: function(){}
-     };
-     Util.objMerge(refConfig._registry, config);
-
-     if(typeof source === 'function'){
-     Util.objMergeNotExists(source.prototype, refConfig);
-     }else if(typeof source === 'object'){
-     Util.objMergeNotExists(source, refConfig);
-     }else{}
-
-     return source;
-     };*/
-    /**
-     * Short methods
-     * @param name
-     */
-    /* app.registerController = function(name){ return app.register('Controller.'+name) };
-     app.registerAction = function(name){ return app.register('Action.'+name) };
-     app.registerModule = function(name){ return app.register('Module.'+name) };*/
-
-    /**
-     * Aliases for modules
-     * @type Controller {{}}    Alias to Controllers unit
-     * @type Action {{}}        Alias to Actions unit
-     * @type Module {{}}        Alias to Modules unit
-     */
-    /* app.Controller = core.unit['controller'];
-     app.Action = core.unit['action'];
-     app.Module = core.unit['module'];*/
-
-
-    /** Application.Error
-     *******************************************************
-     *
-     *
-     **/
-
-    app.Error = function () {
-    };
-    app.Error.page = function () {
-        Dom.loaded(function () {
-            if (!app.node.appErrorPage) {
-                app.node.appErrorPage = Util.createElement('div', {
-                    id: 'app-error-page',
-                    'style': 'display:block'
-                }, '<h1>app-error-page</h1>');
-                Dom('body').one(function (item) {
-                    console.log(item);
-                });
-            }
-        });
-    };
-    app.Error.inline = function () {
-    };
-    app.Error.popup = function () {
-    };
-    app.Error.config = {};
-
-
-    /** Application.Message
-     ******************************************************* **/
-
-    app.Message = function () {
-    };
-    app.Message.page = function () {
-    };
-    app.Message.inline = function () {
-    };
-    app.Message.popup = function () {
-    };
-    app.Message.config = {};
-
-
-    /** Application.Api
-     ******************************************************* **/
-
-    app.Api = function (key, callback, args) {
-    };
-    app.Api.checkToken = function (callback) {
-    };
-    app.Api.config = {};
-
 
     window.Application = app;
-    window.Application.prototype = appProto;
+    window.Application.prototype = proto;
     window.Application.prototype.constructor = app;
 
 })(Inc, Util);
-
-
