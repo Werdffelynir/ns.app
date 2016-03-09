@@ -1,11 +1,26 @@
 
-(function (Inc, Util) {
+(function () {
 
     var proto = {
+
             version:'0.0.2',
+
+            /**
+             * Stack namespaces objects
+             */
             namespaces:{},
+
+            /**
+             * If application is run isInit = true
+             */
             isInit:false,
-            node:{},
+
+            /**
+             * Create function .has() for each namespace
+             * @param namespace
+             * @param name
+             * @returns {has}
+             */
             has: function(namespace, name){
                 var inst = app.instance,
                     has = function (has) {
@@ -15,12 +30,31 @@
                 else return has;
             },
 
+            /**
+             * Merge objects
+             * @param objectBase
+             * @param src
+             * @returns {*}
+             */
+            merge: function(objectBase, src) {
+                for (var key in src)
+                    if (objectBase[key] === undefined)
+                        objectBase[key] = src[key];
+                return objectBase;
+            },
+
+            /**
+             * Create mark to elements of load
+             * @param obj
+             * @param options
+             * @returns {{}}
+             */
             label: function(obj, options) {
                 var source = !!window[obj] ? window[obj] : {};
                 if(typeof source === 'function')
-                    Util.objMergeNotExists(source.prototype, options);
+                    source = this.merge(source.prototype, options);
                 else if(typeof source === 'object')
-                    Util.objMergeNotExists(source, options);
+                    source = this.merge(source, options);
                 return source;
             },
 
@@ -46,6 +80,12 @@
             }
         },
 
+        /**
+         * Constructor
+         * @constructor app
+         * @param prop
+         * @returns {app|*}
+         */
         app = function(prop){
             if (!(this instanceof Application))
                 return new Application(prop);
@@ -57,10 +97,15 @@
             this.start(prop);
         };
 
+
+    /**
+     * instance
+     * @type {null|Application}
+     */
     app.instance = null;
 
     /**
-     * Create object with namespace
+     * Create namespace for module-script
      * @param namespace  "Controller.Name" or "Action.Name"
      * @param reload     bool, if true reload object
      * @returns {*}
@@ -83,12 +128,22 @@
                 inst.namespaces[n][m] = inst.label(m, {_app_:{name:m,permission:1}});
             inst[n][m] = inst.namespaces[n][m];
 
+            /*if(n === 'Controller' && inst[n][m].construct) {
+                console.log(inst[n][m].construct);
+                inst[n][m].construct.call(inst[n][m])
+            }
+            if(n === 'Action' && inst[n][m].init) {
+                inst[n][m].init.call(inst[n][m])
+            }*/
             return inst.namespaces[n][m];
         }
     };
 
+    /**
+     * Global name
+     */
     window.Application = app;
     window.Application.prototype = proto;
     window.Application.prototype.constructor = app;
 
-})(Inc, Util);
+})();

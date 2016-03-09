@@ -32,7 +32,7 @@
         property = {
             url: '/',
             path: '/',
-            name: 'Space Application',
+            name: 'Developer Space',
             data: {},
             namespaces: [
                 'Controller','Action','Module'
@@ -46,11 +46,9 @@
      */
     libinc.require(
         [
-            'js/applibrary/aj.js',
-            'js/applibrary/dom.js',
-            'js/applibrary/tpl.js',
-            'js/applibrary/util.js',
-            'js/app/application.js'
+            '../../js/applibrary/dom.js',
+            '../../js/applibrary/tpl.js',
+            '../../js/app/application.js'
         ],
 
         function(list){
@@ -73,9 +71,7 @@
              */
             appinc.require(
                 [
-                    'js/app/controller/login.js',
-                    'js/app/controller/main.js',
-                    'js/app/controller/possessing.js'
+                    'js/app/controller/processing.js'
                 ]);
 
             /**
@@ -84,7 +80,6 @@
             appinc.require(
                 [
                     'js/app/action/form.auth.js',
-                    'js/app/action/form.register.js'
                 ]);
 
             /**
@@ -92,7 +87,6 @@
              */
             appinc.require(
                 [
-                    'js/app/module/api.js',
                     'js/app/module/error.js',
                     'js/app/module/message.js'
                 ]);
@@ -106,14 +100,16 @@
             appinc.oncomplete = applicationStart;
 
             /**
-             * Start connecting and downloading application units parts scripts
+             * Start connect and load of application units parts scripts
              */
             appinc.start();
 
+        }, applicationError)
 
-            //console.log('Is complete. App: ',App);
-
-        }, applicationError).start();
+        /**
+         * Start connect and load high level of application depending
+         */
+        .start();
 
 
 
@@ -137,6 +133,12 @@
      */
     function applicationStart(list){
         console.log('Application run ...');
+
+        var process =  App.Controller.Processing;
+
+        process.construct();
+
+
     }
 
 })(Inc);
