@@ -79,6 +79,8 @@
 
         function(list){
 
+            Tpl.config({templates: '/ns.app/web/js/app/templates'});
+
             /** ***************************************************
              * Global alias of Application instance
              * @type {Application}

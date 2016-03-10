@@ -17,12 +17,12 @@
      * Construct call first when this controller run
      */
     o.construct = function() {
-        var jObject = App.namespace('Using.depending.onthe.base.application.First.weneed.toselect.allthe.elements.necessary.for.work');
-        var page = App.ns('node').page;
 
-            console.log(jObject);
-            console.log(App.Using.depending.onthe);
-            console.log(page);
+        var head = App.ns('node').header;
+        var navi = App.ns('node').navigation;
+        var cont = App.ns('node').content;
+        var page = App.ns('node').page;
+        //page.style.width = '80%';
 
 
 
