@@ -1,4 +1,7 @@
-
+/**
+ * Configurations and includes scripts
+ * completed settings for init the application
+ */
 (function(Inc){
 
     /**
@@ -33,7 +36,7 @@
          * Javascript include, scripts-library of application
          * @type {Inc}
          */
-        libinc = new Inc(),
+        libinc = new Inc(incOption),
 
         /**
          * Configuration, added as property of Application
@@ -64,11 +67,11 @@
      */
     libinc.require(
         [
-            'js/applibrary/aj.js',
-            'js/applibrary/dom.js',
-            'js/applibrary/tpl.js',
-            'js/applibrary/util.js',
-            'js/app/application.js'
+            '../js/applibrary/aj.js',
+            '../js/applibrary/dom.js',
+            '../js/applibrary/tpl.js',
+            '../js/applibrary/util.js',
+            '../js/app/application.js'
         ],
 
         function(list){
@@ -84,7 +87,7 @@
              * The high level of application depending
              * @type {*|Function|Inc}
              */
-            appinc = new Inc();
+            appinc = new Inc(incOption);
 
             /**
              * Application Parts: Controller

@@ -1,4 +1,7 @@
-
+/**
+ * Configurations and includes scripts
+ * completed settings for init the application
+ */
 (function(Inc){
 
     /**
@@ -6,21 +9,38 @@
      */
     if( window.App ) return;
 
-    /**
-     * Javascript include, scripts-modules of application
-     * @type {Inc}
-     */
-    var appinc,
+    var
+        /**
+         *
+         * @type {boolean}
+         */
+        DEBUG = true,
+
+        /**
+         *
+         * @type {{force: boolean, chain: boolean, debug: boolean}}
+         */
+        incOption = {
+            force: false,
+            chain: true,
+            debug: DEBUG
+        },
+
+        /**
+         * Javascript include, scripts-modules of application
+         * @type {Inc}
+         */
+        appinc,
 
         /**
          * Javascript include, scripts-library of application
          * @type {Inc}
          */
-        libinc = new Inc(),
+        libinc = new Inc(incOption),
 
         /**
-         * Configuration
-         * added as property of Application
+         * Configuration, added as property of Application
+         *
          * @prop config.url         base url
          * @prop config.name        application name
          * @prop config.data        data provider
@@ -32,8 +52,9 @@
         property = {
             url: '/',
             path: '/',
-            name: 'Space Application',
+            name: 'banking',
             data: {},
+            debug: DEBUG,
             namespaces: [
                 'Controller','Action','Module'
             ]
@@ -66,7 +87,7 @@
              * The high level of application depending
              * @type {*|Function|Inc}
              */
-            appinc = new Inc();
+            appinc = new Inc(incOption);
 
             /**
              * Application Parts: Controller
@@ -100,21 +121,22 @@
             /**
              * Processing loading results or errors
              * @type {applicationError}
-             * @type {applicationStart}
+             * @type {applicationStarted}
              */
             appinc.onerror = applicationError;
-            appinc.oncomplete = applicationStart;
+            appinc.oncomplete = applicationStarted;
 
             /**
-             * Start connecting and downloading application units parts scripts
+             * Start connect and load of application units parts scripts
              */
             appinc.start();
 
+        }, applicationError)
 
-            //console.log('Is complete. App: ',App);
-
-        }, applicationError).start();
-
+        /**
+         * Start connect and load high level of application depending
+         */
+        .start();
 
 
     /** ***************************************************
@@ -127,16 +149,21 @@
      * @param error
      */
     function applicationError(error){
-        console.log('error: ',error);
+        App.logError(function(title){
+            console.error(title + 'loading script is fail. Error: ', error);
+        });
     }
-
 
     /**
      * Загрузка всех компонентов закончена
      * @param list  список загруженных скриптов
      */
-    function applicationStart(list){
-        console.log('Application run ...');
+    function applicationStarted(list){
+        App.log('run...');
+
+        // ....
+        // ....
+        // ....
     }
 
 })(Inc);

@@ -53,12 +53,14 @@
      */
     proto.one = function(indexCallback){
         if(this.elements.length == 0) return false;
+
+        if(parseInt(indexCallback) > 0) {
+            return this.elements[indexCallback];
+        }
         if(typeof indexCallback === 'function'){
             this.each(indexCallback, 1);
-            return this.elements[0]
         }
-        indexCallback = !!isNaN(indexCallback) ? indexCallback : 0;
-        return this.elements[indexCallback];
+        return this.elements[0]
     };
 
     /**

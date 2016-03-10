@@ -590,6 +590,28 @@
     };
 
 
+    /**
+     * Cross-browser function for the character of the event keypress:
+     * @param event     event.type must keypress
+     * @returns {*}
+     */
+    o.getChar = function (event) {
+        if (event.which == null) {
+            if (event.keyCode < 32) return null;
+            return String.fromCharCode(event.keyCode)
+        }
+        if (event.which != 0 && event.charCode != 0) {
+            if (event.which < 32) return null;
+            return String.fromCharCode(event.which);
+        }
+        return null;
+    };
+
+
+
+
+
+
     window.Util = o;
 
 })(window);
