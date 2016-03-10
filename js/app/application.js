@@ -7,6 +7,9 @@
  */
 (function () {
 
+    "use strict";
+
+
     /**
      * Application prototype
      * @type {{version: string, url: string, path: string, name: string, debug: boolean, namespaces: {}, isInit: boolean, has: proto.has, merge: proto.merge, label: proto.label, start: proto.start}}

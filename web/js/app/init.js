@@ -4,6 +4,9 @@
  */
 (function(Inc){
 
+    "use strict";
+
+
     /**
      * Locker
      */
@@ -159,8 +162,28 @@
     function applicationStarted(list){
         App.log('run...');
 
+        Dom.loaded(documentLoaded);
+    }
+
+
+
+    function documentLoaded(){
+
+        var node = App.namespace('node');
+
+            node.tips = Dom('#tips').one();
+            node.help = Dom('#help').one();
+            node.popup = Dom('#popup').one();
+            node.page = Dom('#page').one();
+            node.header = Dom('#header').one();
+            node.navigation = Dom('#navigation').one();
+            node.content = Dom('#content').one();
+            node.sidebar = Dom('#sidebar').one();
+            node.footer = Dom('#footer').one();
+
         var process =  App.Controller.Processing;
         process.construct();
+
     }
 
 })(Inc);

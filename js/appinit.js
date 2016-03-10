@@ -4,6 +4,9 @@
  */
 (function(Inc){
 
+    "use strict";
+
+
     /**
      * Locker
      */

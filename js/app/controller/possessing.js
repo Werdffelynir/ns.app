@@ -5,6 +5,9 @@
 
 (function(App, Dom, Tpl){
 
+    "use strict";
+
+
     /**
      * Register controller
      * Using depending on the base application

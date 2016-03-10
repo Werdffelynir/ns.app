@@ -6,6 +6,9 @@
 
 (function(App, Dom, Tpl){
 
+    "use strict";
+
+
     /**
      * Register namespace of module
      * Using depending on the base application
