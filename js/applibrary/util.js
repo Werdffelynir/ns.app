@@ -607,9 +607,24 @@
         return null;
     };
 
-
-
-
+    /**
+     * Add days to some date
+     * @param d1     type Date or number of days 
+     * @param d2     if d1 is type Date, this param number of days 
+     * @returns {*}  type Date 
+     */
+    o.dateDays = function (d1, d2) {
+        var result = new Date();
+        if(arguments.length > 1 ) {
+            result = new Date(d1);
+            result.setDate(result.getDate() + d2);
+            return result;
+        } else if(arguments.length > 0 ) {
+            result = new Date();
+            result.setDate(result.getDate() + d1);
+            return result;
+        } else return result;
+    }
 
 
     window.Util = o;
