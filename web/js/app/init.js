@@ -56,6 +56,7 @@
             url: '/',
             path: '/',
             name: 'banking',
+            node: {},
             data: {},
             debug: DEBUG,
             namespaces: [
@@ -79,7 +80,7 @@
 
         function(list){
 
-            Tpl.config({templates: '/ns.app/web/js/app/templates'});
+            Tpl.config({templates: '/ns.app/web/js/app/templates/'});
 
             /** ***************************************************
              * Global alias of Application instance
@@ -107,7 +108,8 @@
              */
             appinc.require(
                 [
-                    'js/app/action/popup.js'
+                    'js/app/action/popup.js',
+                    'js/app/action/navigation.js'
                 ]);
 
             /**
@@ -170,18 +172,18 @@
 
 
     function documentLoaded(){
-
-        var node = App.namespace('node');
-
-            node.tips = Dom('#tips').one();
-            node.help = Dom('#help').one();
-            node.popup = Dom('#popup').one();
-            node.page = Dom('#page').one();
-            node.header = Dom('#header').one();
-            node.navigation = Dom('#navigation').one();
-            node.content = Dom('#content').one();
-            node.sidebar = Dom('#sidebar').one();
-            node.footer = Dom('#footer').one();
+        
+        var node = App.node;
+        
+        node.tips = Dom('#tips').one();
+        node.help = Dom('#help').one();
+        node.popup = Dom('#popup').one();
+        node.page = Dom('#page').one();
+        node.header = Dom('#header').one();
+        node.navigation = Dom('#navigation').one();
+        node.content = Dom('#content').one();
+        node.sidebar = Dom('#sidebar').one();
+        node.footer = Dom('#footer').one();
 
         var process =  App.Controller.Processing;
         process.construct();

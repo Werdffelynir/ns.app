@@ -8,7 +8,6 @@
 
     "use strict";
 
-
     /**
      * Register action namespace
      * Using depending on the base application

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>JavaScript Application</title>
 
-    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="../css/grid.css">
     <link rel="stylesheet" href="css/main.css">
 
     <script src="../js/applibrary/inc.js"></script>
@@ -17,18 +17,12 @@
 <div id="popup"></div>
 <div id="page">
     <div id="header">Header</div>
-    <div id="navigation">
-        <ul>
-            <li><a href="/main" data-load="main">Home</a></li>
-            <li><a href="/docs" data-load="docs">Documentation</a></li>
-            <li><a href="/load" data-load="load">Downloads</a></li>
-            <li><a href="/exmp" data-load="exmp">Examples</a></li>
-            <li><a href="/bugs" data-load="bugs">Bugs tracker</a></li>
-        </ul>
-    </div>
+    <div id="navigation"></div>
 
     <div id="content">
 
+       
+       
         <h2>Aliquid autem esse</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem cum distinctio eveniet expedita laborum nulla
             perspiciatis porro voluptas! Atque dolorum, ex neque pariatur quaerat suscipit totam. A ea nostrum rem.</p>

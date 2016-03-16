@@ -12,6 +12,8 @@ var Tpl = Tpl || {
          * @var object data
          */
         data : {},
+    
+        debug : true,
 
         /**
          * версия скрипта
@@ -98,18 +100,19 @@ var Tpl = Tpl || {
      * @param callbackError
      */
     o.request = function(url, callback, callbackError) {
+        callbackError ? callbackError : o.callbackError;
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         if(typeof callback === 'function')
             xhr.onload = callback;
-        if(typeof callbackError === 'function')
-            xhr.onerror = callbackError;
+        xhr.onerror = function(err){callbackError.call(o, err)};
+        xhr.onloadend = function(err){callbackError.call(o, err)};
         xhr.send();
     };
 
-    
+    o.loadLastPath = '';
     /**
      * Загружает templates файл
      * Результат вернется как аргумент в функцию обратного вызова callback,
@@ -121,7 +124,7 @@ var Tpl = Tpl || {
      * @param callbackError
      */
     o.loadHTML = function(fileName, callback, callbackError) {
-
+        callbackError = callbackError || o.callbackError;
         var ext = '';
         if( fileName.lastIndexOf('.') !== -1){
             var index =  fileName.lastIndexOf('.'),
@@ -135,7 +138,7 @@ var Tpl = Tpl || {
         var url = o.templates + fileName + ext,
 
             onload = function(event) {
-
+                o.loadLastPath = url;
                 if(event.target instanceof XMLHttpRequest){
                     var xhr = event.target;
                     if(xhr.status === 200 && typeof callback === 'function'){
@@ -151,10 +154,9 @@ var Tpl = Tpl || {
             },
 
             onerror = function(event) {
-                f(typeof callbackError === 'function')
-                    callbackError.call(o, event.target);
+                callbackError.call(o, event.target);
             };
-        console.log(url);
+        
         o.request(url, onload, onerror);
     };
 
@@ -171,7 +173,8 @@ var Tpl = Tpl || {
                     callback.call(o, result);
                 }
             } else {
-                callbackError.call(o, xhr);
+                var _callbackError = callbackError || o.callbackError;
+                _callbackError.call(o, xhr);
             }
         };
 
@@ -237,8 +240,8 @@ var Tpl = Tpl || {
         if(typeof selector === 'object' && selector.nodeType === Node.ELEMENT_NODE){
             selector.dataSource = dataSource;
             selector.innerHTML = selector.dataImplemented = o.renderString(dataSource, params);
-            return selector;
         }
+        return selector;
     };
 
 
@@ -303,6 +306,11 @@ var Tpl = Tpl || {
     o.domIsLoaded = function(){
         return !!o.query('body');
     };
+    
+    o.callbackError = function(e){
+        //if(Tpl.debug)
+            console.error(e);
+    };
 
     /**
      * Сохранение данных на стороне пользователя.
@@ -312,7 +320,6 @@ var Tpl = Tpl || {
      * @var function localKey
      * @var function localRemove
      */
-
     o.localGet = function (name, value) { 
         var result = window.localStorage.getItem(name);
         if (result === undefined) return value;

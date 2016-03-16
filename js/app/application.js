@@ -215,7 +215,7 @@
             if (typeof text === 'function')
                 text.call(app.instance, _title);
             else
-                console.error(_title + text);
+                console.error(_title, text);
         }
     };
 
@@ -229,7 +229,7 @@
             if (typeof text === 'function')
                 text.call(app.instance, _title);
             else
-                console.log(_title + text);
+                console.log(_title, text);
         }
     };
 

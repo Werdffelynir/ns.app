@@ -138,6 +138,71 @@
         return !isNaN(param);
     };
 
+    // Determine whether a variable is empty
+    o.isEmpty = function (param) {
+        return (param === "" || param === 0 || param === "0" || param === null || param === undefined || param === false || (o.isArr(param) && param.length === 0));
+    };
+
+    o.isHtml = function (param) {
+        if(o.isNode(param)) return true;
+        return o.isNode(o.html2node(param));
+    };
+    
+    o.isNode = function (param) {
+        var types = [1, 9, 11];
+        if(typeof param === 'object' && types.indexOf(param.nodeType) !== -1) return true;
+        else return false;
+    };
+    
+    /**
+     * 
+     * Node.ELEMENT_NODE - 1 - ELEMENT
+     * Node.TEXT_NODE - 3 - TEXT
+     * Node.PROCESSING_INSTRUCTION_NODE - 7 - PROCESSING
+     * Node.COMMENT_NODE - 8 - COMMENT
+     * Node.DOCUMENT_NODE - 9 - DOCUMENT
+     * Node.DOCUMENT_TYPE_NODE - 10 - DOCUMENT_TYPE
+     * Node.DOCUMENT_FRAGMENT_NODE - 11 - FRAGMENT
+     * Uses: Util.isNodeType(elem, 'element')
+     */
+    o.isNodeType = function (param, type) {
+        type = String((type?type:1)).toUpperCase();
+        if(typeof param === 'object') {
+            switch(type){
+                case '1':
+                case 'ELEMENT':
+                    return param.nodeType === Node.ELEMENT_NODE;
+                    break;
+                case '3':
+                case 'TEXT':
+                    return param.nodeType === Node.TEXT_NODE;
+                    break;
+                case '7':
+                case 'PROCESSING':
+                    return param.nodeType === Node.PROCESSING_INSTRUCTION_NODE;
+                    break;
+                case '8':
+                case 'COMMENT':
+                    return param.nodeType === Node.COMMENT_NODE;
+                    break;
+                case '9':
+                case 'DOCUMENT':
+                    return param.nodeType === Node.DOCUMENT_NODE;
+                    break;
+                case '10':
+                case 'DOCUMENT_TYPE':
+                    return param.nodeType === Node.DOCUMENT_TYPE_NODE;
+                    break;
+                case '11':
+                case 'FRAGMENT':
+                    return param.nodeType === Node.DOCUMENT_FRAGMENT_NODE;
+                    break;
+                default: return false;
+            }
+        }
+        else return false;
+    };
+    
     /**
      * Determine param to undefined type
      * @param param
@@ -145,11 +210,6 @@
      */
     o.defined = function (param) {
         return typeof(param) != 'undefined';
-    };
-
-    // Determine whether a variable is empty
-    o.isEmpty = function (param) {
-        return (param === "" || param === 0 || param === "0" || param === null || param === undefined || param === false || (o.isArr(param) && param.length === 0));
     };
 
     /**
@@ -543,7 +603,13 @@
         return container.innerHTML;
     };
 
-
+    o.html2node = function (string){
+        var i, fragment = document.createDocumentFragment(), container = document.createElement("div");
+        container.innerHTML = string;
+        while( i = container.firstChild ) fragment.appendChild(i);
+        return fragment.childNodes.length === 1 ? fragment.firstChild : fragment;
+    };
+    
     o.base64encode = function (str){
         var b64chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
         var b64encoded = '';
