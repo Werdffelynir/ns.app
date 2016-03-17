@@ -71,16 +71,16 @@
      */
     libinc.require(
         [
-            '../js/applibrary/aj.js',
-            '../js/applibrary/dom.js',
-            '../js/applibrary/tpl.js',
-            '../js/applibrary/util.js',
-            '../js/app/application.js'
+            '../../js/applibrary/aj.js',
+            '../../js/applibrary/dom.js',
+            '../../js/applibrary/tpl.js',
+            '../../js/applibrary/util.js',
+            '../../js/app/application.js'
         ],
 
         function(list){
 
-            Tpl.config({templates: '/ns.app/web/js/app/templates/'});
+            Tpl.config({templates: '/ns.app/demo/web/js/app/templates/'});
 
             /** ***************************************************
              * Global alias of Application instance
@@ -96,23 +96,6 @@
             appinc = new Inc(incOption);
 
             /**
-             * Application Parts: Controller
-             */
-            appinc.require(
-                [
-                    'js/app/controller/processing.js'
-                ]);
-
-            /**
-             * Application Parts: Actions
-             */
-            appinc.require(
-                [
-                    'js/app/action/popup.js',
-                    'js/app/action/navigation.js'
-                ]);
-
-            /**
              * Application Parts: Modules
              */
             appinc.require(
@@ -120,6 +103,24 @@
                     'js/app/module/api.js',
                     'js/app/module/error.js',
                     'js/app/module/message.js'
+                ]);
+            /**
+             * Application Parts: Actions
+             */
+            appinc.require(
+                [
+                    'js/app/action/popup.js',
+                    'js/app/action/sidebar.js',
+                    'js/app/action/navigation.js'
+                ]);
+
+
+            /**
+             * Application Parts: Controller
+             */
+            appinc.require(
+                [
+                    'js/app/controller/processing.js'
                 ]);
 
             /**
@@ -180,6 +181,7 @@
         node.popup = Dom('#popup').one();
         node.page = Dom('#page').one();
         node.header = Dom('#header').one();
+        node.topnav = Dom('#topnav').one();
         node.navigation = Dom('#navigation').one();
         node.content = Dom('#content').one();
         node.sidebar = Dom('#sidebar').one();

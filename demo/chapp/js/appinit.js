@@ -86,11 +86,13 @@
             appinc = new Inc(incOption);
 
             /**
-             * Application Parts: Controller
+             * Application Parts: Modules
              */
             appinc.require(
                 [
-                    'js/app/controller/processing.js'
+                    'js/app/module/error.js',
+                    'js/app/module/message.js',
+                    'js/app/module/process.js'
                 ]);
 
             /**
@@ -98,16 +100,15 @@
              */
             appinc.require(
                 [
-                    'js/app/action/form.auth.js',
+                    'js/app/action/form.auth.js'
                 ]);
 
             /**
-             * Application Parts: Modules
+             * Application Parts: Controller
              */
             appinc.require(
                 [
-                    'js/app/module/error.js',
-                    'js/app/module/message.js'
+                    'js/app/controller/processing.js'
                 ]);
 
             /**

@@ -673,24 +673,18 @@
         return null;
     };
 
+    o.date = function(){};
     /**
      * Add days to some date
-     * @param d1     type Date or number of days 
-     * @param d2     if d1 is type Date, this param number of days 
+     * @param day           number of days. 0.04 - 1 hour, 0.5 - 12 hour, 1 - 1 day
+     * @param startDate     type Date, start date
      * @returns {*}  type Date 
      */
-    o.dateDays = function (d1, d2) {
-        var result = new Date();
-        if(arguments.length > 1 ) {
-            result = new Date(d1);
-            result.setDate(result.getDate() + d2);
-            return result;
-        } else if(arguments.length > 0 ) {
-            result = new Date();
-            result.setDate(result.getDate() + d1);
-            return result;
-        } else return result;
-    }
+    o.date.addDays = function (day, startDate){
+        var date = startDate ? new Date(startDate) : new Date();
+        date.setTime(date.getTime() + (day * 86400000));
+        return date;
+    };
 
 
     window.Util = o;

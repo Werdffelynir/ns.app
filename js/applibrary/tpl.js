@@ -120,7 +120,7 @@ var Tpl = Tpl || {
      *
      * @param fileName      имя файла html, без указания расширения
      * @param callback      функция обратного вызова. В функцию приходит аргумент
-     *                          с ответом запроса
+     *                          с ответом запроса и информ. о загруженых данных
      * @param callbackError
      */
     o.loadHTML = function(fileName, callback, callbackError) {
@@ -143,10 +143,11 @@ var Tpl = Tpl || {
                     var xhr = event.target;
                     if(xhr.status === 200 && typeof callback === 'function'){
                         internal.data[fileName] = {
+                            id: fileName,
                             source: o.templates + fileName + '.html',
                             response: xhr.responseText
                         };
-                        callback.call(o, xhr.responseText);
+                        callback.call(o, xhr.responseText, internal.data[fileName]);
                     }
                 } else {
                     callbackError.call(o, xhr);
@@ -154,7 +155,8 @@ var Tpl = Tpl || {
             },
 
             onerror = function(event) {
-                callbackError.call(o, event.target);
+                if(event.target.status != 200)
+                    callbackError.call(o, event.target);
             };
         
         o.request(url, onload, onerror);
@@ -239,7 +241,11 @@ var Tpl = Tpl || {
 
         if(typeof selector === 'object' && selector.nodeType === Node.ELEMENT_NODE){
             selector.dataSource = dataSource;
-            selector.innerHTML = selector.dataImplemented = o.renderString(dataSource, params);
+            if(typeof dataSource === 'object'){
+                selector.textContent = '';
+                selector.appendChild(dataSource);
+            }else
+                selector.innerHTML = selector.dataImplemented = o.renderString(dataSource, params);
         }
         return selector;
     };
@@ -308,7 +314,7 @@ var Tpl = Tpl || {
     };
     
     o.callbackError = function(e){
-        //if(Tpl.debug)
+        if(o.debug)
             console.error(e);
     };
 
