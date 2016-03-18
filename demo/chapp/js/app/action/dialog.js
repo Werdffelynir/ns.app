@@ -17,6 +17,7 @@
      */
     o.init = function() {
 
+        Aj.post('')
     };
 
 

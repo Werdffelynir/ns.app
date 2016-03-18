@@ -47,8 +47,9 @@
          * @type {{url: string, name: string, data: {}, path: string, namespaces: string[]}}
          */
         property = {
-            url: '/',
-            path: '/',
+            urlServer: '/ns.app/demo/chapp/server.php',
+            url: '/ns.app/demo/chapp/',
+            path: '/ns.app/demo/chapp/',
             name: 'Developer Space',
             node: {},
             data: {},
@@ -65,6 +66,7 @@
      */
     libinc.require(
         [
+            '../../js/applibrary/aj.js',
             '../../js/applibrary/dom.js',
             '../../js/applibrary/tpl.js',
             '../../js/applibrary/util.js',
@@ -103,7 +105,8 @@
                 [
                     'js/app/action/form.auth.js',
                     'js/app/action/form.register.js',
-                    'js/app/action/dialog.js'
+                    'js/app/action/dialog.js',
+                    'js/app/action/sidebar.js'
                 ]);
 
             /**
@@ -140,6 +143,9 @@
      * Работа начинается тута
      */
 
+    App.actionLink = function(name, func){
+        Dom('.action-link').attr('data-action');
+    };
 
     /**
      * Error loading

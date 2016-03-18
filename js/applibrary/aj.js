@@ -338,11 +338,14 @@
     /**
      * Запрос на основе данных HTML формы
      * @param form
-     * @param config
+     * @param config    {url:'',method:'',contentType:'',data:''}
      * @param callback
      * @returns {*}
      */
     aj.form = function(form, config, callback){
+
+        if(typeof form === 'string')
+            form = document.querySelector(form);
 
         if(typeof form === 'object' && form.nodeName == 'FORM'){
 
@@ -517,7 +520,7 @@
      * Import to global
      */
 
-    window.Aj = aj.open;
+    /*window.Aj = aj.open;
     window.AjGet = aj.get;
     window.AjPost = aj.post;
     window.AjHead = aj.head;
@@ -529,6 +532,20 @@
     window.AjScript = aj.script;
     window.AjWorker = aj.worker;
     window.AjUpload = aj.upload;
-    window.AjUtil = util;
+    window.AjUtil = util;*/
+
+    window.Aj = aj.open;
+    window.AjGet     = window.Aj.get     = aj.get;
+    window.AjPost    = window.Aj.post    = aj.post;
+    window.AjHead    = window.Aj.head    = aj.head;
+    window.AjLoad    = window.Aj.load    = aj.load;
+    window.AjRequest = window.Aj.request = aj.request;
+    window.AjForm    = window.Aj.form    = aj.form;
+    window.AjJson    = window.Aj.json    = aj.json;
+    window.AjJsonp   = window.Aj.jsonp   = aj.jsonp;
+    window.AjScript  = window.Aj.script  = aj.script;
+    window.AjWorker  = window.Aj.worker  = aj.worker;
+    window.AjUpload  = window.Aj.upload  = aj.upload;
+    window.AjUtil    = window.Aj.util    = util;
 
 })(window);

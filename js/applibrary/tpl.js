@@ -241,9 +241,12 @@ var Tpl = Tpl || {
 
         if(typeof selector === 'object' && selector.nodeType === Node.ELEMENT_NODE){
             selector.dataSource = dataSource;
+
             if(typeof dataSource === 'object'){
                 selector.textContent = '';
                 selector.appendChild(dataSource);
+                if(params)
+                    selector.innerHTML = o.renderString(selector.innerHTML, params);
             }else
                 selector.innerHTML = selector.dataImplemented = o.renderString(dataSource, params);
         }

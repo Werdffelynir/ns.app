@@ -590,7 +590,7 @@
      * @param name
      * @param value
      */
-    o.cookie = function (name, value) {
+    o.Cookie = function (name, value) {
         "use strict";
         if(value === undefined){
             return o.cookie.get(name);
@@ -602,13 +602,13 @@
         }
 
     };
-    o.cookie.get = function (name) {
+    o.Cookie.get = function (name) {
         var matches = document.cookie.match(new RegExp(
             "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
         return matches ? decodeURIComponent(matches[1]) : undefined;
     };
-    o.cookie.set = function (name, value, options) {
+    o.Cookie.set = function (name, value, options) {
         options = options || {};
         var expires = options.expires;
         if (typeof expires == "number" && expires) {
@@ -631,7 +631,7 @@
         document.cookie = updatedCookie;
     };
 
-    o.cookie.delete = function (name){
+    o.Cookie.delete = function (name){
         "use strict";
         o.cookie.set(name, "", {
             expires: -1
@@ -726,8 +726,8 @@
         return null;
     };
 
-    o.date = function(){};
-    o.date.time = function(date){
+    o.Date = function(){};
+    o.Date.time = function(date){
         "use strict";
         return date instanceof Date ? date.getTime() : (new Date).getTime();
 
@@ -738,7 +738,7 @@
      * @param startDate     type Date, start date
      * @returns {*}  type Date 
      */
-    o.date.addDays = function (day, startDate){
+    o.Date.addDays = function (day, startDate){
         var date = startDate ? new Date(startDate) : new Date();
         date.setTime(date.getTime() + (day * 86400000));
         return date;

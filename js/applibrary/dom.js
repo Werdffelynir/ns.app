@@ -73,6 +73,21 @@
         return this.elements;
     };
 
+    proto.attr = function (param, value){
+        if(this.elements.length == 0) return;
+
+        if(value !== undefined){
+            try{
+                this.elements.map(function(elem){
+                    elem.setAttribute(param, value);
+                });
+            }catch(e){}
+        } else {
+
+        }
+        return this.elements;
+    };
+
     /**
      * Вернет первый дочерний елемент firstChild
      * Изменяет экземпляр

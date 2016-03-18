@@ -39,16 +39,44 @@
         App.node['footer'] = Dom('#footer').one();
         App.node['body'] = Dom('body').one();
 
-        console.log(App.node);
+        //console.log(App.node);
+        var processLogin = App.Module.Process.create('login'),
+            processDialog = App.Module.Process.create('dialog');
 
-        App.Module.Process.create();
-        if(!Util.cookie('auth')){
-            App.Action.FormAuth.init();
+        if(Util.cookie('auth') != 1 && !Util.cookie('username')){
+            processLogin.render(App.node.dialog, 'login', false, callLoginPage);
         }else{
-            App.Action.Dialog.init();
+            processDialog.render(App.node.dialog, 'dialog', false, callDialogPage);
         }
 
 
+    }
+
+    function callLoginPage(page){
+        App.node['input'].style.display = 'none';
+        App.node['topnav'].textContent = '';
+        App.Action.FormAuth.init(this.id);
+    }
+
+    function callDialogPage(page){
+
+        App.Action.Dialog.init();
+
+        Tpl.include([
+            'topnav',
+            'sidebar',
+            'input'
+        ], function(list){
+            //console.log(list)
+
+            Tpl.inject(App.node.input, list.input.response);
+            Tpl.inject(App.node.topnav, list.topnav.response);
+            Tpl.inject(App.node.sidebar, list.sidebar.response);
+
+
+            App.Action.Sidebar.init();
+
+        })
     }
 
 
