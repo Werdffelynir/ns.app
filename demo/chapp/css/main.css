@@ -44,7 +44,23 @@ html, body{
     color: #fff;
 }
 
-
+#login{
+    width: 210px;
+    margin: 150px auto;
+}
+#login input[type=text]{
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #595959;
+    background-color: #212121;
+    color: #A5A5A5;
+}
+#login input[type=submit]{
+    padding: 0;
+    border: none;
+    background-color: #3C3F41;
+    color: #A5A5A5;
+}
 
 
 
