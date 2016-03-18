@@ -585,6 +585,59 @@
         return window.localStorage.key(key);
     };
 
+    /**
+     * возвращает cookie с именем name, если есть, если нет, то undefined
+     * @param name
+     * @param value
+     */
+    o.cookie = function (name, value) {
+        "use strict";
+        if(value === undefined){
+            return o.cookie.get(name);
+        }
+        else if (value === false || value === null){
+            o.cookie.delete(name);
+        }else {
+            o.cookie.set(name, value);
+        }
+
+    };
+    o.cookie.get = function (name) {
+        var matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    };
+    o.cookie.set = function (name, value, options) {
+        options = options || {};
+        var expires = options.expires;
+        if (typeof expires == "number" && expires) {
+            var d = new Date();
+            d.setTime(d.getTime() + expires * 1000);
+            expires = options.expires = d;
+        }
+        if (expires && expires.toUTCString) {
+            options.expires = expires.toUTCString();
+        }
+        value = encodeURIComponent(value);
+        var updatedCookie = name + "=" + value;
+        for (var propName in options) {
+            updatedCookie += "; " + propName;
+            var propValue = options[propName];
+            if (propValue !== true) {
+                updatedCookie += "=" + propValue;
+            }
+        }
+        document.cookie = updatedCookie;
+    };
+
+    o.cookie.delete = function (name){
+        "use strict";
+        o.cookie.set(name, "", {
+            expires: -1
+        })
+    };
+
     o.each = function (data, callback) {
         if(o.isArr(data)){
             for(var i = 0; i < data.length; i ++) callback.call(null, data[i]);
@@ -674,6 +727,11 @@
     };
 
     o.date = function(){};
+    o.date.time = function(date){
+        "use strict";
+        return date instanceof Date ? date.getTime() : (new Date).getTime();
+
+    };
     /**
      * Add days to some date
      * @param day           number of days. 0.04 - 1 hour, 0.5 - 12 hour, 1 - 1 day

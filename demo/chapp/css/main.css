@@ -1,11 +1,61 @@
 html, body{
-    /*background-color: #d8f3ff;*/
+    background-color: #252525;
+    font-family: sans-serif;
+}
+#page{
+    width: 80%;
+    margin: 0 auto;
+    background-color: #3c3f41;
+    color: #963186;
+}
+
+#header{}
+#logo{}
+#topnav{}
+#content{}
+#dialog{min-height: 300px}
+#sidebar{display: none}
+#input{}
+#area{}
+#areanav{}
+#footer{
+    background-color: #333538;
+    border-top: 1px solid #141414;
+    color: #8F8F8F;
+    padding: 10px;
+    text-align: center;
+    font-size: 10px;
+}
+
+#logo>span:nth-child(1){
+    font-size: 30px;
+    padding-left: 15px;
+    padding-right: 0px;
+}
+#logo>span:nth-child(2){
+    font-size: 40px;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: #fff;
+    background-color: #636B80;
+}
+#logo>span:nth-child(3){
+    font-size: 12px;
+    color: #fff;
+}
+
+
+
+
+
+
+/*
+html, body{
     font-family: sans-serif;
 }
 #page{
     width: 800px;
     margin: 0 auto;
-    /*background-color: #fffff7;*/
 }
 
 .tplHead{
@@ -21,7 +71,6 @@ html, body{
     width: 80%;
     background-color: #fffff7;
     vertical-align: bottom;
-    /*border: 3px solid #737373;*/
     border-left: 5px solid #D8D8D8;
 }
 
@@ -43,7 +92,6 @@ html, body{
     background-color: #636B80;
     font-size: 12px;
     color: #fff;
-    /* border: 5px solid #F3F3F3; */
     border-top: none;
     padding: 3px;
     margin-bottom: 5px;
@@ -84,12 +132,10 @@ html, body{
     background-color: #636B80;
     font-size: 12px;
     color: #fff;
-     /*border: 5px solid #F3F3F3;*/
-    /*border-top: none;*/
     padding: 3px;
     margin: 5px;
 }
-
+*/
 
 
 

@@ -50,6 +50,7 @@
             url: '/',
             path: '/',
             name: 'Developer Space',
+            node: {},
             data: {},
             debug: DEBUG,
             namespaces: [
@@ -100,7 +101,9 @@
              */
             appinc.require(
                 [
-                    'js/app/action/form.auth.js'
+                    'js/app/action/form.auth.js',
+                    'js/app/action/form.register.js',
+                    'js/app/action/dialog.js'
                 ]);
 
             /**
@@ -155,9 +158,8 @@
     function applicationStart(list){
         App.log('run...');
 
-        var process =  App.Controller.Processing;
 
-        process.construct();
+        App.Controller.Processing.construct();
     }
 
 })(Inc);
