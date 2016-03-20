@@ -37,4 +37,9 @@
 
     }
 
+    o.getUsers = function (){
+
+    }
+
+
 })(App, Dom, Tpl);

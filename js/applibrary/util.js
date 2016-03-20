@@ -593,12 +593,12 @@
     o.Cookie = function (name, value) {
         "use strict";
         if(value === undefined){
-            return o.cookie.get(name);
+            return o.Cookie.get(name);
         }
         else if (value === false || value === null){
-            o.cookie.delete(name);
+            o.Cookie.delete(name);
         }else {
-            o.cookie.set(name, value);
+            o.Cookie.set(name, value);
         }
 
     };
@@ -608,6 +608,13 @@
         ));
         return matches ? decodeURIComponent(matches[1]) : undefined;
     };
+    /**
+     *
+     * @param name
+     * @param value
+     * @param {{}} options   {expires: 0, path: '/', domain: 'site.com', secure: false}
+     *                          expires - ms, Date, -1, 0
+     */
     o.Cookie.set = function (name, value, options) {
         options = options || {};
         var expires = options.expires;
@@ -631,11 +638,11 @@
         document.cookie = updatedCookie;
     };
 
-    o.Cookie.delete = function (name){
+    o.Cookie.delete = o.Cookie.remove = function (name, option){
         "use strict";
-        o.cookie.set(name, "", {
-            expires: -1
-        })
+        option = typeof option === 'object' ? option : {};
+        option.expires = -1;
+        o.Cookie.set(name, "", option);
     };
 
     o.each = function (data, callback) {

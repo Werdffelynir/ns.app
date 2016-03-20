@@ -12,6 +12,8 @@
      */
     var o = App.namespace('Action.Navigate');
 
+    o.linker = App.Module.Linker;
+
     /**
      * Construct for action
      */
@@ -21,4 +23,4 @@
 
 
 
-})(Application, Dom, Tpl);
+})(App, Dom, Tpl);

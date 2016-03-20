@@ -47,7 +47,7 @@
          * @type {{url: string, name: string, data: {}, path: string, namespaces: string[]}}
          */
         property = {
-            urlServer: '/ns.app/demo/chapp/server.php',
+            urlServer: '/ns.app/server/chapp.php',
             url: '/ns.app/demo/chapp/',
             path: '/ns.app/demo/chapp/',
             name: 'Developer Space',
@@ -95,7 +95,8 @@
                 [
                     'js/app/module/error.js',
                     'js/app/module/message.js',
-                    'js/app/module/process.js'
+                    'js/app/module/process.js',
+                    'js/app/module/linker.js'
                 ]);
 
             /**
@@ -143,9 +144,6 @@
      * Работа начинается тута
      */
 
-    App.actionLink = function(name, func){
-        Dom('.action-link').attr('data-action');
-    };
 
     /**
      * Error loading
@@ -163,6 +161,11 @@
      */
     function applicationStart(list){
         App.log('run...');
+
+
+        App.actionLink = function(name, func){
+            Dom('.action-link').attr('data-action');
+        };
 
 
         App.Controller.Processing.construct();

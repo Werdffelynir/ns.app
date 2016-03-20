@@ -267,6 +267,7 @@
 
     proto.on = function (eventName, eventFunc, bubble){
         if(this.elements.length == 0) return;
+        if(typeof eventFunc !== 'function') console.error('Not a function type: ',eventFunc);
         try{
             this.elements.map(function(elem){
                 elem.addEventListener(eventName, eventFunc, bubble);
@@ -347,6 +348,70 @@
 
     proto.toString = function (){
         return "Dom"
+    };
+
+
+    /**
+     * Creator of styles, return style-element or style-text.
+     *
+     * <pre>var style = createStyle('body','font-size:10px');
+     *style.add('body','font-size:10px')       // added style
+     *style.add( {'background-color':'red'} )  // added style
+     *style.getString()                        // style-text
+     *style.getObject()                        // style-element</pre>
+     *
+     * @param selector      name of selector styles
+     * @param property      string "display:object" or object {'background-color':'red'}
+     * @returns {*}         return object with methods : getString(), getObject(), add()
+     */
+
+    dom.createStyle = function (selector, property) {
+        var o = {
+            content: '',
+            getString: function () {
+                return '<style rel="stylesheet">' + "\n" + o.content + "\n" + '</style>';
+            },
+            getObject: function () {
+                var st = document.createElement('style');
+                st.setAttribute('rel', 'stylesheet');
+                st.textContent = o.content;
+                return st;
+            },
+            add: function (select, prop) {
+                if (typeof prop === 'string') {
+                    o.content += select + "{" + ( (prop.substr(-1) == ';') ? prop : prop + ';' ) + "}";
+                } else if (typeof prop === 'object') {
+                    o.content += select + "{";
+                    for (var key in prop)
+                        o.content += key + ':' + prop[key] + ';';
+                    o.content += "}";
+                }
+                return this;
+            }
+        };
+        return o.add(selector, property);
+    };
+
+    /**
+     * Create new NodeElement
+     * @param tag       element tag name 'p, div, h3 ... other'
+     * @param attrs     object with attributes key=value
+     * @param inner     text, html or NodeElement
+     * @returns {Element}
+     */
+    dom.createElement = function (tag, attrs, inner) {
+        var elem = document.createElement(tag);
+        if (typeof attrs === 'object') {
+            for (var key in attrs)
+                elem.setAttribute(key, attrs[key]);
+        }
+
+        if (typeof inner === 'string') {
+            elem.innerHTML = inner;
+        } else if (typeof inner === 'object') {
+            elem.appendChild(elem);
+        }
+        return elem;
     };
 
 

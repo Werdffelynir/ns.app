@@ -112,6 +112,11 @@
                     inst.isInit = true;
                 }
                 return inst;
+            },
+
+
+            redirect: function(url){
+                window.location =  this.url + (url.slice(0,1)=='/') ? url.slice(1) : url
             }
         },
 
@@ -221,17 +226,19 @@
 
     /**
      * Debug info log
-     * @param text
+     * @param param
      */
-    app.log = function (text) {
+    app.log = function (param) {
         if (app.instance && app.instance.debug) {
             var _title = 'Application: ';
-            if (typeof text === 'function')
-                text.call(app.instance, _title);
+            if (typeof param === 'function')
+                param.call(app.instance, _title);
             else
-                console.log(_title, text);
+                for (var i = 0; i < arguments.length; i ++ )
+                    console.log( i + ' ' + _title, arguments[i]);
         }
     };
+
 
     /**
      * Global name

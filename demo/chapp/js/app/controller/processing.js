@@ -12,6 +12,11 @@
      */
     var o = App.namespace('Controller.Processing');
 
+    o.Linker = App.Module.Linker;
+    o.Dialog = App.Action.Dialog;
+    o.Sidebar = App.Action.Sidebar;
+    o.FormAuth = App.Action.FormAuth;
+
     /**
      * Construct call first when this controller run
      */
@@ -43,24 +48,39 @@
         var processLogin = App.Module.Process.create('login'),
             processDialog = App.Module.Process.create('dialog');
 
-        if(Util.cookie('auth') != 1 && !Util.cookie('username')){
+        if(Util.Cookie('auth') != 1 || !Util.Cookie('user')){
             processLogin.render(App.node.dialog, 'login', false, callLoginPage);
         }else{
-            processDialog.render(App.node.dialog, 'dialog', false, callDialogPage);
-        }
+            // load base data
+            Aj.post(App.urlServer, {command:'get_base_date'}, function(status, response){
+                try {
+                    var _data = JSON.parse(response);
+                    console.log(_data);
 
+                    App.data['user'] = JSON.parse(Util.Cookie('user'));
+                    App.data['config'] = _data['config'];
+                    App.data['users'] = _data['users'];
+                    App.data['messages'] = _data['messages'];
+                    processDialog.render(App.node.dialog, 'dialog', false, callDialogPage);
+
+                }catch(error){
+                    App.logError('Error in time loading base data');
+                }
+            });
+        }
 
     }
 
     function callLoginPage(page){
         App.node['input'].style.display = 'none';
         App.node['topnav'].textContent = '';
-        App.Action.FormAuth.init(this.id);
+
+        o.FormAuth.init(this.id);
     }
 
     function callDialogPage(page){
 
-        App.Action.Dialog.init();
+        o.Dialog.init();
 
         Tpl.include([
             'topnav',
@@ -69,15 +89,50 @@
         ], function(list){
             //console.log(list)
 
-            Tpl.inject(App.node.input, list.input.response);
+            //Tpl.inject(App.node.input, list.input.response);
             Tpl.inject(App.node.topnav, list.topnav.response);
             Tpl.inject(App.node.sidebar, list.sidebar.response);
 
 
-            App.Action.Sidebar.init();
+            o.Sidebar.init();
+
+            // Назначение действий на основные кнопки интерфейса
+            o.Linker.search();
+            o.Linker.click('logout', click_logout);
+            o.Linker.click('profile', click_profile);
+            o.Linker.click('settings', click_settings);
+            o.Linker.click('enter', click_enter);
+            o.Linker.click('attach', click_attach);
+            Dom(App.node.area).on('keyup', click_enter);
+
+
+            //o.Linker.get('enter').addEventListener(''){}
+
+            //console.log(Dom(App.node.area));
+            //console.log(o.Linker.get());
 
         })
     }
+
+    function click_logout (event){
+        Util.Cookie.remove('auth', {path: '/'});
+        Util.Cookie.remove('user', {path: '/'});
+        App.redirect('/');
+    }
+    function click_profile (event){
+        "use strict";
+        App.log('profile: ', this, event);
+    }
+    function click_settings (event){}
+    function click_enter (event){
+        if(event.type === 'keyup' && (event.code !== 'Enter' || event.shiftKey !== true) ) return;
+
+        var textArea = App.node['area'].innerHTML;
+        App.node['area'].innerHTML = '';
+
+        o.Dialog.putMessage(textArea);
+    }
+    function click_attach (event){}
 
 
 })(App, Dom);

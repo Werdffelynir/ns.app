@@ -34,27 +34,27 @@
 
     function submitLogin (status, response){
         if(status == 200 && !!response){
-//            console.log(!!response);
-            response = JSON.parse(response);
-            if(typeof response === 'object' && typeof response.result === 'object'){
-                Dom(o.form).find('.info').html('<span class="txt_def">Auth is success, <a href="/ns.app/demo/chapp/">redirected</a></span>');
-            }else{
-                Dom(o.form).find('.info').html('<span class="txt_red">Wrong username or password</span>');
+            console.log(response);
+            try{
+                response = JSON.parse(response);
+
+                if(typeof response === 'object' && typeof response.result === 'object'){
+                    Dom(o.form).find('.info').html('<span class="txt_def">Auth is success, <a href="/ns.app/demo/chapp/">redirected</a></span>');
+                    setTimeout(function(){
+                        "use strict";
+                        App.redirect('/');
+                    },2000);
+                }else{
+                    Dom(o.form).find('.info').html('<span class="txt_red">Wrong username or password</span>');
+                }
+            }catch(error){
+                Dom(o.form).find('.info').html('<span class="txt_red">Internal server error</span>');
             }
         }
     }
 
     function submitLoginError (){
         console.error('Request to server fail ',event);
-    }
-
-    /**
-     * Uses: App.Action.FormAuth.submitLogout()
-     */
-    o.submitLogout = function (){
-        Util.Cookie.delete('auth');
-        Util.Cookie.delete('user');
-        window.location = App.url;
     }
 
 
