@@ -86,7 +86,10 @@ if(Server::getCommand() ==  'update_messages' && Server::isAuth()) {
     $user_id = (int) Server::getCommand('last_id');
     $result['messages'] = Server::SPDO()->select('*', 'messages', 'deleted != 1 AND id > ?', [$user_id] );
     echo json_encode($result);
-}*/
+}
+
+        !empty($values['uid']) &&
+*/
 
 
 Server::executeCommand('update_messages', function($values){
@@ -99,6 +102,25 @@ Server::executeCommand('update_messages', function($values){
 });
 
 
+Server::executeCommand('update', function($values) {
+
+    $result['error'] = null;
+    $result['messages'] = null;
+    $result['users'] = null;
+
+    if(!empty($values['uid']) && !empty($values['lmid'])){
+
+        Server::SPDO()->update('users',['lastactive' => time()], 'id = ?', [$values['uid']]);
+        $_users = Server::SPDO()->select('*', 'users', 'active = 1');
+        for($i=0;$i<count($_users);$i ++)
+            $result['users'][ $_users[$i]['id'] ] = $_users[$i];
+
+        $result['messages'] = Server::SPDO()->select('*', 'messages', 'deleted != 1 AND id > ?', [(int) $values['lmid']]);
+
+    }else
+        echo json_encode($result);
+
+});
 
 
 

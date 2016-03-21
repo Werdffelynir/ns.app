@@ -103,15 +103,8 @@
             o.Linker.click('attach', click_attach);
             Dom(App.node.area).on('keyup', click_enter);
 
-            // auto updates
-            var timer = new Timer(5000);
-            timer.onprogress = function(event){
-                console.log('update...');
-            };
-            timer.oncomplete = function(event){
-                console.log('oncomplete');
-            };
-            timer.start();
+            // start auto updates
+            //o.Dialog.autoupdate();
 
         })
     }

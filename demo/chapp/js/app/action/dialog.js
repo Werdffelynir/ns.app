@@ -88,8 +88,12 @@
             ?   App.data.messages[App.data.messages.length-1].id
             :   0;
 
+        // Show message loader (block|none), uid: App.data.user['id']
+        //App.node.inputLoaderIco.style.display = 'block';
+
         Aj.post(App.urlServer, {command:'update_messages', last_id:id}, function(status, response, xhr, event){
 
+            console.log(status, response);
             //App.node.dialogMessages.innerHTML = response;
             try{
                 var res = JSON.parse(response);
@@ -106,20 +110,96 @@
                             App.data.messages.push(item);
                             App.node.dialogMessages.appendChild(_message);
 
-                            o.scroll();
                         });
+                        o.scroll();
 
-
+                        // Show message loader (block|none)
+                        //App.node.inputLoaderIco.style.display = 'none';
                     }
                 }
-            }catch(error){}
+            }catch(error){
+                console.log(error);
+            }
+
         })
     };
+
+
+    o.update = function(){
+        var id = App.data.messages[App.data.messages.length-1]
+            ?   App.data.messages[App.data.messages.length-1].id
+            :   0;
+
+        Aj.post(App.urlServer, {
+            command: 'update',
+            lmid: id,
+            uid: App.data.user.id
+        }, o.updateComplete, o.updateError);
+
+    };
+    o.updateError = function(error){};
+    o.updateComplete = function(status, response, xhr, event){
+        console.log(status, response);
+        //App.node.dialogMessages.innerHTML = response;
+        try{
+            var res = JSON.parse(response);
+
+
+            /*if(status == 200 && typeof res === 'object'){
+                if( Util.isArr(res['messages']) ){
+
+                    res['messages'].map(function(item){
+
+                        var _user = App.data['users'][item['user_id']]
+                                ? App.data['users'][item['user_id']]
+                                : {fullname:'User Name',photo:'user.png'},
+                            _message = o.createMessage(_user, item);
+
+                        App.data.messages.push(item);
+                        App.node.dialogMessages.appendChild(_message);
+
+                    });
+                    o.scroll();
+
+                    // Show message loader (block|none)
+                    //App.node.inputLoaderIco.style.display = 'none';
+                }
+            }*/
+
+        }catch(error){
+            App.error('After request, in response parse data some error.');
+        }
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     o.scroll = function(){
         App.node.dialogMessages.scrollTo(0,App.node.dialogMessages.scrollHeight);
     };
 
+    o.autoupdate = function(){
+        var timer = new Timer(5000);
+        timer.onprogress = function(event){
+            o.updateMessages();
+        };
+        timer.start();
+    };
 
     o.createMessage = function (user, item, ico, name, time, text) {
 
