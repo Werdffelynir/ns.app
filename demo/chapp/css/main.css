@@ -99,8 +99,8 @@ a:hover{ color: #e79642; }
     width: 90%;
     vertical-align: top;
     /*    margin: 5px;;*/
-        padding: 5px;
-        font-size: 12px;
+    padding: 0 5px;
+    font-size: 12px;
     font-family: Arial, serif;
     background-color: #272727;
     color: #BDBDBD;
@@ -175,7 +175,17 @@ a:hover{ color: #e79642; }
 .loader{
     margin: 20% auto;
 }
-
+#loader_messages{
+    display: block;
+    position: absolute;
+    margin-left: -36px;
+}
+.loader_ico{
+    display: none;
+    width: 36px;
+    height: 36px;
+    margin-top: 375px;
+}
 
 /*DIALOG*/
 
@@ -185,7 +195,7 @@ a:hover{ color: #e79642; }
     /*overflow-x: hidden;*/
 }
 
-#msg_list{
+#dialog_messages{
     max-height: 300px;
     overflow-y: auto;
 }

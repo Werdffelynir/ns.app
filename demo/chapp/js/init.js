@@ -56,7 +56,20 @@
             debug: DEBUG,
             namespaces: [
                 'Controller','Action','Module'
-            ]
+            ],
+            timeToDate: function(str){
+                var _date = new Date();
+                _date.setTime(parseInt(str));
+                return _date;
+            },
+            dataToStr: function(date){
+                return date.getHours() +
+                    ':' + date.getMinutes() +
+                    ':' + date.getSeconds() +
+                    ' ' + date.getDate() +
+                    '.' + date.getMonth() +
+                    '.' + date.getFullYear();
+            }
         };
 
     /**

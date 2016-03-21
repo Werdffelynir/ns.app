@@ -60,7 +60,7 @@ if(Server::getCommand() ==  'put_message' && Server::isAuth()) {
 
     $response['result'] = Server::SPDO()->insert('messages', [
         'user_id' => $user_id,
-        'time' => date("d.m.Y H:i:s"),
+        'time' => time(), //date("d.m.Y H:i:s"),
         'text' => trim(strip_tags($text)),
     ]);
 

@@ -43,6 +43,8 @@
         App.node['areanav'] = Dom('#areanav').one();
         App.node['footer'] = Dom('#footer').one();
         App.node['body'] = Dom('body').one();
+        App.node['loader_messages'] = Dom('#loader_messages').one();
+        App.node['loader_messages_ico'] = Dom('#loader_messages>.loader_ico').one();
 
         //console.log(App.node);
         var processLogin = App.Module.Process.create('login'),
@@ -55,7 +57,7 @@
             Aj.post(App.urlServer, {command:'get_base_date'}, function(status, response){
                 try {
                     var _data = JSON.parse(response);
-                    console.log(_data);
+                    //console.log(_data);
 
                     App.data['user'] = JSON.parse(Util.Cookie('user'));
                     App.data['config'] = _data['config'];
@@ -105,11 +107,12 @@
             o.Linker.click('attach', click_attach);
             Dom(App.node.area).on('keyup', click_enter);
 
-
             //o.Linker.get('enter').addEventListener(''){}
 
             //console.log(Dom(App.node.area));
             //console.log(o.Linker.get());
+
+            // auto updates
 
         })
     }
@@ -125,6 +128,7 @@
     }
     function click_settings (event){}
     function click_enter (event){
+        if(App.node['area'].textContent.length == 0) return;
         if(event.type === 'keyup' && (event.code !== 'Enter' || event.shiftKey !== true) ) return;
 
         var textArea = App.node['area'].innerHTML;

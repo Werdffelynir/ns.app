@@ -18,9 +18,10 @@
      * Construct for action
      */
     o.init = function() {
-
+        // Show message loader (block|none)
+        App.node['loader_messages_ico'].style.display = 'block';
         App.node.dialog.innerHTML = '';
-        App.node.dialogMessages = Dom.createElement('div',{id:'msg_list'});
+        App.node.dialogMessages = Dom.createElement('div',{id:'dialog_messages'});
         App.node.dialog.appendChild(App.node.dialogMessages);
         o.loadMessages();
 
@@ -33,31 +34,31 @@
                     var _user = App.data['users'][item['user_id']]
                         ? App.data['users'][item['user_id']]
                         : {fullname:'User Name',photo:'user.png'},
-                        _message = o.createMessage(_user['photo'], _user['fullname'], item['time'], item['text']);
+                        _message = o.createMessage(_user, item);
                     App.node.dialogMessages.appendChild(_message);
                 }
-            })
+            });
+            o.scroll();
+
+            // Show message loader (block|none)
+            App.node['loader_messages_ico'].style.display = 'none';
         }
-        //Aj.post(App.urlServer, {command:'get_messages'}, function(status, response, xhr, event){
-        //    try{
-        //        var ms = JSON.parse(response);
-        //    }catch(error){}
-        //})
     };
 
     o.putMessage = function(text){
-        // console.log('putMessage: ', text);
-        Aj.post(App.urlServer,
-            {
-                command:'put_message',
-                text:text,
-                user_id: App.data['user'].id
-            },
+
+        // Show message loader (block|none)
+        App.node['loader_messages_ico'].style.display = 'block';
+
+        Aj.post(App.urlServer, {command:'put_message', text:text, user_id: App.data['user'].id},
             function(status, response, xhr, event){
                 try{
                     var res = JSON.parse(response);
                     if(status == 200 && typeof res === 'object' && parseInt(res.result) > 0){
                         o.updateMessages();
+
+                        // Show message loader (block|none)
+                        App.node['loader_messages_ico'].style.display = 'none';
                     }
                 }catch(error){}
             }
@@ -84,10 +85,10 @@
                             var _user = App.data['users'][item['user_id']]
                                     ? App.data['users'][item['user_id']]
                                     : {fullname:'User Name',photo:'user.png'},
-                                _message = o.createMessage(_user['photo'], _user['fullname'], item['time'], item['text']);
+                                _message = o.createMessage(_user, item);
                             App.data['messages'].push(item);
                             App.node.dialogMessages.appendChild(_message);
-
+                            o.scroll();
                         });
 
                     }
@@ -96,55 +97,41 @@
         })
     };
 
+    o.scroll = function(){
+        App.node.dialogMessages.scrollTo(0,App.node.dialogMessages.scrollHeight);
+    };
 
 
+    o.createMessage = function (user, item, ico, name, time, text) {
 
+        var timeDate = App.dataToStr(App.timeToDate(item['time']+'000')),
+            curUser = App.data.user,
+            nav = '';
+        nav += '<div class="btn btn_min">pit</div>';
+        nav += '<div class="btn btn_min">hide</div>';
 
+        // 30 min for delete own message
+        if(item.user_id == curUser.id && (new Date).getTime()-(60000*30) < (parseInt(item['time']+'000')) )
+            nav += '<div class="btn btn_min">delete</div>';
 
+        nav = '<div class="tbl_cell mbox_nav">' + nav + '</div>';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    o.createMessage = function (ico, name, time, text) {
-
-        var elem_nav = '';
-        elem_nav += '<div class="btn btn_min">pit</div>';
-        elem_nav += '<div class="btn btn_min">hide</div>';
-
-        elem_nav = '<div class="tbl_cell mbox_nav">' + elem_nav + '</div>';
-
-        var elem_ico = '<img src="/ns.app/demo/chapp/images/' + ico + '" alt="">';
-        var elem_timename = '<div class="mbox_head tbl">'+
+        var ico = '<img src="/ns.app/demo/chapp/images/' + user['photo'] + '" alt="">';
+        var time_name = '<div class="mbox_head tbl">'+
             '<div class="tbl_cell">'+
-                '<i class="mbox_time">'+time+'</i>@<i class="mbox_name">'+name+'</i>'+
+                '<i class="mbox_time">'+timeDate+'</i> @ <i class="mbox_name">' + user['fullname'] + '</i>'+
             '</div>' +
-            elem_nav +
+            nav +
             '</div>';
-        var elem_msg = '<div class="mbox_msg">' + text + '</div>';
-        var elem_mbox_ico = Dom.createElement('div', {class:'tbl_cell mbox_ico'}, elem_ico);
-        var elem_mbox_ctx = Dom.createElement('div', {class:'tbl_cell mbox_ctx'}, elem_timename + elem_msg);
+        var msg = '<div class="mbox_msg">' + item['text'] + '</div>';
+        var mbox_ico = Dom.createElement('div', {class:'tbl_cell mbox_ico'}, ico);
+        var mbox_ctx = Dom.createElement('div', {class:'tbl_cell mbox_ctx'}, time_name + msg);
 
 
         var mbox = Dom.createElement('div', {class:'mbox tbl'});
-        mbox.appendChild(elem_mbox_ico);
-        mbox.appendChild(elem_mbox_ctx);
+        mbox.appendChild(mbox_ico);
+        mbox.appendChild(mbox_ctx);
         return mbox;
     }
-
 
 })(App, Dom, Tpl);

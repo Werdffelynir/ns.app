@@ -102,6 +102,10 @@
         return false;
     };
 
+    o.objToArr = function (obj) {
+        return  [].slice.call(obj);
+    };
+
     /**
      * Check on typeof is string a param
      * @param param
