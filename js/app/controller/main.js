@@ -40,4 +40,4 @@
 
     }
 
-})(Application, Dom, Tpl);
+})(App, Dom, Tpl);

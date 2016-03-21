@@ -11,7 +11,7 @@
 
 
     /**
-     * Application prototype
+     * NSApp prototype
      * @type {{version: string, url: string, path: string, name: string, debug: boolean, namespaces: {}, isInit: boolean, has: proto.has, merge: proto.merge, label: proto.label, start: proto.start}}
      */
     var proto = {
@@ -29,7 +29,7 @@
             path: '/',
 
             /**
-             * Application name
+             * NSApp name
              */
             name: 'Application',
 
@@ -96,7 +96,7 @@
             /**
              * Run application, insert properties into application instance
              * @param properties
-             * @returns {{Application}}
+             * @returns {{NSApp}}
              **/
             start: function (properties) {
                 var inst = app.instance;
@@ -127,14 +127,14 @@
          * @returns {app|*}
          */
         app = function (prop) {
-            if (!(this instanceof Application))
-                return new Application(prop);
+            if (!(this instanceof NSApp))
+                return new NSApp(prop);
 
             if (!app.instance)
                 app.instance = this;
 
             this.namespace = app.namespace;
-            this.logError = app.logError;
+            this.logError = this.error = app.logError;
             this.log = app.log;
             this.ns = app.ns;
             this.start(prop);
@@ -143,7 +143,7 @@
 
     /**
      * instance
-     * @type {null|Application}
+     * @type {null|NSApp}
      */
     app.instance = null;
 
@@ -216,7 +216,7 @@
      */
     app.logError = function (text) {
         if (app.instance && app.instance.debug) {
-            var _title = 'Application throw error: ';
+            var _title = 'NSApp throw error: ';
             if (typeof text === 'function')
                 text.call(app.instance, _title);
             else
@@ -230,7 +230,7 @@
      */
     app.log = function (param) {
         if (app.instance && app.instance.debug) {
-            var _title = 'Application: ';
+            var _title = 'NSApp: ';
             if (typeof param === 'function')
                 param.call(app.instance, _title);
             else
@@ -243,8 +243,8 @@
     /**
      * Global name
      */
-    window.Application = app;
-    window.Application.prototype = proto;
-    window.Application.prototype.constructor = app;
+    window.NSApp = app;
+    window.NSApp.prototype = proto;
+    window.NSApp.prototype.constructor = app;
 
 })();

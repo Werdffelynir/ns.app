@@ -43,8 +43,8 @@
         App.node['areanav'] = Dom('#areanav').one();
         App.node['footer'] = Dom('#footer').one();
         App.node['body'] = Dom('body').one();
-        App.node['loader_messages'] = Dom('#loader_messages').one();
-        App.node['loader_messages_ico'] = Dom('#loader_messages>.loader_ico').one();
+        App.node['inputLoader'] = Dom('#input_loader').one();
+        App.node['inputLoaderIco'] = Dom('.input_loader_ico').one();
 
         //console.log(App.node);
         var processLogin = App.Module.Process.create('login'),
@@ -85,16 +85,12 @@
         o.Dialog.init();
 
         Tpl.include([
-            'topnav',
             'sidebar',
-            'input'
+            'topnav'
         ], function(list){
-            //console.log(list)
 
-            //Tpl.inject(App.node.input, list.input.response);
             Tpl.inject(App.node.topnav, list.topnav.response);
             Tpl.inject(App.node.sidebar, list.sidebar.response);
-
 
             o.Sidebar.init();
 
@@ -107,12 +103,15 @@
             o.Linker.click('attach', click_attach);
             Dom(App.node.area).on('keyup', click_enter);
 
-            //o.Linker.get('enter').addEventListener(''){}
-
-            //console.log(Dom(App.node.area));
-            //console.log(o.Linker.get());
-
             // auto updates
+            var timer = new Timer(5000);
+            timer.onprogress = function(event){
+                console.log('update...');
+            };
+            timer.oncomplete = function(event){
+                console.log('oncomplete');
+            };
+            timer.start();
 
         })
     }

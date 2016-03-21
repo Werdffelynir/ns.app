@@ -31,8 +31,10 @@
     /**
      * Construct for action
      */
-    o.search = function() {
-        var elems = document.querySelectorAll('.linker');
+    o.search = function(where, refresh) {
+        where = typeof where === 'object' && where.nodeType === Node.ELEMENT_NODE ? where : document;
+        refresh = refresh||false;
+        var elems = where.querySelectorAll('.linker');
         for(var i = 0; i < elems.length; i ++ ){
             var id = elems[i].getAttribute('data-id')
                 ? elems[i].getAttribute('data-id')
@@ -43,7 +45,7 @@
                         : false
                     )
                 );
-            if(id)
+            if(id) if(!o.stack[ id ] || refresh)
                 o.stack[ id ] = elems[i];
         }
         return o.stack;
@@ -60,6 +62,11 @@
             return o.stack[id];
         }
         return false;
+    };
+
+    o.refresh = function() {
+        o.search();
+        return o;
     };
 
     /**

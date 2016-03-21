@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="js/applibrary/timer.js"></script>
+</head>
+<body>
+
+<div id="tm"></div>
+
+<script>
+/*
+    var timer = new Timer(300, 10);
+
+    timer.addEventListener(Timer.START, function(){ console.log('on START') },false);
+    timer.addEventListener(Timer.PROGRESS, function(i){ console.log('on PROGRESS:'+ i.iterator, i) },false);
+    timer.addEventListener(Timer.COMPLETE, function(){ console.log('on COMPLETE') },false);
+
+    timer.start();*/
+
+
+/*
+    var
+        iter = 0,
+        timer = new Timer(1000, 7);
+
+    timer.onstart = function(event){
+        console.log(iter + ': onstart');
+    };
+    timer.onprogress = function(event){
+        console.log(iter + ': onprogress - ' + event.progress);
+    };
+    timer.oncomplete = function(event){
+        console.log(iter + ': oncomplete');
+
+        if(iter !== 1) {
+            timer.reset();
+            timer.start();
+        }
+
+        iter = 1;
+    };
+
+    timer.start();*/
+
+    var
+        iter = 0,
+        timer = new Timer(1000, 7);
+
+    timer.onstart = function(event){
+        console.log(iter + ': Timer start');
+    };
+    timer.onprogress = function(event){
+
+        if(event.progress === 5 && iter === 1) {
+            timer.abort();
+            console.log(iter + ': Timer abort - ' + event.progress);
+        }
+        console.log(iter + ': onprogress - ' + event.progress);
+
+    };
+    timer.oncomplete = function(event){
+        console.log(iter + ': Timer complete!');
+
+        if(iter !== 1) {
+            timer.reset();
+            timer.start();
+        }
+
+        iter = 1;
+    };
+
+    timer.start();
+
+</script>
+</body>
+</html>

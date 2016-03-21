@@ -83,10 +83,10 @@
             Tpl.config({templates: '/ns.app/demo/web/js/app/templates/'});
 
             /** ***************************************************
-             * Global alias of Application instance
-             * @type {Application}
+             * Global alias of NSApp instance
+             * @type {NSApp}
              */
-            window.App = Application(property);
+            window.App = NSApp(property);
 
             /**
              * Connection of application scripts parts.

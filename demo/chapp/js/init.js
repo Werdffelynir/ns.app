@@ -83,16 +83,17 @@
             '../../js/applibrary/dom.js',
             '../../js/applibrary/tpl.js',
             '../../js/applibrary/util.js',
+            '../../js/applibrary/timer.js',
             '../../js/app/application.js'
         ],
 
         function(list){
 
             /** ***************************************************
-             * Global alias of Application instance
-             * @type {Application}
+             * Global alias of NSApp instance
+             * @type {NSApp}
              */
-            window.App = Application(property);
+            window.App = NSApp(property);
 
             /**
              * Connection of application scripts parts.
@@ -102,7 +103,7 @@
             appinc = new Inc(incOption);
 
             /**
-             * Application Parts: Modules
+             * NSApp Parts: Modules
              */
             appinc.require(
                 [

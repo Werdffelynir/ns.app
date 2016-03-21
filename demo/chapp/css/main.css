@@ -175,16 +175,16 @@ a:hover{ color: #e79642; }
 .loader{
     margin: 20% auto;
 }
-#loader_messages{
+#input_loader{
     display: block;
     position: absolute;
-    margin-left: -36px;
+    margin-left: -40px;
 }
-.loader_ico{
+.input_loader_ico{
     display: none;
     width: 36px;
     height: 36px;
-    margin-top: 375px;
+    margin-top: 14px;
 }
 
 /*DIALOG*/
@@ -194,9 +194,9 @@ a:hover{ color: #e79642; }
     /*overflow-y: auto;*/
     /*overflow-x: hidden;*/
 }
-
+#dialog{}
 #dialog_messages{
-    max-height: 300px;
+    max-height: 400px;
     overflow-y: auto;
 }
 
@@ -260,53 +260,6 @@ a:hover{ color: #e79642; }
 .mbox_nav{
     text-align: right;
 }
-
-/*btn  go up
-#GoUpButton, #GoUpClickZone p, #GoPrevButton i {
-    background-color: #454545;
-}
-#GoUpButton {
-    background: #ff6600 url('images/goButtonBg.png') no-repeat;
-}
-#GoUpText {
-    opacity: 0;
-    font-family: Tahoma, Verdana, Arial, sans-serif;
-    font-size: 12px;
-    position: fixed;
-    line-height: 25px;
-    text-align: center;
-    left: 37px;
-    top: 35px;
-    width: 63px;
-    height: 27px;
-    padding: 0;
-    margin: 0;
-    background-color: #1D1D1D;
-    z-index: 1;
-}
-#GoUpWrapper {
-    width: 100px;
-    height: 100%;
-    position: fixed;
-    display: none;
-    z-index: 0;
-    left: 0;
-    top: 0;
-}
-#GoUpClickZone {
-    background: transparent url('images/noBrandMenuBg.png');
-}
-#GoPrevButton {
-    z-index: 110;
-    width: 50px;
-    height: 100%;
-    position: fixed;
-    left: 0;
-    top: 0;
-    display: none;
-    cursor: pointer;
-}*/
-
 
 ::-webkit-scrollbar {
     width: 5px;

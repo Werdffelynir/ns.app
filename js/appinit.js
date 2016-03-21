@@ -81,9 +81,9 @@
 
             /** ***************************************************
              * Global alias of Application instance
-             * @type {Application}
+             * @type {NSApp}
              */
-            window.App = Application(property);
+            window.App = NSApp(property);
 
             /**
              * Connection of application scripts parts.
