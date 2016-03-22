@@ -4,7 +4,7 @@
  * @namespace App.Controller.Processing
  */
 
-(function(App, Dom){
+(function (App, Dom) {
 
     /**
      * Register controller
@@ -20,7 +20,7 @@
     /**
      * Construct call first when this controller run
      */
-    o.construct = function() {
+    o.construct = function () {
 
         /**
          * First we need to select all the elements necessary for work.
@@ -29,7 +29,7 @@
         Dom.loaded(documentLoaded);
     };
 
-    function documentLoaded(){
+    function documentLoaded() {
         App.node['body'] = Dom('body').one();
         App.node['page'] = Dom('#page').one();
         App.node['header'] = Dom('#header').one();
@@ -50,22 +50,24 @@
         var processLogin = App.Module.Process.create('login'),
             processDialog = App.Module.Process.create('dialog');
 
-        if(Util.Cookie('auth') != 1 || !Util.Cookie('user')){
+        if (Util.Cookie('auth') != 1 || !Util.Cookie('user')) {
             processLogin.render(App.node.dialog, 'login', false, callLoginPage);
-        }else{
+        } else {
             // load base data
-            Aj.post(App.urlServer, {command:'get_base_date'}, function(status, response){
+            Aj.post(App.urlServer, {command: 'base_date'}, function (status, response) {
                 try {
-                    var _data = JSON.parse(response);
-                    //console.log(_data);
+                    var baseDate = JSON.parse(response);
+
+                    console.log(baseDate);
 
                     App.data['user'] = JSON.parse(Util.Cookie('user'));
-                    App.data['config'] = _data['config'];
-                    App.data['users'] = _data['users'];
-                    App.data['messages'] = _data['messages'];
+                    App.data['config'] = baseDate['config'];
+                    App.data['users'] = baseDate['users'];
+                    App.data['messages'] = baseDate['messages'];
+
                     processDialog.render(App.node.dialog, 'dialog', false, callDialogPage);
 
-                }catch(error){
+                } catch (error) {
                     App.logError('Error in time loading base data');
                 }
             });
@@ -73,21 +75,21 @@
 
     }
 
-    function callLoginPage(page){
+    function callLoginPage(page) {
         App.node['input'].style.display = 'none';
         App.node['topnav'].textContent = '';
 
-        o.FormAuth.init(this.id);
+        o.FormAuth.init();
     }
 
-    function callDialogPage(page){
+    function callDialogPage(page) {
 
         o.Dialog.init();
 
         Tpl.include([
             'sidebar',
             'topnav'
-        ], function(list){
+        ], function (list) {
 
             Tpl.inject(App.node.topnav, list.topnav.response);
             Tpl.inject(App.node.sidebar, list.sidebar.response);
@@ -109,26 +111,32 @@
         })
     }
 
-    function click_logout (event){
+    function click_logout(event) {
         Util.Cookie.remove('auth', {path: '/'});
         Util.Cookie.remove('user', {path: '/'});
         App.redirect('/');
     }
-    function click_profile (event){
+
+    function click_profile(event) {
         "use strict";
         App.log('profile: ', this, event);
     }
-    function click_settings (event){}
-    function click_enter (event){
-        if(App.node['area'].textContent.length == 0) return;
-        if(event.type === 'keyup' && (event.code !== 'Enter' || event.shiftKey !== true) ) return;
+
+    function click_settings(event) {
+    }
+
+    function click_enter(event) {
+        if (App.node['area'].textContent.length == 0) return;
+        if (event.type === 'keyup' && (event.code !== 'Enter' || event.shiftKey !== true)) return;
 
         var textArea = App.node['area'].innerHTML;
         App.node['area'].innerHTML = '';
 
-        o.Dialog.putMessage(textArea);
+        o.Dialog.update({message_text: textArea});
     }
-    function click_attach (event){}
+
+    function click_attach(event) {
+    }
 
 
 })(App, Dom);

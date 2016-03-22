@@ -1,10 +1,9 @@
-
 /**
  * Action dialog.js
  * @namespace App.Action.Dialog
  */
 
-(function(App, Dom, Tpl){
+(function (App, Dom, Tpl) {
 
     /**
      * Register action namespace
@@ -12,190 +11,118 @@
      */
     var o = App.namespace('Action.Dialog');
 
-    o.linker = App.Module.Linker;
+    o.Linker = App.Module.Linker;
 
     /**
      * Construct for action
      */
-    o.init = function() {
+    o.init = function () {
         // Show message loader (block|none)
         App.node.inputLoaderIco.style.display = 'block';
         App.node.dialog.innerHTML = '';
-        App.node.dialogMessages = Dom.createElement('div',{id:'dialog_messages'});
+        App.node.dialogMessages = Dom.createElement('div', {id: 'dialog_messages'});
         App.node.dialog.appendChild(App.node.dialogMessages);
-        o.loadMessages();
+
+        o.addMessages(App.data.messages);
 
     };
 
-    o.loadMessages = function() {
-        if(Array.isArray(App.data['messages'])){
-            App.data['messages'].map(function (item) {
-                if(Util.isObj(item)){
+    o.addMessages = function (messages) {
+        var us = App.data['users'];
+        messages.map(function (item) {
+            if (!item.added) {
+                item.added = true;
 
-                    var _user = App.data['users'][item['user_id']]
-                        ? App.data['users'][item['user_id']]
-                        : {fullname:'User Name',photo:'user.png'},
-                        _message = o.createMessage(_user, item);
+                var user = us[item['user_id']]
+                        ? us[item['user_id']] : {fullname:'Undefined', photo:'user.png'},
+                    message = o.createMessage(user, item);
 
-                    App.node.dialogMessages.appendChild(_message);
-                }
-            });
-            o.scroll();
-
-            // Show message loader (block|none)
-            App.node.inputLoaderIco.style.display = 'none';
-        }
-    };
-
-    o.putMessage = function(text){
-
-        // Show message loader (block|none)
-        App.node.inputLoaderIco.style.display = 'block';
-
-        Aj.post(App.urlServer, {command:'put_message', text:text, user_id: App.data['user'].id},
-            // request is complete
-            function(status, response, xhr, event){
-                try{
-                    var res = JSON.parse(response);
-                    if(status == 200 && typeof res === 'object'){
-
-                        if(parseInt(res.result) > 0){
-                            o.updateMessages();
-                        }
-                        else if(res.result === false) App.error('Response update result is false');
-
-                        // Show message loader (block|none)
-                        App.node.inputLoaderIco.style.display = 'none';
-
-                    }else
-                        App.error('Response data does not match to type.');
-
-                }catch(error){
-                    App.error('Response data fail on parse to object');
-                }
-            },
-            // request is fail
-            function(status, xhr, event){
-                App.error('Response data fail on parse to object');
-            }    
-        );
-
-    };
-
-    // {"error":null,"messages":null}
-    o.updateMessages = function(){
-        var id = App.data.messages[App.data.messages.length-1]
-            ?   App.data.messages[App.data.messages.length-1].id
-            :   0;
-
-        // Show message loader (block|none), uid: App.data.user['id']
-        //App.node.inputLoaderIco.style.display = 'block';
-
-        Aj.post(App.urlServer, {command:'update_messages', last_id:id}, function(status, response, xhr, event){
-
-            console.log(status, response);
-            //App.node.dialogMessages.innerHTML = response;
-            try{
-                var res = JSON.parse(response);
-                if(status == 200 && typeof res === 'object'){
-                    if( Util.isArr(res['messages']) ){
-
-                        res['messages'].map(function(item){
-
-                            var _user = App.data['users'][item['user_id']]
-                                    ? App.data['users'][item['user_id']]
-                                    : {fullname:'User Name',photo:'user.png'},
-                                _message = o.createMessage(_user, item);
-
-                            App.data.messages.push(item);
-                            App.node.dialogMessages.appendChild(_message);
-
-                        });
-                        o.scroll();
-
-                        // Show message loader (block|none)
-                        //App.node.inputLoaderIco.style.display = 'none';
-                    }
-                }
-            }catch(error){
-                console.log(error);
+                App.node.dialogMessages.appendChild(message);
             }
-
-        })
-    };
-
-
-    o.update = function(){
-        var id = App.data.messages[App.data.messages.length-1]
-            ?   App.data.messages[App.data.messages.length-1].id
-            :   0;
-
-        Aj.post(App.urlServer, {
-            command: 'update',
-            lmid: id,
-            uid: App.data.user.id
-        }, o.updateComplete, o.updateError);
+        });
+        o.scroll();
 
     };
-    o.updateError = function(error){};
-    o.updateComplete = function(status, response, xhr, event){
-        console.log(status, response);
+
+    /**
+     *
+     * @param {*} sendData  command,
+     *                      uid,
+     *                      last_message_id,
+     *                      delete_message_id,
+     */
+    o.update = function (sendData) {
+        var id = App.data.messages[App.data.messages.length - 1]
+            ? App.data.messages[App.data.messages.length - 1].id
+            : 0;
+
+        if (!Util.isObj(sendData)) sendData = {};
+        sendData.command = 'update';
+        sendData.uid = App.data.user.id;
+        sendData.last_message_id = id;
+
+        //console.log(sendData);
+
+        Aj.post(App.urlServer, sendData, o.updateComplete, o.updateError);
+
+    };
+    o.updateError = function (error) {
+    };
+    o.updateComplete = function (status, response, xhr, event) {
+        //console.log(status, response);
         //App.node.dialogMessages.innerHTML = response;
-        try{
-            var res = JSON.parse(response);
+        try {
+            var data = JSON.parse(response);
 
+            if(Util.isArr(data.messages)) o.addMessages(data.messages);
+            if(Util.isObj(data.users)) {
+                //console.log(o.Sidebar);
+                App.data.users = data.users;
+
+                App.node['sidebar'].innerHTML = '';
+                App.Action.Sidebar.renderUsersList(App.data.users);
+
+            }//o.Sidebar.setUsersStatus(data.users);
+
+            //console.log(data);
 
             /*if(status == 200 && typeof res === 'object'){
-                if( Util.isArr(res['messages']) ){
+             if( Util.isArr(res['messages']) ){
 
-                    res['messages'].map(function(item){
+             res['messages'].map(function(item){
 
-                        var _user = App.data['users'][item['user_id']]
-                                ? App.data['users'][item['user_id']]
-                                : {fullname:'User Name',photo:'user.png'},
-                            _message = o.createMessage(_user, item);
+             var _user = App.data['users'][item['user_id']]
+             ? App.data['users'][item['user_id']]
+             : {fullname:'User Name',photo:'user.png'},
+             _message = o.createMessage(_user, item);
 
-                        App.data.messages.push(item);
-                        App.node.dialogMessages.appendChild(_message);
+             App.data.messages.push(item);
+             App.node.dialogMessages.appendChild(_message);
 
-                    });
-                    o.scroll();
+             });
+             o.scroll();
 
-                    // Show message loader (block|none)
-                    //App.node.inputLoaderIco.style.display = 'none';
-                }
-            }*/
+             // Show message loader (block|none)
+             //App.node.inputLoaderIco.style.display = 'none';
+             }
+             }*/
 
-        }catch(error){
+        } catch (error) {
             App.error('After request, in response parse data some error.');
         }
     };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    o.scroll = function(){
-        App.node.dialogMessages.scrollTo(0,App.node.dialogMessages.scrollHeight);
+    o.scroll = function () {
+        if( App.node.dialogMessages.scrollTo )
+            App.node.dialogMessages.scrollTo(0, App.node.dialogMessages.scrollHeight);
+        else
+            App.node.dialogMessages.scrollTop = App.node.dialogMessages.scrollHeight
     };
 
-    o.autoupdate = function(){
+    o.autoupdate = function () {
         var timer = new Timer(5000);
-        timer.onprogress = function(event){
+        timer.onprogress = function (event) {
             o.updateMessages();
         };
         timer.start();
@@ -203,31 +130,31 @@
 
     o.createMessage = function (user, item, ico, name, time, text) {
 
-        var timeDate = App.dataToStr(App.timeToDate(item['time']+'000')),
+        var timeDate = App.dataToStr(App.timeToDate(item['time'] + '000')),
             curUser = App.data.user,
             nav = '';
         nav += '<div class="btn btn_min">pit</div>';
         nav += '<div class="btn btn_min">hide</div>';
 
         // 30 min for delete own message
-        if(item.user_id == curUser.id && (new Date).getTime()-(60000*30) < (parseInt(item['time']+'000')) )
+        if (item.user_id == curUser.id && (new Date).getTime() - (60000 * 30) < (parseInt(item['time'] + '000')))
             nav += '<div class="btn btn_min">delete</div>';
 
         nav = '<div class="tbl_cell mbox_nav">' + nav + '</div>';
 
         var ico = '<img src="/ns.app/demo/chapp/images/' + user['photo'] + '" alt="">';
-        var time_name = '<div class="mbox_head tbl">'+
-            '<div class="tbl_cell">'+
-                '<i class="mbox_time">'+timeDate+'</i> @ <i class="mbox_name">' + user['fullname'] + '</i>'+
+        var time_name = '<div class="mbox_head tbl">' +
+            '<div class="tbl_cell">' +
+            '<i class="mbox_time">' + timeDate + '</i> @ <i class="mbox_name">' + user['fullname'] + '</i>' +
             '</div>' +
             nav +
             '</div>';
         var msg = '<div class="mbox_msg">' + item['text'] + '</div>';
-        var mbox_ico = Dom.createElement('div', {class:'tbl_cell mbox_ico'}, ico);
-        var mbox_ctx = Dom.createElement('div', {class:'tbl_cell mbox_ctx'}, time_name + msg);
+        var mbox_ico = Dom.createElement('div', {class: 'tbl_cell mbox_ico'}, ico);
+        var mbox_ctx = Dom.createElement('div', {class: 'tbl_cell mbox_ctx'}, time_name + msg);
 
 
-        var mbox = Dom.createElement('div', {class:'mbox tbl'});
+        var mbox = Dom.createElement('div', {class: 'mbox tbl'});
         mbox.appendChild(mbox_ico);
         mbox.appendChild(mbox_ctx);
         return mbox;

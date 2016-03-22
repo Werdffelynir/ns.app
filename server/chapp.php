@@ -21,6 +21,16 @@ class Server {
     static public function executeCommand($command, callable $callback){
         self::$_commands[trim($command)] = $callback;
     }
+    static public function dbGetMessages(){
+        return Server::SPDO()->select('*', 'messages', 'deleted != 1');
+    }
+    static public function dbGetUsers(){
+        $result = [];
+        $users = Server::SPDO()->select('*', 'users', 'active != 0');
+        for($i=0;$i<count($users);$i ++)
+            $result[$users[$i]['id'] ] = $users[$i];
+        return $result;
+    }
     static public function run(){
         $command = self::getCommand('command');
         $callback = isset(self::$_commands[$command]) ? self::$_commands[$command]: false;
@@ -31,8 +41,22 @@ class Server {
     }
 }
 
+Server::executeCommand('login', function(){
+    $result['user'] = null;
+    //$users = Server::dbGetUsers();
+    foreach(Server::dbGetUsers() as $user){
+        if($user['username'] == $_POST['username'] && $user['password'] == md5($_POST['password'])){
+            $result['user'] = $user;
+            unset($result['user']['password']);
+            setcookie('auth', '1', time() + 3600 * 24, '/');
+            setcookie('user', json_encode($result['user']), time() + 3600 * 24, '/');
+            break;
+        }
+    }
+    echo json_encode($result);
+});
 
-if(!empty($_POST['username']) && !empty($_POST['password'])){
+/*if(!empty($_POST['username']) && !empty($_POST['password'])){
     $response['result'] = '0';
     $users = Server::SPDO()->select('*', 'users', 'active = 1');
     foreach($users as $user){
@@ -46,7 +70,7 @@ if(!empty($_POST['username']) && !empty($_POST['password'])){
     }
     echo json_encode($response);
 }
-
+/*
 if(Server::getCommand() ==  'put_message' && Server::isAuth()) {
 
     $response['result'] = '0';
@@ -66,32 +90,21 @@ if(Server::getCommand() ==  'put_message' && Server::isAuth()) {
 
     print_r(json_encode($response));
 }
-
 if(Server::getCommand() ==  'get_base_date' && Server::isAuth()) {
     $result['config'] = [
         'service_name' => 'Service Name',
         'service_description' => 'Service Description',
     ];
-    $result['messages'] = Server::SPDO()->select('*', 'messages', 'deleted != 1');
-    $result['users'] = [];
-    $_users = Server::SPDO()->select('*', 'users', 'active = 1');
-    for($i=0;$i<count($_users);$i ++)
-        $result['users'][ $_users[$i]['id'] ] = $_users[$i];
+    $result['messages'] = Server::dbGetMessages();
+    $result['users'] = Server::dbGetUsers();
 
     echo json_encode($result);
 }
-
-/*
 if(Server::getCommand() ==  'update_messages' && Server::isAuth()) {
     $user_id = (int) Server::getCommand('last_id');
     $result['messages'] = Server::SPDO()->select('*', 'messages', 'deleted != 1 AND id > ?', [$user_id] );
     echo json_encode($result);
 }
-
-        !empty($values['uid']) &&
-*/
-
-
 Server::executeCommand('update_messages', function($values){
     $result['error'] = null;
     if(!empty($values['last_id']) && $values['last_id'] > 0){
@@ -100,25 +113,53 @@ Server::executeCommand('update_messages', function($values){
         $result['messages'] = null;
     echo json_encode($result);
 });
+*/
 
+Server::executeCommand('base_date', function(){
+    $result['config'] = [
+        'name' => 'Service Name',
+        'description' => 'Service Description',
+    ];
+    $result['messages'] = Server::dbGetMessages();
+    $result['users'] = Server::dbGetUsers();
+    echo json_encode($result);
+});
 
-Server::executeCommand('update', function($values) {
+Server::executeCommand('update', function() {
+
+    $userId = Server::getCommand('uid');
+    $lastMessageId = Server::getCommand('last_message_id');
+    $deleteMessageId = Server::getCommand('delete_message_id');
+    $messageText = Server::getCommand('message_text');
 
     $result['error'] = null;
     $result['messages'] = null;
-    $result['users'] = null;
 
-    if(!empty($values['uid']) && !empty($values['lmid'])){
+    if($userId && $messageText){
+        $result['message_update'] = Server::SPDO()->insert('messages', [
+            'user_id' => $userId,
+            'time' => time(),
+            'text' => trim(strip_tags($messageText)),
+        ]);
+    }
 
-        Server::SPDO()->update('users',['lastactive' => time()], 'id = ?', [$values['uid']]);
-        $_users = Server::SPDO()->select('*', 'users', 'active = 1');
-        for($i=0;$i<count($_users);$i ++)
-            $result['users'][ $_users[$i]['id'] ] = $_users[$i];
+    if($userId && $lastMessageId){
+        $_res = Server::SPDO()->update('users',['lastactive' => time()], 'id = ?', [$userId]);
+        if(!$_res)
+            $result['error'] = Server::SPDO()->getError();
+        $result['messages'] = Server::SPDO()->select('*', 'messages', 'deleted != 1 AND id > ?', [$lastMessageId]);
+    }
 
-        $result['messages'] = Server::SPDO()->select('*', 'messages', 'deleted != 1 AND id > ?', [(int) $values['lmid']]);
+    if($userId && $deleteMessageId){
+        $result['message_deleted'] = Server::SPDO()->update('messages',
+            ['deleted' => 1],
+            'id = ? AND user_id = ?',
+            [$deleteMessageId,$userId]
+        );
+    }
+    $result['users'] = Server::dbGetUsers();
 
-    }else
-        echo json_encode($result);
+    echo json_encode($result);
 
 });
 

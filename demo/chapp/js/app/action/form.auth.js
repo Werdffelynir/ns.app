@@ -16,16 +16,11 @@
     /**
      * Construct for action
      */
-    o.init = function(process) {
+    o.init = function() {
 
         o.form = Dom('form[name=login]').on('submit', function(event){
             event.preventDefault();
-
-            Aj.form('form[name=login]', {
-                method:'post',
-                url: App.urlServer,
-                data: {process:process}
-            },
+            Aj.form('form[name=login]', {method:'post', url: App.urlServer},
                 submitLogin,
                 submitLoginError
             );
@@ -34,16 +29,13 @@
 
     function submitLogin (status, response){
         if(status == 200 && !!response){
-            console.log(response);
             try{
                 response = JSON.parse(response);
-
-                if(typeof response === 'object' && typeof response.result === 'object'){
-                    Dom(o.form).find('.info').html('<span class="txt_def">Auth is success, <a href="/ns.app/demo/chapp/">redirected</a></span>');
-                    setTimeout(function(){
-                        "use strict";
-                        App.redirect('/');
-                    },2000);
+                if(typeof response === 'object' && typeof response.user === 'object'){
+                    var info = 'Hello ' + response.user.fullname + ', auth is success' +
+                        ', <a href="/ns.app/demo/chapp/">redirected</a>';
+                    Dom(o.form).find('.info').html('<span class="txt_def">'+info+'</span>');
+                    setTimeout(function(){App.redirect('/')},1000);
                 }else{
                     Dom(o.form).find('.info').html('<span class="txt_red">Wrong username or password</span>');
                 }

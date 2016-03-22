@@ -163,7 +163,7 @@ a:hover{ color: #e79642; }
     margin: 2px 0 2px;
     border-top: 1px solid #4E4E4E;
 }
-.usrbox.active {
+.usrbox.online {
     color: #fff;
     background-color: #454545;
 }
@@ -196,7 +196,7 @@ a:hover{ color: #e79642; }
 }
 #dialog{}
 #dialog_messages{
-    max-height: 400px;
+    max-height: 260px;
     overflow-y: auto;
 }
 
