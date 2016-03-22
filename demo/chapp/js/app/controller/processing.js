@@ -10,49 +10,53 @@
      * Register controller
      * Using depending on the base application
      */
-    var o = App.namespace('Controller.Processing');
+    var ps = App.namespace('Controller.Processing');
 
-    o.Linker = App.Module.Linker;
-    o.Dialog = App.Action.Dialog;
-    o.Sidebar = App.Action.Sidebar;
-    o.FormAuth = App.Action.FormAuth;
+    ps.node = {};
+    ps.data = {};
+
+    ps.Error = App.Module.Error;
+    ps.Linker = App.Module.Linker;
+    ps.Process = App.Module.Process;
+
+    ps.Login = App.Action.Login;
+    ps.Dialog = App.Action.Dialog;
+    ps.Sidebar = App.Action.Sidebar;
+    ps.Register = App.Action.Register;
 
     /**
      * Construct call first when this controller run
      */
-    o.construct = function () {
+    ps.construct = function () {
 
-        /**
-         * First we need to select all the elements necessary for work.
-         * But after the DOM is loaded
-         */
         Dom.loaded(documentLoaded);
     };
 
     function documentLoaded() {
-        App.node['body'] = Dom('body').one();
-        App.node['page'] = Dom('#page').one();
-        App.node['header'] = Dom('#header').one();
-        App.node['logo'] = Dom('#logo').one();
-        App.node['topnav'] = Dom('#topnav').one();
-        App.node['content'] = Dom('#content').one();
-        App.node['dialog'] = Dom('#dialog').one();
-        App.node['sidebar'] = Dom('#sidebar').one();
-        App.node['input'] = Dom('#input').one();
-        App.node['area'] = Dom('#area').one();
-        App.node['areanav'] = Dom('#areanav').one();
-        App.node['footer'] = Dom('#footer').one();
-        App.node['body'] = Dom('body').one();
-        App.node['inputLoader'] = Dom('#input_loader').one();
-        App.node['inputLoaderIco'] = Dom('.input_loader_ico').one();
 
-        //console.log(App.node);
-        var processLogin = App.Module.Process.create('login'),
-            processDialog = App.Module.Process.create('dialog');
+        ps.node['body'] = Dom('body').one();
+        ps.node['page'] = Dom('#page').one();
+        ps.node['header'] = Dom('#header').one();
+        ps.node['logo'] = Dom('#logo').one();
+        ps.node['topnav'] = Dom('#topnav').one();
+        ps.node['content'] = Dom('#content').one();
+        ps.node['dialog'] = Dom('#dialog').one();
+        ps.node['sidebar'] = Dom('#sidebar').one();
+        ps.node['input'] = Dom('#input').one();
+        ps.node['area'] = Dom('#area').one();
+        ps.node['areanav'] = Dom('#areanav').one();
+        ps.node['footer'] = Dom('#footer').one();
+        ps.node['inputLoader'] = Dom('#input_loader').one();
+        ps.node['inputLoaderIco'] = Dom('.input_loader_ico').one();
+
+        // Router
+        var processLogin = ps.Process.create('login'),
+            processDialog = ps.Process.create('dialog');
 
         if (Util.Cookie('auth') != 1 || !Util.Cookie('user')) {
-            processLogin.render(App.node.dialog, 'login', false, callLoginPage);
-        } else {
+            processLogin.render(ps.node['dialog'], 'login', false, showLoginPage);
+        }
+        else {
             // load base data
             Aj.post(App.urlServer, {command: 'base_date'}, function (status, response) {
                 try {
@@ -60,83 +64,61 @@
 
                     console.log(baseDate);
 
-                    App.data['user'] = JSON.parse(Util.Cookie('user'));
-                    App.data['config'] = baseDate['config'];
-                    App.data['users'] = baseDate['users'];
-                    App.data['messages'] = baseDate['messages'];
+                    ps.data['user'] = JSON.parse(Util.Cookie('user'));
+                    ps.data['config'] = baseDate['config'];
+                    ps.data['users'] = baseDate['users'];
+                    ps.data['messages'] = baseDate['messages'];
 
-                    processDialog.render(App.node.dialog, 'dialog', false, callDialogPage);
+                    processDialog.render(ps.node['dialog'], 'dialog', false, showDialogPage);
 
                 } catch (error) {
-                    App.logError('Error in time loading base data');
+                    App.logError('Error loading/parse base data');
                 }
             });
         }
 
+
+
     }
+    function showLoginPage() {
 
-    function callLoginPage(page) {
-        App.node['input'].style.display = 'none';
-        App.node['topnav'].textContent = '';
+        ps.Login.init();
 
-        o.FormAuth.init();
+        ps.node['input'].style.display = 'none';
+        ps.node['topnav'].textContent = '';
+
     }
+    function showDialogPage() {
 
-    function callDialogPage(page) {
-
-        o.Dialog.init();
+        ps.Dialog.init(ps.node, ps.data);
 
         Tpl.include([
             'sidebar',
             'topnav'
         ], function (list) {
 
-            Tpl.inject(App.node.topnav, list.topnav.response);
-            Tpl.inject(App.node.sidebar, list.sidebar.response);
+            Tpl.inject(ps.node.topnav, list.topnav.response);
+            Tpl.inject(ps.node.sidebar, list.sidebar.response);
 
-            o.Sidebar.init();
+            ps.Sidebar.init(ps.node, ps.data);
 
             // Назначение действий на основные кнопки интерфейса
-            o.Linker.search();
-            o.Linker.click('logout', click_logout);
-            o.Linker.click('profile', click_profile);
-            o.Linker.click('settings', click_settings);
-            o.Linker.click('enter', click_enter);
-            o.Linker.click('attach', click_attach);
-            Dom(App.node.area).on('keyup', click_enter);
+            ps.Linker.search();
+            ps.Linker.click('logout', ps.Login.out);
+
+            //ps.Linker.click('profile', click_profile);
+            //ps.Linker.click('settings', click_settings);
+            //ps.Linker.click('attach', click_attach);
+            ps.Linker.click('enter', ps.Dialog.send);
+
+            Dom(ps.node.area).on('keyup', ps.Dialog.send);
 
             // start auto updates
-            //o.Dialog.autoupdate();
+            ps.Dialog.autoupdate();
 
         })
     }
 
-    function click_logout(event) {
-        Util.Cookie.remove('auth', {path: '/'});
-        Util.Cookie.remove('user', {path: '/'});
-        App.redirect('/');
-    }
-
-    function click_profile(event) {
-        "use strict";
-        App.log('profile: ', this, event);
-    }
-
-    function click_settings(event) {
-    }
-
-    function click_enter(event) {
-        if (App.node['area'].textContent.length == 0) return;
-        if (event.type === 'keyup' && (event.code !== 'Enter' || event.shiftKey !== true)) return;
-
-        var textArea = App.node['area'].innerHTML;
-        App.node['area'].innerHTML = '';
-
-        o.Dialog.update({message_text: textArea});
-    }
-
-    function click_attach(event) {
-    }
 
 
 })(App, Dom);

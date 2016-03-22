@@ -51,8 +51,6 @@
             url: '/ns.app/demo/chapp/',
             path: '/ns.app/demo/chapp/',
             name: 'Developer Space',
-            node: {},
-            data: {},
             debug: DEBUG,
             namespaces: [
                 'Controller','Action','Module'
@@ -107,10 +105,10 @@
              */
             appinc.require(
                 [
+                    'js/app/module/info.js',
                     'js/app/module/error.js',
-                    'js/app/module/message.js',
-                    'js/app/module/process.js',
-                    'js/app/module/linker.js'
+                    'js/app/module/linker.js',
+                    'js/app/module/process.js'
                 ]);
 
             /**
@@ -118,8 +116,8 @@
              */
             appinc.require(
                 [
-                    'js/app/action/form.auth.js',
-                    'js/app/action/form.register.js',
+                    'js/app/action/login.js',
+                    'js/app/action/register.js',
                     'js/app/action/dialog.js',
                     'js/app/action/sidebar.js'
                 ]);
@@ -175,12 +173,6 @@
      */
     function applicationStart(list){
         App.log('run...');
-
-
-        App.actionLink = function(name, func){
-            Dom('.action-link').attr('data-action');
-        };
-
 
         App.Controller.Processing.construct();
     }

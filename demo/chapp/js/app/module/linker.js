@@ -3,16 +3,16 @@
  * module linker.js
  * Выполнитель действий для кнопок.
  *
- * o.search();
+ * linker.search();
  * Соберает все елементы с классом .linker
  *
  * Елементы собраны в стек по индификатору
  * Нидификатор - назначается по атрибутам по проиоритету data-id, id, href#hash
  *
- * o.get( id )
+ * linker.get( id )
  * Выбирает элемент по индификатору
  *
- * o.click( id )
+ * linker.click( id )
  * Назначает событие клика для элемента по индификатору
  *
  * @namespace App.Module.Linker
@@ -24,14 +24,14 @@
      * Register action namespace
      * Using depending on the base application
      */
-    var o = App.namespace('Module.Linker');
+    var linker = App.namespace('Module.Linker');
 
-    o.stack = {};
+    linker.stack = {};
 
     /**
      * Construct for action
      */
-    o.search = function(where, refresh) {
+    linker.search = function(where, refresh) {
         where = typeof where === 'object' && where.nodeType === Node.ELEMENT_NODE ? where : document;
         refresh = refresh||false;
         var elems = where.querySelectorAll('.linker');
@@ -45,36 +45,37 @@
                         : false
                     )
                 );
-            if(id) if(!o.stack[ id ] || refresh)
-                o.stack[ id ] = elems[i];
+            if(id) if(!linker.stack[ id ] || refresh)
+                linker.stack[ id ] = elems[i];
         }
-        return o.stack;
+        return linker.stack;
     };
 
 
-    o.click = function(id, callback, useCapture) {
-        return o.on('click', id,  callback, useCapture);
+    linker.click = function(id, callback, useCapture) {
+        return linker.on('click', id,  callback, useCapture);
     };
 
-    o.on = function(event, id, callback, useCapture) {
-        if(o.stack[id]) {
-            o.stack[id].addEventListener(event, callback, useCapture);
-            return o.stack[id];
+    linker.on = function(event, id, callback, useCapture) {
+        if(typeof callback !== 'function') {
+            console.error('typeof callback not a function');
+            return false;
+        }
+
+        if(linker.stack[id]) {
+            linker.stack[id].addEventListener(event, callback, useCapture);
+            return linker.stack[id];
         }
         return false;
     };
 
-    o.refresh = function() {
-        o.search();
+    linker.refresh = function() {
+        linker.search();
         return o;
     };
 
-    /**
-     *
-     * @param id
-     * @returns {{}|*}
-     */
-    o.get = function(id){return (id)?o.stack[id]:o.stack};
-
+    linker.get = function(id){
+        return (id)?linker.stack[id]:linker.stack
+    };
 
 })(App, Dom, Tpl);

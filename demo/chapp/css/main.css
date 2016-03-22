@@ -167,7 +167,11 @@ a:hover{ color: #e79642; }
     color: #fff;
     background-color: #454545;
 }
-
+.usrbox>.tbl_cell:first-child{
+    width: 38px;
+    border-right: 1px solid #515151;
+}
+.usrbox>.tbl_cell:last-child{padding-left: 5px;}
 
 
 

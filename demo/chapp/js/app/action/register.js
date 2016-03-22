@@ -1,7 +1,7 @@
 
 /**
- * Action form.register.js
- * @namespace App.Action.FormRegister
+ * Action register.js
+ * @namespace App.Action.Register
  */
 
 (function(App, Dom, Tpl){
@@ -10,7 +10,7 @@
      * Register action namespace
      * Using depending on the base application
      */
-    var o = App.namespace('Action.FormRegister');
+    var o = App.namespace('Action.Register');
 
     /**
      * Construct for action

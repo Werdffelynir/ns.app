@@ -45,7 +45,7 @@
                 });
 
             }else
-                console.error('Params: target and/or template is empty');
+                App.error('Params: target and/or template is empty');
         }
         else {
             this.target = call_target;

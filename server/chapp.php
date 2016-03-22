@@ -125,7 +125,7 @@ Server::executeCommand('base_date', function(){
     echo json_encode($result);
 });
 
-Server::executeCommand('update', function() {
+Server::executeCommand('update', function($cmds) {
 
     $userId = Server::getCommand('uid');
     $lastMessageId = Server::getCommand('last_message_id');
@@ -139,8 +139,9 @@ Server::executeCommand('update', function() {
         $result['message_update'] = Server::SPDO()->insert('messages', [
             'user_id' => $userId,
             'time' => time(),
-            'text' => trim(strip_tags($messageText)),
+            'text' => $messageText,
         ]);
+        $result['message_update'] = $messageText;
     }
 
     if($userId && $lastMessageId){
