@@ -67,7 +67,7 @@
                 try {
                     var baseDate = JSON.parse(response);
 
-                    console.log(baseDate);
+                    //console.log(baseDate);
 
                     ps.data['user'] = JSON.parse(Util.Cookie('user'));
                     ps.data['config'] = baseDate['config'];
@@ -110,19 +110,21 @@
             ps.Settings.init(ps.node, ps.data);
 
             // Назначение действий на основные кнопки интерфейса
-            ps.Linker.search();
+            var btns = ps.Linker.search();
             ps.Linker.click('logout', ps.Login.out);
-
-            ps.Linker.get('profile').textContent += ' of ' +ps.data.user.fullname;
+            //ps.Linker.get('profile').textContent += ' of ' +ps.data.user.fullname;
             ps.Linker.click('profile', ps.Profile.open);
             ps.Linker.click('settings', ps.Settings.open);
-            //ps.Linker.click('attach', click_attach);
+            ps.Linker.click('attach', ps.Dialog.openAttach);
             ps.Linker.click('enter', ps.Dialog.send);
 
             Dom(ps.node.area).on('keyup', ps.Dialog.send);
 
             // start auto updates
-            ps.Dialog.autoupdate();
+            //ps.Dialog.autoupdate();
+            ps.Linker.click('usrbox', ps.Sidebar.openUsrbox);
+
+
 
         })
     }

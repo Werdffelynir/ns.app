@@ -46,11 +46,23 @@
         event.preventDefault();
 
         if(o.nodeToggle.style.display == 'block') {
+
             o.nodeToggle.style.display = 'none'
         } else {
             Tpl.inject(o.nodeToggle, o.template);
             o.nodeToggle.style.display = 'block'
+
+
+            var linker = App.Module.Linker;
+            linker.search();
+            var f = linker.on('input','set-field', function(e){
+                console.log(this, e);
+
+            });
+            console.log(f);
         }
+
+
         //console.log()
     };
 

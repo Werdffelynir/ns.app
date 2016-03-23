@@ -152,4 +152,7 @@
         if(typeof data.users === 'object') App.Action.Sidebar.addUsers(data.users);
     };
 
+
+    o.openAttach = function (e) {};
+
 })(App, Dom, Tpl);

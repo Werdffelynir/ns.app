@@ -81,9 +81,12 @@
 
         return Dom.createElement('div', {
                 'class': 'usrbox tbl linker' + (_online?' online':''),
-                'id': 'user_' + user['id']
+                'id': 'user_' + user['id'],
+                'data-id': 'usrbox'
             }, _box);
     };
+
+    o.openUsrbox = function(e){};
 
    /* o.updateStatusOnline = function(user, status){
         Dom(o.node.sidebar).find('.usrbox[id*=user_'+user.id+']').one(function(elem){

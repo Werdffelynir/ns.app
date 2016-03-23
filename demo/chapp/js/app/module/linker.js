@@ -26,15 +26,16 @@
      */
     var linker = App.namespace('Module.Linker');
 
-    linker.stack = {};
+    linker.stack = [];
+    linker.stackError = [];
 
     /**
      * Construct for action
      */
-    linker.search = function(where, refresh) {
+    linker.search = function(where) {
         where = typeof where === 'object' && where.nodeType === Node.ELEMENT_NODE ? where : document;
-        refresh = refresh||false;
         var elems = where.querySelectorAll('.linker');
+
         for(var i = 0; i < elems.length; i ++ ){
             var id = elems[i].getAttribute('data-id')
                 ? elems[i].getAttribute('data-id')
@@ -45,9 +46,16 @@
                         : false
                     )
                 );
-            if(id) if(!linker.stack[ id ] || refresh)
-                linker.stack[ id ] = elems[i];
+            if(id) {
+                elems[i]._linkerId = id;
+                linker.stack.push(elems[i]);
+            }
+            else linker.stackError.push(elems[i]);
         }
+
+        if(linker.stackError.length > 0)
+            console.error('Linker catch elements without ID: ', linker.stackError);
+
         return linker.stack;
     };
 
@@ -61,21 +69,26 @@
             console.error('typeof callback not a function');
             return false;
         }
-
-        if(linker.stack[id]) {
-            linker.stack[id].addEventListener(event, callback, useCapture);
-            return linker.stack[id];
+        var elem = linker.get(id, true);
+        if(elem) {
+            for(var i = 0; i < elem.length; i ++){
+                elem[i].addEventListener(event, callback, useCapture);
+            }
         }
-        return false;
     };
 
     linker.refresh = function() {
-        linker.search();
-        return o;
+        return linker.search();
     };
 
-    linker.get = function(id){
-        return (id)?linker.stack[id]:linker.stack
+    linker.get = function(id, array){
+        var linkers = [];
+        for(var i = 0; i < linker.stack.length; i ++)
+            if(linker.stack[i]._linkerId === id)
+                linkers.push(linker.stack[i]);
+        if(linkers.length === 0) return null;
+        if(!!array) return linkers;
+        return linkers[0];
     };
 
 })(App, Dom, Tpl);
