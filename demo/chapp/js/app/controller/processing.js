@@ -22,6 +22,8 @@
     ps.Login = App.Action.Login;
     ps.Dialog = App.Action.Dialog;
     ps.Sidebar = App.Action.Sidebar;
+    ps.Profile = App.Action.Profile;
+    ps.Settings = App.Action.Settings;
     ps.Register = App.Action.Register;
 
     /**
@@ -36,9 +38,12 @@
 
         ps.node['body'] = Dom('body').one();
         ps.node['page'] = Dom('#page').one();
+        ps.node['infoblock'] = Dom('#infoblock').one();
         ps.node['header'] = Dom('#header').one();
         ps.node['logo'] = Dom('#logo').one();
         ps.node['topnav'] = Dom('#topnav').one();
+        ps.node['infoline'] = Dom('#infoline').one();
+        ps.node['contentAbove'] = Dom('#content-above').one();
         ps.node['content'] = Dom('#content').one();
         ps.node['dialog'] = Dom('#dialog').one();
         ps.node['sidebar'] = Dom('#sidebar').one();
@@ -101,13 +106,16 @@
             Tpl.inject(ps.node.sidebar, list.sidebar.response);
 
             ps.Sidebar.init(ps.node, ps.data);
+            ps.Profile.init(ps.node, ps.data);
+            ps.Settings.init(ps.node, ps.data);
 
             // Назначение действий на основные кнопки интерфейса
             ps.Linker.search();
             ps.Linker.click('logout', ps.Login.out);
 
-            //ps.Linker.click('profile', click_profile);
-            //ps.Linker.click('settings', click_settings);
+            ps.Linker.get('profile').textContent += ' of ' +ps.data.user.fullname;
+            ps.Linker.click('profile', ps.Profile.open);
+            ps.Linker.click('settings', ps.Settings.open);
             //ps.Linker.click('attach', click_attach);
             ps.Linker.click('enter', ps.Dialog.send);
 

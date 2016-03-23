@@ -57,6 +57,7 @@
             ],
             timeToDate: function(str){
                 var _date = new Date();
+                if(String(str).length < 13) str += '000';
                 _date.setTime(parseInt(str));
                 return _date;
             },
@@ -119,7 +120,9 @@
                     'js/app/action/login.js',
                     'js/app/action/register.js',
                     'js/app/action/dialog.js',
-                    'js/app/action/sidebar.js'
+                    'js/app/action/profile.js',
+                    'js/app/action/sidebar.js',
+                    'js/app/action/settings.js'
                 ]);
 
             /**

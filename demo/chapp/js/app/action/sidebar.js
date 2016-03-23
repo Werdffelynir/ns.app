@@ -69,7 +69,7 @@
     o.createUser = function (user) {
         var _online = user['id'] == o.data.user['id'] ? true :
                 (user['lastactive']
-                    ? App.timeToDate(user['lastactive'] + '000').getTime() > (new Date()).getTime() - 60000 * 5
+                    ? App.timeToDate(user['lastactive']).getTime() > (new Date()).getTime() - 60000 * 5
                     : false
                 ),
             _box = '';

@@ -144,7 +144,7 @@ var Tpl = Tpl || {
                     if(xhr.status === 200 && typeof callback === 'function'){
                         internal.data[fileName] = {
                             id: fileName,
-                            source: o.templates + fileName + '.html',
+                            source: o.templates + fileName + ext,
                             response: xhr.responseText
                         };
                         callback.call(o, xhr.responseText, internal.data[fileName]);

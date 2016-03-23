@@ -57,10 +57,9 @@
                     message = o.createMessage(user, item);
 
                 o.node.dialogMessages.appendChild(message);
+                o.scroll();
             }
         });
-        o.scroll();
-
     };
 
 
@@ -82,7 +81,7 @@
 
     o.createMessage = function (user, item) {
 
-        var timeDate = App.dataToStr(App.timeToDate(item['time'] + '000')),
+        var timeDate = App.dataToStr(App.timeToDate(item['time'])),
             curUser = o.data.user,
             nav = '';
 
@@ -90,7 +89,7 @@
         nav += '<div class="btn btn_min">Hide</div>';
 
         // 30 min for delete own message
-        if (item.user_id == curUser.id && (new Date).getTime() - (60000 * 30) < (parseInt(item.time + '000')))
+        if (item.user_id == curUser.id && (new Date).getTime() - (60000 * 5) < (parseInt(item.time + '000')))
             nav += '<div class="btn btn_min">Delete</div>';
 
         nav = '<div class="tbl_cell mbox_nav">' + nav + '</div>';
