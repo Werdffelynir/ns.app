@@ -221,6 +221,9 @@ ul li{  }
 .profile>div:first-child{
     width: 115px;
 }
+.profile>div:nth-child(2){
+    width: 220px;
+}
 .profile_ico{
     width: 115px;
     height: 115px;
@@ -235,7 +238,7 @@ ul li{  }
     padding: 2px 5px;
     font-size: 14px;
     color: #fff;
-    width: 50%;
+    width: 200px;
 }
 .editfield:focus{
     padding-left: 10px;
@@ -253,7 +256,10 @@ ul li{  }
 
 .settings-open>div{
     vertical-align: top;
-    width: 33%;
+}
+
+.settings-open>div:first-child{
+    width: 220px;
 }
 
 
