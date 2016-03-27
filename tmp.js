@@ -84,3 +84,201 @@ if (inst.isInit && path.length >= 5) {
 
 
 =============================================================================
+        if(i === 0 && typeof source === 'object'){
+            this.require.loadScriptsRecursive(i, source.src, source.oncomplete, source.onerror, this);
+
+        }else if (Array.isArray(source)){
+            self.require.loadScript(
+                source[i],
+                function(){
+                    self.require.loadScriptsRecursive(++i, source, onload, onerror, self)
+                },
+                function(error){
+                    console.error("Script element loading is fail. src: " + source[self.require.loadScriptsRecursive.i++]);
+                }
+            );
+        }
+
+
+
+        /*if(typeof source === 'object'){
+            this.require.loadScriptsRecursive.i = 0;
+            this.require.loadScriptsRecursive(source.src, onload, onerror);
+
+        }else if (Array.isArray(source)){
+            var self = this;
+            this.require.loadScript(
+                source[this.require.loadScriptsRecursive.i++],
+                function(){
+                    self.require.loadScriptsRecursive(source, onload, onerror)
+                },
+                function(error){
+                    console.error("Script element loading is fail. src: " + source[self.require.loadScriptsRecursive.i++]);
+                }
+            );
+        }*/
+
+
+        /*/var
+            _onload = function(){
+                //this.require.loadScriptsRecursive(i++, source[iter], oncomplete, onerror);
+            },
+            _onerror = function(){
+                console.error("Require source not found! Key: " + key + " not exist!");
+            };
+
+        if(Array.isArray(source)){
+
+
+        }else if (typeof source === 'string'){
+            this.require.loadScript(source, _onload, _onerror);
+        }/*/
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
+
+
+
+
+
+
+
+
+
+=============================================================================
