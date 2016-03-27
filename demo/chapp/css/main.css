@@ -11,10 +11,15 @@ ul{
 }
 ul li{  }
 #page{
+    min-width: 460px;
     width: 80%;
     margin: 0 auto;
     background-color: #3c3f41;
     color: #A1A1A1;
+}
+
+@media screen and (max-width: 920px) {
+    #page {width: 98%}
 }
 
 #header{border-bottom: 1px solid #636363;}
