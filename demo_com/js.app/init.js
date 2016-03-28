@@ -1,4 +1,6 @@
 
+
+
 var property = {
     url: '/ns.app/demo_com/',
     urlServer: '/server.php',
@@ -32,15 +34,15 @@ App.require('libs',
 App.require('dependence',
     [
         // Modules
-        'js/app/module/api.js',
+        'js.app/module/api.js',
 
         // Actions
-        'js/app/action/sidebar.js',
+        'js.app/action/sidebar.js',
 
         // Controllers
-        'js/app/controller/login.js',
-        'js/app/controller/front.js',
-        'js/app/controller/back.js'
+        'js.app/controller/login.js',
+        'js.app/controller/front.js',
+        'js.app/controller/back.js'
 
     ],
     initDependence, initError);
@@ -57,7 +59,6 @@ function initLibrary(list){
 }
 function initDependence(list){
     console.log('Application start!');
-
     //App.Controller.Login.isAuth();
     //var args = [1,'one','I'];
     //App.constructsStart(args);

@@ -2,18 +2,28 @@
 
 
 ## config
+
 ```js
 window.App = new NamespaceApplication({
-    url: '/',
-    name: true,
-    debug: true
+    url: '/',                  // Base application URL path
+    name: 'My Application',    // Application name
+    debug: true,               // Debug mod
+    constructsType: 'runtime', // Constructors execute type
+                               //   false - off constructor
+                               //   'runtime' - perform during the assignment of namespace
+                               //   'gather' - save in the stack, for call and execute all 
+                               //   constructor methods, use `App.constructsStart()`
+    param: 'some'              // Custom params
 });
 ```
 
+
 ## methods
+
 ```js
 App.setConfig(config:Object):App
 App.namespace(namespace:String, callback:Function):Object
+App.constructsStart(args:*):App
 App.require(key:String, path:Array, oncomplete:Function, onerror:Function):App
 App.requireStart(key:String):App
 App.script(src:String, onload:Function, onerror:Function):HTMLElement
@@ -26,6 +36,18 @@ App.query(selector:String, callback:Function):HTMLElement
 App.queryAll(selector:String, callback:Function):Array
 App.each(list:Array|Object, callback:Function, tmp:Object):Array|Object
 ```
+
+
+## static methods
+
+```
+NamespaceApplication.request(method:String, url:String, callback:Function, callbackError:Function):XMLHttpRequest
+NamespaceApplication.assign(stringData:String, params:Object):String
+NamespaceApplication.script(src:String, onload:Function, onerror:Function):HTMLElement
+NamespaceApplication.style(src:String, onload:Function, onerror:Function):HTMLElement
+NamespaceApplication.file(url:String, onload:Function, onerror:Function):void
+```
+
 
 ### App.namespace()
 
@@ -77,6 +99,7 @@ textEdit.input = function(){};
 
 ```
 
+
 ### App.require()
 
 Syntax: `App.require(key:String, path:Array, oncomplete:Function, onerror:Function):App`
@@ -93,6 +116,7 @@ function onLibraryLoaded(list){}
 function onRequireError(error){}
 ```
 
+
 ### App.script(), App.style()
 
 Syntax: `App.loadScript(src:String, onload:Function, onerror:Function):HTMLElement`
@@ -104,6 +128,7 @@ App.loadScript('/js/script.js', function(element){}, function(error){});
 // loading of css style file
 App.loadCSSLink('/css/style.css', function(element){}, function(error){});
 ```
+
 
 ### App.file(), App.render()
 
@@ -121,22 +146,25 @@ function loadFileError(error) {
 }
 ```
 
+
 ### App.assign()
 
-Syntax: `App.assignValues(stringData:String, params:Object):String`
+Syntax: `App.assign(stringData:String, params:Object):String`
 
 ```js
 var tpl = '<h1>{{title}}</h1><div>{{content}}</div>';
 
-var pageContent = App.assignValues(tpl, {
+var pageContent = App.assign(tpl, {
     title:"hello world",
     content:"hello world"
 })
 ```
 
+
 ### App.query(), App.queryAll()
 
-Syntax: ``
+Syntax: `App.query(selector:String, callback:Function):HTMLElement`
+Syntax: `App.queryAll(selector:String, callback:Function):Array`
 
 ```js
 // example 1
@@ -153,6 +181,7 @@ App.queryAll('#menu li>a', function(menuLinks){
     // do ...
 });
 ```
+
 
 ### App.each()
 
@@ -174,7 +203,6 @@ App.each(obj, function(item, key){
     console.log(item, key);
 });
 ```
-
 
 
 ## start `init.js`
@@ -235,7 +263,7 @@ function onLibraryLoaded(list){
 function onDependenceLoaded(list){
     console.log('Application start!');
 
-    // work starts here
+    // work starts here ...
 
 }
 

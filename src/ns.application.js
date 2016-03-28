@@ -116,6 +116,7 @@
             item.construct.apply(item, args);
         },args);
         this._constructs_stack = [];
+        return this;
     };
 
     /**
