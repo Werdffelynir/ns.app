@@ -56,7 +56,7 @@ var Tpl = Tpl || {
          *  Merge objects, primary container is `objectBase`
          */
         merge: function(objectBase, source){
-            if(typeof source === 'object' && typeof object === 'object' ){
+            if(typeof objectBase === 'object' && typeof source === 'object' ){
                 for (var key in source)
                     if (source.hasOwnProperty(key)) objectBase[key] = source[key];
                 return objectBase;

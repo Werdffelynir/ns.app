@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <title>JavaScript Application</title>
 
-    <link rel="stylesheet" href="http://js.dev.loc/ns.app/css/grid.css">
+    <link rel="stylesheet" href="../css/grid.css">
     <link rel="stylesheet" href="css/main.css">
 
-<!--    <script src="http://js.dev.loc/ns.app/src/applibrary/inc.js"></script>-->
-<!--    <script src="js/app/init.js"></script>-->
-    <script src="js/dev.app.js"></script>
-    <script src="js/dev.app_init.js"></script>
-    <script src="js/dev.app_mods.js"></script>
+    <script src="../src/ns.application.js"></script>
+    <script src="js/init.js"></script>
 
 </head>
 <body>
