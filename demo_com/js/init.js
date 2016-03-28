@@ -53,11 +53,18 @@ function onLibraryLoaded(list){
 function onDependenceLoaded(list){
     console.log('Application start!');
 
-    App.loadFile(App.urlTemplates + 'popup.html', function(data) {
-        App.render('#app-content', data);
-    } , function(error){
-        console.error('File loading error!', error);
-    })
+
+
+    var tmpSum = 'conf', arr = [1,2,3,4,5];
+    App.each(arr, function(item, index, sum){
+        sum += '-' + index + '-' + (item * 100);
+        console.log(item, index, sum);
+    }, tmpSum);
+
+    /*var obj = {id:123,name:'Class',root:'/'};
+    App.each(obj, function(item, key){
+        console.log(item, key);
+    });*/
 
 }
 

@@ -7,7 +7,6 @@
         proto = {
             config: {
                 url: '/',
-                name: true,
                 debug: true
             },
             merge: function (objectBase, src) {
@@ -278,7 +277,7 @@
      * @returns {*}
      */
     proto.each = function (list, callback, tmp) {
-        tmp = tmp || {};
+        //tmp = tmp !== undefined ? tmp : {};
         if (list instanceof Array) {
             for (var i = 0; i < list.length; i++) {
                 callback.call(this, list[i], i, tmp);
