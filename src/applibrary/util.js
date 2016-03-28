@@ -11,29 +11,48 @@
         };
     }
 
-    var o = {};
+    var util = {};
+
+    /**
+     * Deeply extends two objects
+     * @param  {Object} destination The destination object, This object will change
+     * @param  {Object} source      The custom options to extend destination by
+     * @return {Object}             The desination object
+     */
+    util.extend = function(destination, source) {
+        var property;
+        for (property in source) {
+            if (source[property] && source[property].constructor && source[property].constructor === Object) {
+                destination[property] = destination[property] || {};
+                util.extend(destination[property], source[property]);
+            } else {
+                destination[property] = source[property];
+            }
+        }
+        return destination;
+    };
 
     /**
      * Clone object
-     * @param obj
+     * @param   {Object} source
      * @returns {*}
      */
-    o.objClone = function (obj) {
-        if (obj === null || typeof obj !== 'object') return obj;
-        var temp = obj.constructor();
-        for (var key in obj)
-            temp[key] = o.objClone(obj[key]);
+    util.objClone = function (source) {
+        if (source === null || typeof source !== 'object') return source;
+        var temp = source.constructor();
+        for (var key in source)
+            temp[key] = util.objClone(source[key]);
         return temp;
     };
 
     /**
      * Count object length
-     * @param obj
+     * @param   {Object} source
      * @returns {number}
      */
-    o.objLen = function (obj) {
+    util.objLen = function (source) {
         var it = 0;
-        for (var k in obj) it++;
+        for (var k in source) it++;
         return it;
     };
 
@@ -43,7 +62,7 @@
      * @param src           the elements of this object will be added/replaced to main object `obj`
      * @returns {*}         object result
      */
-    o.objMerge = function (objectBase, src) {
+    util.objMerge = function (objectBase, src) {
         if (typeof objectBase !== 'object' || typeof src !== 'object')
             return false;
 
@@ -65,7 +84,7 @@
      * @param src
      * @returns {*}
      */
-    o.objMergeNotExists = function (objectBase, src) {
+    util.objMergeNotExists = function (objectBase, src) {
         for (var key in src)
             if (objectBase[key] === undefined)
                 objectBase[key] = src[key];
@@ -78,7 +97,7 @@
      * @param src
      * @returns {*}
      */
-    o.objMergeOnlyExists = function (objectBase, src) {
+    util.objMergeOnlyExists = function (objectBase, src) {
         for (var key in src)
             if (objectBase[key] !== undefined)
                 objectBase[key] = src[key];
@@ -93,8 +112,8 @@
      * @param arr2
      * @returns {*}
      */
-    o.arrDiff = function (arr1, arr2) {
-        if (o.isArr(arr1) && o.isArr(arr2)) {
+    util.arrDiff = function (arr1, arr2) {
+        if (util.isArr(arr1) && util.isArr(arr2)) {
             return arr1.slice(0).filter(function (item) {
                 return arr2.indexOf(item) === -1;
             })
@@ -102,7 +121,7 @@
         return false;
     };
 
-    o.objToArr = function (obj) {
+    util.objToArr = function (obj) {
         return  [].slice.call(obj);
     };
 
@@ -111,7 +130,7 @@
      * @param param
      * @returns {boolean}
      */
-    o.isStr = function (param) {
+    util.isStr = function (param) {
         return typeof param === 'string';
     };
 
@@ -120,7 +139,7 @@
      * @param param
      * @returns {boolean}
      */
-    o.isArr = function (param) {
+    util.isArr = function (param) {
         return Array.isArray(param);
     };
 
@@ -129,7 +148,7 @@
      * @param param
      * @returns {boolean}
      */
-    o.isObj = function (param) {
+    util.isObj = function (param) {
         return (param !== null && typeof param == 'object');
     };
 
@@ -138,21 +157,21 @@
      * @param param
      * @returns {boolean}
      */
-    o.isNum = function (param) {
+    util.isNum = function (param) {
         return !isNaN(param);
     };
 
     // Determine whether a variable is empty
-    o.isEmpty = function (param) {
-        return (param === "" || param === 0 || param === "0" || param === null || param === undefined || param === false || (o.isArr(param) && param.length === 0));
+    util.isEmpty = function (param) {
+        return (param === "" || param === 0 || param === "0" || param === null || param === undefined || param === false || (util.isArr(param) && param.length === 0));
     };
 
-    o.isHtml = function (param) {
-        if(o.isNode(param)) return true;
-        return o.isNode(o.html2node(param));
+    util.isHtml = function (param) {
+        if(util.isNode(param)) return true;
+        return util.isNode(util.html2node(param));
     };
     
-    o.isNode = function (param) {
+    util.isNode = function (param) {
         var types = [1, 9, 11];
         if(typeof param === 'object' && types.indexOf(param.nodeType) !== -1) return true;
         else return false;
@@ -169,7 +188,7 @@
      * Node.DOCUMENT_FRAGMENT_NODE - 11 - FRAGMENT
      * Uses: Util.isNodeType(elem, 'element')
      */
-    o.isNodeType = function (param, type) {
+    util.isNodeType = function (param, type) {
         type = String((type?type:1)).toUpperCase();
         if(typeof param === 'object') {
             switch(type){
@@ -212,7 +231,7 @@
      * @param param
      * @returns {boolean}
      */
-    o.defined = function (param) {
+    util.defined = function (param) {
         return typeof(param) != 'undefined';
     };
 
@@ -220,7 +239,7 @@
      * Javascript object to JSON data
      * @param data
      */
-    o.objToJson = function (data) {
+    util.objToJson = function (data) {
         return JSON.stringify(data);
     };
 
@@ -228,7 +247,7 @@
      * JSON data to Javascript object
      * @param data
      */
-    o.jsonToObj = function (data) {
+    util.jsonToObj = function (data) {
         return JSON.parse(data);
     };
 
@@ -237,7 +256,7 @@
      * @param src
      * @returns {Array}
      */
-    o.cleanArr = function (src) {
+    util.cleanArr = function (src) {
         var arr = [];
         for (var i = 0; i < src.length; i++)
             if (src[i]) arr.push(src[i]);
@@ -249,7 +268,7 @@
      * @param data
      * @returns {string}
      */
-    o.typeOf = function (data) {
+    util.typeOf = function (data) {
         return Object.prototype.toString.call(data).slice(8, -1);
     };
 
@@ -259,7 +278,7 @@
      * @param asObject
      * @returns {*}
      */
-    o.formData = function (form, asObject) {
+    util.formData = function (form, asObject) {
         var obj = {}, str = '';
         for (var i = 0; i < form.length; i++) {
             var f = form[i];
@@ -279,7 +298,7 @@
      * @param data
      * @returns {*}
      */
-    o.toNode = function (data) {
+    util.toNode = function (data) {
         var parser = new DOMParser();
         var node = parser.parseFromString(data, "text/xml");
         console.log(node);
@@ -293,7 +312,7 @@
      * @param arr
      * @returns {Array}
      */
-    o.uniqueArr = function (arr) {
+    util.uniqueArr = function (arr) {
         var tmp = [];
         for (var i = 0; i < arr.length; i++) {
             if (tmp.indexOf(arr[i]) == "-1") tmp.push(arr[i]);
@@ -307,7 +326,7 @@
      * @param url
      * @returns {*|string|null|string}
      */
-    o.fileGetContents = function (url) {
+    util.fileGetContents = function (url) {
         var req = null;
         try {
             req = new ActiveXObject("Msxml2.XMLHTTP");
@@ -333,7 +352,7 @@
      * @param elem
      * @returns {{y: number, x: number, width: number, height: number}}
      */
-    o.getPosition = function (elem) {
+    util.getPosition = function (elem) {
         var top = 0, left = 0;
         if (elem.getBoundingClientRect) {
             var box = elem.getBoundingClientRect();
@@ -362,7 +381,7 @@
      * @param event
      * @returns {{x: number, y: number}}
      */
-    o.getMouseElement = function (element, event) {
+    util.getMouseElement = function (element, event) {
         if(element instanceof HTMLElement && event instanceof MouseEvent) {
             var x = event.pageX - element.offsetLeft;
             var y = event.pageY - element.offsetTop;
@@ -377,7 +396,7 @@
      * @param event
      * @returns {{x: number, y: number}}
      */
-    o.getMouseCanvas = function (canvas, event) {
+    util.getMouseCanvas = function (canvas, event) {
         if((canvas instanceof HTMLCanvasElement || canvas.getBoundingClientRect) && event instanceof MouseEvent){
             var rect = canvas.getBoundingClientRect();
             return {
@@ -401,7 +420,7 @@
      * @param property      string "display:object" or object {'background-color':'red'}
      * @returns {*}         return object with methods : getString(), getObject(), add()
      */
-    o.createStyle = function (selector, property) {
+    util.createStyle = function (selector, property) {
         var o = {
             content: '',
             getString: function () {
@@ -435,7 +454,7 @@
      * @param inner     text, html or NodeElement
      * @returns {Element}
      */
-    o.createElement = function (tag, attrs, inner) {
+    util.createElement = function (tag, attrs, inner) {
         var elem = document.createElement(tag);
         if (typeof attrs === 'object') {
             for (var key in attrs)
@@ -457,7 +476,7 @@
      * @param max
      * @returns {number}
      */
-    o.rand = function (min, max) {
+    util.rand = function (min, max) {
         min = min || 0;
         max = max || 100;
         return Math.floor(Math.random() * (max - min + 1) + min);
@@ -467,7 +486,7 @@
      * Returns random string color, HEX format
      * @returns {string}
      */
-    o.randColor = function () {
+    util.randColor = function () {
         var letters = '0123456789ABCDEF'.split(''),
             color = '#';
         for (var i = 0; i < 6; i++)
@@ -480,7 +499,7 @@
      * @param deg
      * @returns {number}
      */
-    o.degreesToRadians = function (deg) {
+    util.degreesToRadians = function (deg) {
         return (deg * Math.PI) / 180;
     };
 
@@ -489,7 +508,7 @@
      * @param rad
      * @returns {number}
      */
-    o.radiansToDegrees = function (rad) {
+    util.radiansToDegrees = function (rad) {
         return (rad * 180) / Math.PI;
     };
 
@@ -500,7 +519,7 @@
      * @param point2
      * @returns {number}
      */
-    o.distanceBetween = function (point1, point2) {
+    util.distanceBetween = function (point1, point2) {
         var dx = point2.x - point1.x;
         var dy = point2.y - point1.y;
         return Math.sqrt(dx * dx + dy * dy);
@@ -511,7 +530,7 @@
      * @param data      Object key=value
      * @returns {*}     query string
      */
-    o.encodeData = function(data){
+    util.encodeData = function(data){
         if(typeof data === 'string') return data;
         if(typeof data !== 'object') return '';
         var convertData = [];
@@ -526,7 +545,7 @@
      * @param url
      * @returns {{}}
      */
-    o.parseGet = function(url){
+    util.parseGet = function(url){
         url = url || document.location;
         var params = {};
         var parser = document.createElement('a');
@@ -545,7 +564,7 @@
      * @param url
      * @returns {{}}
      */
-    o.parseUrl = function(url){
+    util.parseUrl = function(url){
         url = url || document.location;
         var params = {};
         var parser = document.createElement('a');
@@ -557,35 +576,35 @@
         params.pathname = parser.pathname;
         params.hash = parser.hash;
         params.search = parser.search;
-        params.get = o.parseGet(parser.search);
+        params.get = util.parseGet(parser.search);
         return params;
     };
 
-    o.Storage = function(name, value){
+    util.Storage = function(name, value){
         if(!name){
             return false;
         }else if(value === undefined){
-            return o.Storage.get(name);
+            return util.Storage.get(name);
         }else if(!value){
-            return o.Storage.remove(name);
+            return util.Storage.remove(name);
         }else{
-            return o.Storage.set(name, value);
+            return util.Storage.set(name, value);
         }
     };
-    o.Storage.set = function (name, value) {
+    util.Storage.set = function (name, value) {
         try{value = JSON.stringify(value)}catch(error){}
         return window.localStorage.setItem(name, value);
     };
-    o.Storage.get = function (name) {
+    util.Storage.get = function (name) {
         var value = window.localStorage.getItem(name);
         if(value)
             try{value = JSON.parse(value)}catch(error){}
         return value;
     };
-    o.Storage.remove = function (name) {
+    util.Storage.remove = function (name) {
         return window.localStorage.removeItem(name);
     };
-    o.Storage.key = function (name) {
+    util.Storage.key = function (name) {
         return window.localStorage.key(key);
     };
 
@@ -594,19 +613,19 @@
      * @param name
      * @param value
      */
-    o.Cookie = function (name, value) {
+    util.Cookie = function (name, value) {
         "use strict";
         if(value === undefined){
-            return o.Cookie.get(name);
+            return util.Cookie.get(name);
         }
         else if (value === false || value === null){
-            o.Cookie.delete(name);
+            util.Cookie.delete(name);
         }else {
-            o.Cookie.set(name, value);
+            util.Cookie.set(name, value);
         }
 
     };
-    o.Cookie.get = function (name) {
+    util.Cookie.get = function (name) {
         var matches = document.cookie.match(new RegExp(
             "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
@@ -619,7 +638,7 @@
      * @param {{}} options   {expires: 0, path: '/', domain: 'site.com', secure: false}
      *                          expires - ms, Date, -1, 0
      */
-    o.Cookie.set = function (name, value, options) {
+    util.Cookie.set = function (name, value, options) {
         options = options || {};
         var expires = options.expires;
         if (typeof expires == "number" && expires) {
@@ -642,39 +661,39 @@
         document.cookie = updatedCookie;
     };
 
-    o.Cookie.delete = o.Cookie.remove = function (name, option){
+    util.Cookie.delete = util.Cookie.remove = function (name, option){
         "use strict";
         option = typeof option === 'object' ? option : {};
         option.expires = -1;
-        o.Cookie.set(name, "", option);
+        util.Cookie.set(name, "", option);
     };
 
-    o.each = function (data, callback) {
-        if(o.isArr(data)){
+    util.each = function (data, callback) {
+        if(util.isArr(data)){
             for(var i = 0; i < data.length; i ++) callback.call(null, data[i]);
-        }else if(o.isObj(data)){
+        }else if(util.isObj(data)){
             for(var k in data) callback.call(null, k, data[k]);
         }else return false;
     };
 
-    o.ucfirst = function (string){
+    util.ucfirst = function (string){
         return string && string[0].toUpperCase() + string.slice(1);
     };
 
-    o.node2html = function (element){
+    util.node2html = function (element){
         var container = document.createElement("div");
         container.appendChild(element.cloneNode(true));
         return container.innerHTML;
     };
 
-    o.html2node = function (string){
+    util.html2node = function (string){
         var i, fragment = document.createDocumentFragment(), container = document.createElement("div");
         container.innerHTML = string;
         while( i = container.firstChild ) fragment.appendChild(i);
         return fragment.childNodes.length === 1 ? fragment.firstChild : fragment;
     };
     
-    o.base64encode = function (str){
+    util.base64encode = function (str){
         var b64chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
         var b64encoded = '';
         var chr1, chr2, chr3;
@@ -694,7 +713,7 @@
     };
 
 
-    o.base64decode = function (str) {
+    util.base64decode = function (str) {
         var b64chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
         var b64decoded = '';
         var chr1, chr2, chr3;
@@ -725,7 +744,7 @@
      * @param event     event.type must keypress
      * @returns {*}
      */
-    o.getChar = function (event) {
+    util.getChar = function (event) {
         if (event.which == null) {
             if (event.keyCode < 32) return null;
             return String.fromCharCode(event.keyCode)
@@ -737,8 +756,8 @@
         return null;
     };
 
-    o.Date = function(){};
-    o.Date.time = function(date){
+    util.Date = function(){};
+    util.Date.time = function(date){
         "use strict";
         return date instanceof Date ? date.getTime() : (new Date).getTime();
 
@@ -749,13 +768,13 @@
      * @param startDate     type Date, start date
      * @returns {*}  type Date 
      */
-    o.Date.addDays = function (day, startDate){
+    util.Date.addDays = function (day, startDate){
         var date = startDate ? new Date(startDate) : new Date();
         date.setTime(date.getTime() + (day * 86400000));
         return date;
     };
 
 
-    window.Util = o;
+    window.Util = util;
 
 })(window);

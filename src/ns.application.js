@@ -29,8 +29,9 @@
                  *          for call and execute all constructor methods, use .constructsStart()
                  */
                 constructsType: 'runtime',
-                _require_stack: {},
-                _constructs_stack: []
+                _stackRequires: {},
+                _stackNodes: {},
+                _stackConstructs: []
             },
 
             merge: function (objectBase, src) {
@@ -104,19 +105,45 @@
             if(this.constructsType == 'runtime') {
                 tmp.construct.apply(tmp, args);
             }else if (this.constructsType == 'gather') {
-                this._constructs_stack.push(tmp);
+                this._stackConstructs.push(tmp);
             }
         }
 
         return tmp;
     };
 
+    /**
+     * Run all modules constructs
+     * @param args
+     * @returns {proto}
+     */
     proto.constructsStart = function(args) {
-        this.each(this._constructs_stack, function(item, index){
+        this.each(this._stackConstructs, function(item, index){
             item.construct.apply(item, args);
         },args);
-        this._constructs_stack = [];
+        this._stackConstructs = [];
         return this;
+    };
+
+    /**
+     * Storage of HTML elements
+     *      if nodes a Object - Add new elements key = HTMLElements
+     *      if nodes a String - Get HTMLElements by key, if exists
+     *      if nodes a not set - return object with all elements
+     * @param nodes
+     * @returns {*}
+     */
+    proto.node = function (nodes) {
+        if(typeof nodes === 'object') {
+            for (var key in nodes)
+                this._stackNodes[key] = nodes[key];
+            return this._stackNodes;
+        }
+        else if (typeof nodes === 'string')
+            return this._stackNodes[nodes] ? this._stackNodes[nodes] : null;
+
+        else if (nodes === undefined)
+            return this._stackNodes;
     };
 
     /**
@@ -128,7 +155,7 @@
      * @returns {proto}
      */
     proto.require = function(key, path, oncomplete, onerror){
-        this._require_stack[key] = {
+        this._stackRequires[key] = {
             src:  Array.isArray(path) ? path : [path],
             oncomplete : oncomplete,
             onerror : onerror
@@ -142,7 +169,7 @@
      */
     proto.requireStart = function(key){
         var source;
-        if(this._require_stack[key]){
+        if(this._stackRequires[key]){
             this._recursive_load_script(0, key);
         }else{
             console.error("Require source not found! Key: " + key + " not exist!");
@@ -152,7 +179,7 @@
 
     proto._recursive_load_script = function  (i, key) {
         var self = this,
-            source = this._require_stack[key];
+            source = this._stackRequires[key];
 
         if (source.src[i]) {
             if(!Array.isArray(source.node)) source.node = [];
@@ -186,7 +213,6 @@
 
         return script;
     };
-
 
     /**
      * Loads the CSS link element
@@ -277,12 +303,12 @@
     };
 
     /**
-     * Simple render
+     * Simple inject data to selector element
      * @param selector
      * @param data
      * @returns {*}
      */
-    proto.render = function(selector, data){
+    proto.inject = function(selector, data){
         if(typeof selector === 'string') selector = this.query(selector);
         if(typeof selector === 'object' && selector.nodeType === Node.ELEMENT_NODE) {
             selector.textContent = '';
@@ -344,14 +370,29 @@
         return list;
     };
 
+
+    /**
+     * Execute callback function if DOM is loaded
+     * @param callback
+     */
+    proto.domLoaded = function(callback){
+        if(document.querySelector('body')) {
+            callback.call({});
+        }else{
+            document.addEventListener('DOMContentLoaded', function(){callback.call({})}, false);
+        }
+    };
+
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      * STATIC METHODS
+     * uses: NamespaceApplication.afterDOMLoaded()
      * uses: NamespaceApplication.request()
      * uses: NamespaceApplication.assign()
      * uses: NamespaceApplication.script()
      * uses: NamespaceApplication.style()
      * uses: NamespaceApplication.file()
      */
+    app.domLoaded = proto.domLoaded;
     app.request = proto.request;
     app.assign = proto.assign;
     app.script = proto.script;
@@ -366,21 +407,3 @@
     window.NamespaceApplication.prototype.constructor = app;
 
 })(window);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

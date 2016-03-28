@@ -1,6 +1,8 @@
 
 
 
+
+
 var property = {
     url: '/ns.app/demo_com/',
     urlServer: '/server.php',
@@ -8,8 +10,9 @@ var property = {
     urlTemplates: '/ns.app/demo_com/templates/',
     name: 'Developer',
     debug: true,
-    constructsType: 'gather'
+    constructsType: false
 };
+
 
 //console.dir(NamespaceApplication);
 
@@ -37,11 +40,12 @@ App.require('dependence',
         'js.app/module/api.js',
 
         // Actions
+        'js.app/action/user.js',
         'js.app/action/sidebar.js',
+        'js.app/action/navigate.js',
 
         // Controllers
-        'js.app/controller/login.js',
-        'js.app/controller/front.js',
+        'js.app/controller/page.js',
         'js.app/controller/back.js'
 
     ],
@@ -54,18 +58,15 @@ App.requireStart('libs');
 function initError(error){
     console.error('onRequireError' , error);
 }
+
+
 function initLibrary(list){
     App.requireStart('dependence');
 }
+
+
 function initDependence(list){
     console.log('Application start!');
-    //App.Controller.Login.isAuth();
-    //var args = [1,'one','I'];
-    //App.constructsStart(args);
+
+    App.Controller.Page.construct();
 }
-
-
-
-
-
-//console.log('App: ', App);

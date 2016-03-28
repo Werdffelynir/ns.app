@@ -1,6 +1,6 @@
-if(App.namespace){App.namespace('Controller.Popup', function(App){
+if(App.namespace){App.namespace('Action.Popup', function(App){
     /**
-     * @namespace App.Controller.Popup
+     * @namespace App.Action.Popup
      */
     var o = {};
 

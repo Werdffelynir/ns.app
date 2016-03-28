@@ -35,6 +35,7 @@ App.route(urlPath:String, callback:Function):App
 App.query(selector:String, callback:Function):HTMLElement
 App.queryAll(selector:String, callback:Function):Array
 App.each(list:Array|Object, callback:Function, tmp:Object):Array|Object
+App.inject(selector:String|Object, data:String|Object):HTMLElement
 ```
 
 

@@ -1,6 +1,6 @@
-if(App.namespace){App.namespace('Controller.Sidebar', function(App){
+if(App.namespace){App.namespace('Action.Sidebar', function(App){
     /**
-     * @namespace App.Controller.Sidebar
+     * @namespace App.Action.Sidebar
      */
     var o = {};
 
