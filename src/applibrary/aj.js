@@ -278,6 +278,16 @@
         var ajax = aj.open(params);
         return ajax.send();
     };
+
+    /**
+     * Простой POST запрос
+     *
+     * @param url       :String             Адрес запроса
+     * @param data      :String|FormData    Передаваемые данные
+     * @param callback  :Function           Выполняет по окончании операции при любом результате
+     * @param response  :String             Тип данных ответа
+     * @returns {*}
+     */
     aj.post = function(url, data, callback, response){
         var params = {
             url:url,

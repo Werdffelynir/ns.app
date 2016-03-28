@@ -16,11 +16,11 @@ App.setConfig(config:Object):App
 App.namespace(namespace:String, callback:Function):Object
 App.require(key:String, path:Array, oncomplete:Function, onerror:Function):App
 App.requireStart(key:String):App
-App.loadScript(src:String, onload:Function, onerror:Function):HTMLElement
-App.loadCSSLink(src:String, onload:Function, onerror:Function):HTMLElement
-App.loadFile(url:String, onload:Function, onerror:Function):void
+App.script(src:String, onload:Function, onerror:Function):HTMLElement
+App.style(src:String, onload:Function, onerror:Function):HTMLElement
+App.file(url:String, onload:Function, onerror:Function):void
 App.request(method:String, url:String, callback:Function, callbackError:Function):XMLHttpRequest
-App.assignValues(stringData:String, params:Object):String
+App.assign(stringData:String, params:Object):String
 App.route(urlPath:String, callback:Function):App
 App.query(selector:String, callback:Function):HTMLElement
 App.queryAll(selector:String, callback:Function):Array
@@ -93,7 +93,7 @@ function onLibraryLoaded(list){}
 function onRequireError(error){}
 ```
 
-### App.loadScript(), App.loadCSSLink()
+### App.script(), App.style()
 
 Syntax: `App.loadScript(src:String, onload:Function, onerror:Function):HTMLElement`
 
@@ -105,7 +105,7 @@ App.loadScript('/js/script.js', function(element){}, function(error){});
 App.loadCSSLink('/css/style.css', function(element){}, function(error){});
 ```
 
-### App.loadFile(), App.render()
+### App.file(), App.render()
 
 Syntax: `App.loadFile(url:String, onload:Function, onerror:Function):void`
 
@@ -121,7 +121,7 @@ function loadFileError(error) {
 }
 ```
 
-### App.assignValues()
+### App.assign()
 
 Syntax: `App.assignValues(stringData:String, params:Object):String`
 

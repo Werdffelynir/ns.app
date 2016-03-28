@@ -4,18 +4,49 @@
 (function (window){
 
     var
+        /**
+         * NamespaceApplication Prototype
+         * @type {*}
+         */
         proto = {
+
             config: {
+                /**
+                 * Base url
+                 */
                 url: '/',
-                debug: true
+
+                /**
+                 * Debug mod
+                 */
+                debug: true,
+
+                /**
+                 * Startup type of constructor for modules
+                 * Type: false - off constructor
+                 *      'runtime' - perform during the assignment of namespace
+                 *      'gather' - save in the stack,
+                 *          for call and execute all constructor methods, use .constructsStart()
+                 */
+                constructsType: 'runtime',
+                _require_stack: {},
+                _constructs_stack: []
             },
+
             merge: function (objectBase, src) {
                 for (var key in src)
                     if (objectBase[key] === undefined)
                         objectBase[key] = src[key];
                 return objectBase;
             }
-        } , app = function(config){
+        },
+
+        /**
+         * NamespaceApplication Constructor
+         * @param config
+         * @returns {app|NamespaceApplication}
+         */
+        app = function(config){
 
             if (!(this instanceof NamespaceApplication))
                 return new NamespaceApplication(config);
@@ -23,6 +54,11 @@
             this.version = '0.1.0';
             this.setConfig(config);
         };
+
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     * PROTOTYPE METHODS
+     */
 
     /**
      * Apply config object to instance properties
@@ -42,9 +78,10 @@
      * Create namespace for module-script
      * @param namespace  "Controller.Name" or "Action.Name"
      * @param callback
+     * @param args
      * @returns {{}}
      */
-    proto.namespace = function(namespace, callback) {
+    proto.namespace = function(namespace, callback, args) {
 
         var
             name,
@@ -61,7 +98,24 @@
                 tmp = tmp[name];
             }
         }
+
+        if(tmp.construct){
+            args = Array.isArray(args) ? args : [];
+            if(this.constructsType == 'runtime') {
+                tmp.construct.apply(tmp, args);
+            }else if (this.constructsType == 'gather') {
+                this._constructs_stack.push(tmp);
+            }
+        }
+
         return tmp;
+    };
+
+    proto.constructsStart = function(args) {
+        this.each(this._constructs_stack, function(item, index){
+            item.construct.apply(item, args);
+        },args);
+        this._constructs_stack = [];
     };
 
     /**
@@ -73,14 +127,13 @@
      * @returns {proto}
      */
     proto.require = function(key, path, oncomplete, onerror){
-        this.require.stack[key] = {
+        this._require_stack[key] = {
             src:  Array.isArray(path) ? path : [path],
             oncomplete : oncomplete,
             onerror : onerror
         };
         return this;
     };
-    proto.require.stack = {};
 
     /**
      * Start loading the list of scripts by key (identifier)
@@ -88,7 +141,7 @@
      */
     proto.requireStart = function(key){
         var source;
-        if(this.require.stack[key]){
+        if(this._require_stack[key]){
             this._recursive_load_script(0, key);
         }else{
             console.error("Require source not found! Key: " + key + " not exist!");
@@ -98,11 +151,11 @@
 
     proto._recursive_load_script = function  (i, key) {
         var self = this,
-            source = this.require.stack[key];
+            source = this._require_stack[key];
 
         if (source.src[i]) {
             if(!Array.isArray(source.node)) source.node = [];
-            source.node.push(this.loadScript(source.src[i], function(){
+            source.node.push(this.script(source.src[i], function(){
                 self._recursive_load_script(++i, key);
             }, source.onerror));
         } else if (i ===  source.src.length)
@@ -117,10 +170,10 @@
      * @param onerror
      * @returns {Element}
      */
-    proto.loadScript = function  (src, onload, onerror) {
+    proto.script = function  (src, onload, onerror) {
         var
             script = document.createElement('script'),
-            id = "src-" + Math.random().toString(32).slice(2); //this.require.encodeId(src);
+            id = "src-" + Math.random().toString(32).slice(2);
 
         script.src = (src.substr(-3) === '.js') ? src : src + '.js';
         script.type = 'application/javascript';
@@ -141,9 +194,9 @@
      * @param onerror
      * @returns {Element}
      */
-    proto.loadCSSLink = function  (src, onload, onerror) {
+    proto.style = function  (src, onload, onerror) {
         var link = document.createElement('link'),
-            id = "src-" + Math.random().toString(32).slice(2);//this.encodeId(src);
+            id = "src-" + Math.random().toString(32).slice(2);
 
         link.href = (src.substr(-4) === '.css') ? src : src + '.css';
         link.rel = 'stylesheet';
@@ -160,8 +213,8 @@
      * @param onload
      * @param onerror
      */
-    proto.loadFile = function  (url, onload, onerror) {
-        this.request('GET', url, function(event){
+    proto.file = function  (url, onload, onerror) {
+        proto.request('GET', url, function(event){
             if(event.target.status === 200)
                 onload.call(this, event.target.responseText, event);
             else
@@ -197,7 +250,7 @@
      * @param params
      * @returns {*}
      */
-    proto.assignValues = function  (stringData, params) {
+    proto.assign = function  (stringData, params) {
         if(typeof params === 'object')
             for(var k in params)
                 stringData = stringData.replace(new RegExp('{{'+k+'}}', 'gi'), params[k]);
@@ -290,9 +343,22 @@
         return list;
     };
 
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     * STATIC METHODS
+     * uses: NamespaceApplication.request()
+     * uses: NamespaceApplication.assign()
+     * uses: NamespaceApplication.script()
+     * uses: NamespaceApplication.style()
+     * uses: NamespaceApplication.file()
+     */
+    app.request = proto.request;
+    app.assign = proto.assign;
+    app.script = proto.script;
+    app.style = proto.style;
+    app.file = proto.file;
 
-    /**
-     * Global name
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     * GLOBAL NAME
      */
     window.NamespaceApplication = app;
     window.NamespaceApplication.prototype = proto;

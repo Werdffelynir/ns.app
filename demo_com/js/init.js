@@ -1,29 +1,32 @@
 
 var property = {
-    urlServer: '/server.php',
-    urlLibs: '/ns.app/',
     url: '/ns.app/demo_com/',
-    urlTemplates: '/ns.app/demo_com/js/app/templates/',
+    urlServer: '/server.php',
+    urlLibs: '/ns.app/src/applibrary/',
+    urlTemplates: '/ns.app/demo_com/templates/',
     name: 'Developer',
-    debug: true
+    debug: true,
+    constructsType: 'gather'
 };
+
+//console.dir(NamespaceApplication);
 
 window.App = new NamespaceApplication(property);
 
 // loadings styles
-App.loadCSSLink(App.url + 'css/desktop.css',null,onRequireError);
-App.loadCSSLink(App.url + 'css/mobile.css',null,onRequireError);
-App.loadScript(App.url + 'js/test.js',null,onRequireError);
+App.style(App.url + 'css/desktop.css', null,initError);
+App.style(App.url + 'css/mobile.css',null,initError);
+App.script(App.url + 'js/test.js',null,initError);
 
 
 App.require('libs',
     [
-        App.urlLibs + 'src/applibrary/aj.js',
-        App.urlLibs + 'src/applibrary/dom.js',
-        App.urlLibs + 'src/applibrary/util.js',
-        App.urlLibs + 'src/applibrary/timer.js'
+        App.urlLibs + 'aj.js',
+        App.urlLibs + 'dom.js',
+        App.urlLibs + 'util.js',
+        App.urlLibs + 'timer.js'
     ],
-    onLibraryLoaded, onRequireError);
+    initLibrary, initError);
 
 
 App.require('dependence',
@@ -35,37 +38,29 @@ App.require('dependence',
         'js/app/action/sidebar.js',
 
         // Controllers
-        'js/app/controller/login.js'
+        'js/app/controller/login.js',
+        'js/app/controller/front.js',
+        'js/app/controller/back.js'
 
     ],
-    onDependenceLoaded, onRequireError);
+    initDependence, initError);
 
 // start loading resources 'libs'
 App.requireStart('libs');
 
 
-function onRequireError(error){
+function initError(error){
     console.error('onRequireError' , error);
 }
-function onLibraryLoaded(list){
+function initLibrary(list){
     App.requireStart('dependence');
 }
-function onDependenceLoaded(list){
+function initDependence(list){
     console.log('Application start!');
 
-
-
-    var tmpSum = 'conf', arr = [1,2,3,4,5];
-    App.each(arr, function(item, index, sum){
-        sum += '-' + index + '-' + (item * 100);
-        console.log(item, index, sum);
-    }, tmpSum);
-
-    /*var obj = {id:123,name:'Class',root:'/'};
-    App.each(obj, function(item, key){
-        console.log(item, key);
-    });*/
-
+    //App.Controller.Login.isAuth();
+    //var args = [1,'one','I'];
+    //App.constructsStart(args);
 }
 
 
