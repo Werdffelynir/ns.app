@@ -27,6 +27,7 @@ App.script(App.url + 'js/test.js',null,initError);
 App.require('libs',
     [
         App.urlLibs + 'aj.js',
+        App.urlLibs + 'idb.js',
         App.urlLibs + 'dom.js',
         App.urlLibs + 'util.js',
         App.urlLibs + 'timer.js'

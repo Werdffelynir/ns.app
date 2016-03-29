@@ -15,21 +15,21 @@
  * linker.click( id )
  * Назначает событие клика для элемента по индификатору
  *
- * @namespace App.Module.Linker
  */
 
-(function(App, Dom, Tpl){
+(function(App){
 
     /**
      * Register action namespace
      * Using depending on the base application
+     * @namespace App.Module.Linker
      */
-    var linker = {};
+    var linker = App.namespace('Module.Linker');
 
     linker.stack = [];
     linker.stackError = [];
 
-    App.namespace('Module.Linker', linker);
+    
 
     /**
      * Construct for action
@@ -63,6 +63,21 @@
     };
 
 
+    linker.refresh = function() {
+        return linker.search();
+    };
+
+    linker.get = function(id, array){
+        if(!id && !array) return linker.stack;
+        var linkers = [];
+        for(var i = 0; i < linker.stack.length; i ++)
+            if(linker.stack[i]._linkerId === id)
+                linkers.push(linker.stack[i]);
+        if(linkers.length === 0) return null;
+        if(!!array) return linkers;
+        return linkers[0];
+    };
+
     linker.click = function(id, callback, useCapture) {
         return linker.on('click', id,  callback, useCapture);
     };
@@ -80,18 +95,4 @@
         }
     };
 
-    linker.refresh = function() {
-        return linker.search();
-    };
-
-    linker.get = function(id, array){
-        var linkers = [];
-        for(var i = 0; i < linker.stack.length; i ++)
-            if(linker.stack[i]._linkerId === id)
-                linkers.push(linker.stack[i]);
-        if(linkers.length === 0) return null;
-        if(!!array) return linkers;
-        return linkers[0];
-    };
-
-})(App, Dom, Tpl);
+})(App);

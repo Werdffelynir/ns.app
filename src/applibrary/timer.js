@@ -79,10 +79,11 @@
 
         };
 
+
     timer.START = 'start';
     timer.PROGRESS = 'progress';
     timer.COMPLETE = 'complete';
-
+    
     window.Timer = timer;
     window.Timer.prototype = timerProto;
     window.Timer.prototype.constructor = timer;

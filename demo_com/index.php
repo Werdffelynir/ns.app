@@ -15,8 +15,8 @@
 
 <div id="app-tips"></div>
 <div id="app-help"></div>
-<div id="app-popup">
-    <div id="app-popup-win">
+<div id="app-popup" class="linker" data-id="popup_wrapper">
+    <div id="app-popup-win" class="linker" data-id="popup_win">
         <div id="app-popup-top" class="tbl">
             <div class="tbl_cell">Title name</div>
             <div class="tbl_cell linker" data-id="popup_close">Close</div>
@@ -38,4 +38,3 @@
 
 </body>
 </html>
-

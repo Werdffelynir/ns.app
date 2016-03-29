@@ -580,94 +580,6 @@
         return params;
     };
 
-    util.Storage = function(name, value){
-        if(!name){
-            return false;
-        }else if(value === undefined){
-            return util.Storage.get(name);
-        }else if(!value){
-            return util.Storage.remove(name);
-        }else{
-            return util.Storage.set(name, value);
-        }
-    };
-    util.Storage.set = function (name, value) {
-        try{value = JSON.stringify(value)}catch(error){}
-        return window.localStorage.setItem(name, value);
-    };
-    util.Storage.get = function (name) {
-        var value = window.localStorage.getItem(name);
-        if(value)
-            try{value = JSON.parse(value)}catch(error){}
-        return value;
-    };
-    util.Storage.remove = function (name) {
-        return window.localStorage.removeItem(name);
-    };
-    util.Storage.key = function (name) {
-        return window.localStorage.key(key);
-    };
-
-    /**
-     * возвращает cookie с именем name, если есть, если нет, то undefined
-     * @param name
-     * @param value
-     */
-    util.Cookie = function (name, value) {
-        "use strict";
-        if(value === undefined){
-            return util.Cookie.get(name);
-        }
-        else if (value === false || value === null){
-            util.Cookie.delete(name);
-        }else {
-            util.Cookie.set(name, value);
-        }
-
-    };
-    util.Cookie.get = function (name) {
-        var matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-    };
-    /**
-     *
-     * @param name
-     * @param value
-     * @param {{}} options   {expires: 0, path: '/', domain: 'site.com', secure: false}
-     *                          expires - ms, Date, -1, 0
-     */
-    util.Cookie.set = function (name, value, options) {
-        options = options || {};
-        var expires = options.expires;
-        if (typeof expires == "number" && expires) {
-            var d = new Date();
-            d.setTime(d.getTime() + expires * 1000);
-            expires = options.expires = d;
-        }
-        if (expires && expires.toUTCString) {
-            options.expires = expires.toUTCString();
-        }
-        value = encodeURIComponent(value);
-        var updatedCookie = name + "=" + value;
-        for (var propName in options) {
-            updatedCookie += "; " + propName;
-            var propValue = options[propName];
-            if (propValue !== true) {
-                updatedCookie += "=" + propValue;
-            }
-        }
-        document.cookie = updatedCookie;
-    };
-
-    util.Cookie.delete = util.Cookie.remove = function (name, option){
-        "use strict";
-        option = typeof option === 'object' ? option : {};
-        option.expires = -1;
-        util.Cookie.set(name, "", option);
-    };
-
     util.each = function (data, callback) {
         if(util.isArr(data)){
             for(var i = 0; i < data.length; i ++) callback.call(null, data[i]);
@@ -774,6 +686,172 @@
         return date;
     };
 
+    util.Storage = function(name, value){
+        if(!name){
+            return false;
+        }else if(value === undefined){
+            return util.Storage.get(name);
+        }else if(!value){
+            return util.Storage.remove(name);
+        }else{
+            return util.Storage.set(name, value);
+        }
+    };
+    util.Storage.set = function (name, value) {
+        try{value = JSON.stringify(value)}catch(error){}
+        return window.localStorage.setItem(name, value);
+    };
+    util.Storage.get = function (name) {
+        var value = window.localStorage.getItem(name);
+        if(value)
+            try{value = JSON.parse(value)}catch(error){}
+        return value;
+    };
+    util.Storage.remove = function (name) {
+        return window.localStorage.removeItem(name);
+    };
+    util.Storage.key = function (name) {
+        return window.localStorage.key(key);
+    };
+    // when invoked, will empty all keys out of the storage.
+    util.Storage.clear = function () {
+        return window.localStorage.clear();
+    };
+    // returns an integer representing the number of data items stored in the Storage object.
+    util.Storage.length = function () {
+        return window.localStorage.length;
+    };
+    
+    
+
+    util.IndexedDB =  function(name, value){
+        
+    };
+    util.IndexedDB.db = null;
+    
+    util.IndexedDB.get =  function(name, value){
+
+    };
+    util.IndexedDB.set =  function(name, value){
+
+    };
+    util.IndexedDB.remove =  function(name, value){
+
+    };
+    
+    
+    
+    
+    /**
+     * возвращает cookie с именем name, если есть, если нет, то undefined
+     * @param name
+     * @param value
+     */
+    util.Cookie = function (name, value) {
+        "use strict";
+        if(value === undefined){
+            return util.Cookie.get(name);
+        }
+        else if (value === false || value === null){
+            util.Cookie.delete(name);
+        }else {
+            util.Cookie.set(name, value);
+        }
+
+    };
+    util.Cookie.get = function (name) {
+        var matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    };
+    /**
+     *
+     * @param name
+     * @param value
+     * @param {{}} options   {expires: 0, path: '/', domain: 'site.com', secure: false}
+     *                          expires - ms, Date, -1, 0
+     */
+    util.Cookie.set = function (name, value, options) {
+        options = options || {};
+        var expires = options.expires;
+        if (typeof expires == "number" && expires) {
+            var d = new Date();
+            d.setTime(d.getTime() + expires * 1000);
+            expires = options.expires = d;
+        }
+        if (expires && expires.toUTCString) {
+            options.expires = expires.toUTCString();
+        }
+        value = encodeURIComponent(value);
+        var updatedCookie = name + "=" + value;
+        for (var propName in options) {
+            updatedCookie += "; " + propName;
+            var propValue = options[propName];
+            if (propValue !== true) {
+                updatedCookie += "=" + propValue;
+            }
+        }
+        document.cookie = updatedCookie;
+    };
+
+    util.Cookie.delete = util.Cookie.remove = function (name, option){
+        "use strict";
+        option = typeof option === 'object' ? option : {};
+        option.expires = -1;
+        util.Cookie.set(name, "", option);
+    };
+    
+    util.getURLParameter = function(name) {
+       var reg = (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search) || [, null])[1];
+	   return reg === null ? undefined : decodeURI(reg);
+    }
+    
+    /**
+     * An asynchronous for-each loop
+     *
+     * @param   {array}     array       The array to loop through
+     *
+     * @param   {function}  done        Callback function (when the loop is finished or an error occurs)
+     *
+     * @param   {function}  iterator
+     * The logic for each iteration.  Signature is `function(item, index, next)`.
+     * Call `next()` to continue to the next item.  Call `next(Error)` to throw an error and cancel the loop.
+     * Or don't call `next` at all to break out of the loop.
+     */
+    util.asyncForEach function (array, done, iterator) {
+        var i = 0;
+        next();
+
+        function next(err) {
+            if (err)
+                done(err);
+            else if (i >= array.length)
+                done();
+            else if (i < array.length) {
+                var item = array[i++];
+                setTimeout(function() {
+                    iterator(item, i - 1, next);
+                }, 0);
+            }
+        }
+    };
+    
+
+	/**
+	 * Calls the callback in a given interval until it returns true
+	 * @param {function} callback
+	 * @param {integer} interval in milliseconds
+	 */
+	util.waitFor = function(callback, interval) {
+		var internalCallback = function() {
+			if(callback() !== true) {
+				setTimeout(internalCallback, interval);
+			}
+		};
+		internalCallback();
+	},
+    
 
     window.Util = util;
 
