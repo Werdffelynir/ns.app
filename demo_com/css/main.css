@@ -1,46 +1,74 @@
 html, body {
     width: 100%;
     height: 100%;
-    color: #555;
-    background-color: #dddddd;
+    color: #242424;
+    background-color: #f0f0f0;
     font-family: "Ubuntu Condensed", "Ubuntu", "sans", "sans-serif";
 }
 
-#tips{display: none;}
+#app-tips{display: none;}
 
-#help{display: none;}
+#app-help{display: none;}
 
-#popup{display: none;}
+#app-popup{display: none;}
+#app-popup.active{
+    display: block;
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: rgba(63, 63, 63, 0.8);
+    border: 2px solid #121212;
+}
+#app-popup-win{
+    max-width: 80%;
+    position: absolute;
+    padding: 10px;
+    background-color: #FFF;
+    box-shadow: 0 0 1px 1px rgba(63, 63, 63, 0.50);
+}
+#app-popup-top{}
+#app-popup-top>div:first-child{}
+#app-popup-top>div:last-child{
+    width: 10%;
+    text-align: right;
+}
+#app-popup-content{
+    padding: 10px 0;
+}
+#app-popup-bottom{
+    text-align: right;
+}
 
-#page {
+
+
+#app-page {
     width: 80%;
     height: 100%;
     margin: 0 auto;
 }
 
-#header{}
 
-#wrapper{}
 
-#content{min-height: 300px;}
+#app-wrapper{}
 
-#sidebar{
+#app-content{min-height: 300px;}
+
+#app-sidebar{
     display: none;
     border-left: 3px solid #1f1f1f;
 }
 
-#footer{}
 
-#navigation ul {
+.navigation ul {
     list-style: none;
     margin-bottom: 0px;
 }
 
-#navigation ul li {
+.navigation ul li {
     display: inline;
 }
 
-#navigation ul li a {
+.navigation ul li a {
     display: inline-block;
     padding: 5px 10px;
     text-decoration: none;
@@ -53,12 +81,12 @@ html, body {
     text-align: center;
 }
 
-#navigation ul li a:hover {
+.navigation ul li a:hover {
     color: #FFF;
     background-color: #595959;
 }
 
-#navigation ul li a:active {
+.navigation ul li a:active {
     color: #FFF;
     background-color: #595959;
 }
@@ -77,30 +105,37 @@ html, body {
 
 .btn, a.btn {
     display: inline-block;
-    padding: 5px 10px;
+    padding: 2px 5px;
     text-decoration: none;
     text-transform: uppercase;
     font-size: 12px;
-    color: #C3C3C3;
-    background-color: #3F3F3F;
-    border: 2px solid #121212;
+    background-color: #C9C9C9;
+    border: 1px solid #a1a1a1;
     min-width: 100px;
     text-align: center;
+    outline: none !important;
 }
 .btn:hover, a.btn:hover {
-    color: #FFF;
-    background-color: #595959;
+    background-color: #bfbfbf;
 }
 
-#sb-open.sb-opened{
-    background-color: #8d9000;
+input[type=submit]:focus, *:focus{
+    outline: none !important;
 }
-#content.sb-opened{
-    /*display: inline-block;*/
-    /*width: calc(100% - 240px);*/
+
+
+.login-box{
+    display: inline-block;
+    padding: 20px;
+    background-color: #C9C9C9;
+    border: 1px solid #a1a1a1;
 }
-#sidebar.sb-opened{
-    /*display: inline-block;*/
-    display: table-cell;
-    width: 240px;
+input[type=text],
+input[type=password],
+input[type=date]{
+    border: 2px solid #b7b7b7;
+    padding: 2px 5px;
 }
+input[type=submit]{}
+
+p{padding: 4px 0 2px}

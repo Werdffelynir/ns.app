@@ -303,7 +303,7 @@
     };
 
     /**
-     * Simple inject data to selector element
+     * Simple inject data to HTMLElement [by selector]
      * @param selector
      * @param data
      * @returns {*}
@@ -325,26 +325,59 @@
      * Query DOM Element by selector
      *
      * @param selector
-     * @param callback
+     * @param parent|callback
      * @returns {Element}
      */
-    proto.query = function(selector, callback){
-        var elem = document.querySelector(selector);
-        if(elem && typeof callback == 'function')
+    proto.query = function(selector, parent){
+        var callback, elem, from = document;
+
+        if(typeof parent === 'function')
+            callback = parent;
+        else if(typeof parent === 'string')
+            from = document.querySelector(parent);
+        else if(typeof parent === 'object' && parent.nodeType === Node.ELEMENT_NODE)
+            from = parent;
+
+        if(from)
+            elem = from.querySelector(selector);
+
+        if(elem && typeof callback === 'function')
             callback.call(this, elem);
+
+        // debug
+        if(this.debug && !elem)
+            console.error("Error query DOM Element by selector ", selector);
+
         return elem;
     };
 
     /**
      * Query DOM Elements by selector
      * @param selector
-     * @param callback
+     * @param parent|callback
      * @returns {Array.<T>}
      */
-    proto.queryAll = function(selector, callback){
-        var elems = [].splice.call(document.querySelectorAll(selector));
+    proto.queryAll = function(selector, parent){
+
+        var callback, elems, from = document;
+
+        if(typeof parent === 'function')
+            callback = parent;
+        else if(typeof parent === 'string')
+            from = document.querySelector(parent);
+        else if(typeof parent === 'object' && parent.nodeType === Node.ELEMENT_NODE)
+            from = parent;
+
+        if(from)
+            elems = [].splice.call(from.querySelectorAll(selector));
+
         if(elems.length > 0 && typeof callback == 'function')
             callback.call(this, elems);
+
+        // debug
+        if(this.debug && !elems)
+            console.error("Error queryAll DOM Elements by selector ", selector);
+
         return elems;
     };
 

@@ -346,6 +346,36 @@
         return this;
     };
 
+    proto.html2node = function(string) {
+        var i, f = document.createDocumentFragment(), c = document.createElement("div");
+        c.innerHTML = string;
+        while( i = c.firstChild ) f.appendChild(i);
+        return f.childNodes.length === 1 ? f.firstChild : f;
+    };
+
+    proto.append = function(elements){
+        var fragment = document.createDocumentFragment();
+        if(Array.isArray(elements)) {
+            elements.map(function(item){
+                if(typeof item === 'object' && item.nodeType === Node.ELEMENT_NODE)
+                    fragment.appendChild(item);
+                else if (typeof item === 'string')
+                    fragment.appendChild(proto.html2node(item));
+            });
+        }
+        else if(typeof elements === 'object' && elements.nodeType === Node.ELEMENT_NODE){
+            fragment.appendChild(elements);
+        }
+        else if(typeof elements === 'string'){
+            fragment.appendChild(proto.html2node(elements));
+        }
+
+        this.elements.map(function(elem){
+            elem.appendChild(fragment);
+        });
+        return this;
+    };
+
     proto.toString = function (){
         return "Dom"
     };
@@ -413,7 +443,6 @@
         }
         return elem;
     };
-
 
     /**
      * Execute callback function if DOM is loaded

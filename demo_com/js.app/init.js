@@ -38,9 +38,11 @@ App.require('dependence',
     [
         // Modules
         'js.app/module/api.js',
+        'js.app/module/linker.js',
 
         // Actions
         'js.app/action/user.js',
+        'js.app/action/popup.js',
         'js.app/action/sidebar.js',
         'js.app/action/navigate.js',
 
