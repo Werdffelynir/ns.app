@@ -810,7 +810,7 @@
     /**
      * An asynchronous for-each loop
      *
-     * @param   {array}     array       The array to loop through
+     * @param   {Array}     array       The array to loop through
      *
      * @param   {function}  done        Callback function (when the loop is finished or an error occurs)
      *
@@ -819,7 +819,7 @@
      * Call `next()` to continue to the next item.  Call `next(Error)` to throw an error and cancel the loop.
      * Or don't call `next` at all to break out of the loop.
      */
-    util.asyncForEach function (array, done, iterator) {
+    util.asyncForEach = function (array, done, iterator) {
         var i = 0;
         next();
 
@@ -841,7 +841,7 @@
 	/**
 	 * Calls the callback in a given interval until it returns true
 	 * @param {function} callback
-	 * @param {integer} interval in milliseconds
+	 * @param {number} interval in milliseconds
 	 */
 	util.waitFor = function(callback, interval) {
 		var internalCallback = function() {
@@ -850,7 +850,7 @@
 			}
 		};
 		internalCallback();
-	},
+	};
     
 
     window.Util = util;

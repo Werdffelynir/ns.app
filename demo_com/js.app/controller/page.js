@@ -58,25 +58,42 @@ if(App.namespace){App.namespace('Controller.Page', function(App){
         ];
 
         
-        var request = new Idb('test', 1);
-        
+        var request = new Idb({
+              name:'test'
+            , version: 1
+            , onerror: function(event) {
+                console.log("error: ", event);
+            }
+            , onsuccess: function(event) {
+                console.log("onsuccess this: ", this);
+                console.log("onsuccess: ", event);
+            }
+            , onblocked: function(event) {
+                console.log("onblocked: ", event);
+            }
+            , onupgradeneeded: function(event) {
+                console.log("onupgradeneeded: ", event);
+            }
+        });
+
+        /*
         console.log(request);
 
-        request.onerror = function(event) {
+        request.openRequest.onerror = function(event) {
           console.log("error: ", event);
         };
 
-        request.onsuccess = function(event) {
+        request.openRequest.onsuccess = function(event) {
           //db = request.result;
           console.log("onsuccess this: ", this);
           console.log("onsuccess event: ", event);
-          console.log("onsuccess success: ", request.result);
+          console.log("onsuccess success: ", request.openRequest.result);
         };
 
-        request.onupgradeneeded = function(event) {
+        request.openRequest.onupgradeneeded = function(event) {
           console.log("onupgradeneeded event: ", event);
         }
-        
+        */
         
         
         
