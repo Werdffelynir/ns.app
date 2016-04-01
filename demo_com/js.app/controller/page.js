@@ -52,15 +52,20 @@ if(App.namespace){App.namespace('Controller.Page', function(App){
         //var c = ns.render('content', 'content.home.html');
         //console.log(c);
 
+/*
         var  customerData = [
-            { id: "00-01", name: "Bill", age: 35, email: "bill@company.com" },
-            { id: "00-02", name: "Donna", age: 32, email: "donna@home.org" }
+            { id: 1, name: "Bill", age: 35, email: "bill@company.com" },
+            { id: 2, name: "Donna", age: 32, email: "donna@home.org" },
+            { id: 3, name: "Donna", age: 32, email: "donna@home.org" },
+            { id: 4, name: "Donna", age: 32, email: "donna@home.org" },
+            { id: 5, name: "Donna", age: 32, email: "donna@home.org" },
+            { id: 6, name: "Donna", age: 32, email: "donna@home.org" }
         ];
 
 
         var request = new Idb({
               name:'test'
-            , version: 1
+            , version: 5
             , onerror: function(event) {
                 console.log("error: ", event);
             }
@@ -73,9 +78,16 @@ if(App.namespace){App.namespace('Controller.Page', function(App){
             }
             , onupgradeneeded: function(event) {
                 console.log("onupgradeneeded: ", event);
+                
+                var db = event.target.result;
+                var objectStore = db.createObjectStore("customers5", {keyPath: "id"});
+                for (var i in customerData) {
+                        objectStore.add(customerData[i]);      
+                }
+                
             }
         });
-
+*/
         /*
         console.log(request);
 
