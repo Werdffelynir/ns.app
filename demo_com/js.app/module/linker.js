@@ -30,7 +30,6 @@
     linker.stackError = [];
 
     
-
     /**
      * Construct for action
      * data-id - id - href
@@ -67,6 +66,7 @@
         return linker.search();
     };
 
+
     linker.get = function(id, array){
         if(!id && !array) return linker.stack;
         var linkers = [];
@@ -78,9 +78,11 @@
         return linkers[0];
     };
 
+
     linker.click = function(id, callback, useCapture) {
         return linker.on('click', id,  callback, useCapture);
     };
+
 
     linker.on = function(event, id, callback, useCapture) {
         if(typeof callback !== 'function') {
@@ -94,5 +96,6 @@
             }
         }
     };
+    
 
 })(App);

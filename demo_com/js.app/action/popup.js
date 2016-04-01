@@ -2,7 +2,6 @@ if(App.namespace){App.namespace('Action.Popup', function(App){
     
     var Linker;
     
-    
     /**
      * @namespace App.Action.Popup
      */
