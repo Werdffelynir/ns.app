@@ -686,6 +686,13 @@
         return date;
     };
 
+    util.Date.daysBetween = function (date1, date2) {
+        var ONE_DAY = 86400000,
+            date1_ms = date1.getTime(),
+            date2_ms = date2.getTime();
+        return Math.round((Math.abs(date1_ms - date2_ms))/ONE_DAY)
+    };
+
     util.Storage = function(name, value){
         if(!name){
             return false;
@@ -805,7 +812,7 @@
     util.getURLParameter = function(name) {
        var reg = (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search) || [, null])[1];
 	   return reg === null ? undefined : decodeURI(reg);
-    }
+    };
     
     /**
      * An asynchronous for-each loop
