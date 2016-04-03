@@ -100,7 +100,7 @@
             }
         }
 
-        if(tmp.construct){
+        if(typeof tmp === "object" && tmp.construct){
             args = Array.isArray(args) ? args : [];
             if(this.constructsType == 'runtime') {
                 tmp.construct.apply(tmp, args);
@@ -109,7 +109,7 @@
             }
         }
 
-        return tmp;
+        return  tmp;
     };
 
     /**

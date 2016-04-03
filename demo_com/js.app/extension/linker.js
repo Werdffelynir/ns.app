@@ -1,6 +1,6 @@
 
 /**
- * module linker.js
+ * static linker.js
  * Выполнитель действий для кнопок.
  *
  * linker.search();
@@ -22,13 +22,12 @@
     /**
      * Register action namespace
      * Using depending on the base application
-     * @namespace App.Module.Linker
+     * @namespace App.Extension.Linker
      */
-    var linker = App.namespace('Module.Linker');
+    var linker = App.namespace('Extension.Linker');
 
     linker.stack = [];
     linker.stackError = [];
-
     
     /**
      * Construct for action

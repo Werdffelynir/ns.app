@@ -530,32 +530,18 @@
      * Import to global
      */
 
-    /*window.Aj = aj.open;
-    window.AjGet = aj.get;
-    window.AjPost = aj.post;
-    window.AjHead = aj.head;
-    window.AjLoad = aj.load;
-    window.AjRequest = aj.request;
-    window.AjForm = aj.form;
-    window.AjJson = aj.json;
-    window.AjJsonp = aj.jsonp;
-    window.AjScript = aj.script;
-    window.AjWorker = aj.worker;
-    window.AjUpload = aj.upload;
-    window.AjUtil = util;*/
-
     window.Aj = aj.open;
-    window.AjGet     = window.Aj.get     = aj.get;
-    window.AjPost    = window.Aj.post    = aj.post;
-    window.AjHead    = window.Aj.head    = aj.head;
-    window.AjLoad    = window.Aj.load    = aj.load;
-    window.AjRequest = window.Aj.request = aj.request;
-    window.AjForm    = window.Aj.form    = aj.form;
-    window.AjJson    = window.Aj.json    = aj.json;
-    window.AjJsonp   = window.Aj.jsonp   = aj.jsonp;
-    window.AjScript  = window.Aj.script  = aj.script;
-    window.AjWorker  = window.Aj.worker  = aj.worker;
-    window.AjUpload  = window.Aj.upload  = aj.upload;
-    window.AjUtil    = window.Aj.util    = util;
+    /*window.AjGet     = */window.Aj.get     = aj.get;
+    /*window.AjPost    = */window.Aj.post    = aj.post;
+    /*window.AjHead    = */window.Aj.head    = aj.head;
+    /*window.AjLoad    = */window.Aj.load    = aj.load;
+    /*window.AjRequest = */window.Aj.request = aj.request;
+    /*window.AjForm    = */window.Aj.form    = aj.form;
+    /*window.AjJson    = */window.Aj.json    = aj.json;
+    /*window.AjJsonp   = */window.Aj.jsonp   = aj.jsonp;
+    /*window.AjScript  = */window.Aj.script  = aj.script;
+    /*window.AjWorker  = */window.Aj.worker  = aj.worker;
+    /*window.AjUpload  = */window.Aj.upload  = aj.upload;
+    /*window.AjUtil    = */window.Aj.util    = util;
 
 })(window);

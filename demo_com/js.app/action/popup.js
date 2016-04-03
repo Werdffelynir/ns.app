@@ -50,13 +50,5 @@ if(App.namespace){App.namespace('Action.Popup', function(App){
         win.style.left = left+'px';
     };
 
-    o.createPopup = function(wrapper){
-        var
-            top = Dom.createElement('div',{id:'app-popup-top'}),
-            content = Dom.createElement('div',{id:'app-popup-content'}),
-            bottom = Dom.createElement('div',{id:'app-popup-bottom'});
-        Dom(wrapper).append([top,content,bottom]);
-    };
-
     return o;
 })}

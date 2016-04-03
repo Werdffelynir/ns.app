@@ -145,6 +145,65 @@ if (inst.isInit && path.length >= 5) {
 
 
 
+/*
+        var  customerData = [
+            { id: 1, name: "Bill", age: 35, email: "bill@company.com" },
+            { id: 2, name: "Donna", age: 32, email: "donna@home.org" },
+            { id: 3, name: "Donna", age: 32, email: "donna@home.org" },
+            { id: 4, name: "Donna", age: 32, email: "donna@home.org" },
+            { id: 5, name: "Donna", age: 32, email: "donna@home.org" },
+            { id: 6, name: "Donna", age: 32, email: "donna@home.org" }
+        ];
+
+        
+        var request = new Idb({
+              name:'test'
+            , version: 5
+            , onerror: function(event) {
+                console.log("error: ", event);
+            }
+            , onsuccess: function(event) {
+                console.log("onsuccess this: ", this);
+                console.log("onsuccess: ", event);
+            }
+            , onblocked: function(event) {
+                console.log("onblocked: ", event);
+            }
+            , onupgradeneeded: function(event) {
+                console.log("onupgradeneeded: ", event);
+                
+                var db = event.target.result;
+                var objectStore = db.createObjectStore("customers5", {keyPath: "id"});
+                for (var i in customerData) {
+                        objectStore.add(customerData[i]);      
+                }
+                
+            }
+        });
+*/
+        /*
+        console.log(request);
+
+        request.openRequest.onerror = function(event) {
+          console.log("error: ", event);
+        };
+
+        request.openRequest.onsuccess = function(event) {
+          //db = request.result;
+          console.log("onsuccess this: ", this);
+          console.log("onsuccess event: ", event);
+          console.log("onsuccess success: ", request.openRequest.result);
+        };
+
+        request.openRequest.onupgradeneeded = function(event) {
+          console.log("onupgradeneeded event: ", event);
+        }
+        */
+        
+        
+        
+
+
 
 
 
