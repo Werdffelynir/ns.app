@@ -1,0 +1,27 @@
+- var auth = false;
+
+doctype html
+html(lang='en')
+  head
+    link(href='css/style.css', rel='stylesheet')
+    scritp(src='js/script.js', type='javascript/application')
+
+  body
+
+    #page
+
+      #header authenticated
+
+      #topmanu
+        ul
+          li
+            a(href='{{link}}')
+
+      #content
+        h1 Hello world
+        if auth
+            p You are amazing
+          else
+            p Get on it!
+
+      #footer

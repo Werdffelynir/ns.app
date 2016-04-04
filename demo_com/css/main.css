@@ -3,7 +3,7 @@ html, body {
     height: 100%;
     color: #242424;
     background-color: #f0f0f0;
-    font-family: "Ubuntu Condensed", "Ubuntu", "sans", "sans-serif";
+    font-family: "Ubuntu Condensed", "Ubuntu", "Arial", "sans-serif";
 }
 
 #app-tips{display: none;}
@@ -20,7 +20,7 @@ html, body {
     border: 2px solid #121212;
 }
 #app-popup-win{
-    max-width: 80%;
+    max-width: 600px;
     position: absolute;
     padding: 10px;
     background-color: #FFF;
@@ -107,16 +107,23 @@ html, body {
     display: inline-block;
     padding: 2px 5px;
     text-decoration: none;
-    text-transform: uppercase;
     font-size: 12px;
-    background-color: #C9C9C9;
-    border: 1px solid #a1a1a1;
+    background-color: #212121;
+    border: 1px solid #000;
     min-width: 100px;
     text-align: center;
     outline: none !important;
+    color: #fff;
+    font-weight: bold;
 }
 .btn:hover, a.btn:hover {
-    background-color: #bfbfbf;
+    background-color: #292929;
+    color: #FF7916;
+}
+
+.btn:active, a.btn:active {
+    background-color: #1a1a1a;
+    color: #D85213;
 }
 
 input[type=submit]:focus, *:focus{
@@ -124,18 +131,54 @@ input[type=submit]:focus, *:focus{
 }
 
 
-.login-box{
-    display: inline-block;
-    padding: 20px;
-    background-color: #C9C9C9;
-    border: 1px solid #a1a1a1;
-}
 input[type=text],
 input[type=password],
 input[type=date]{
     border: 2px solid #b7b7b7;
-    padding: 2px 5px;
+    padding: 5px 10px;
+    border-radius: 0px;
 }
 input[type=submit]{}
 
 p{padding: 4px 0 2px}
+
+/*Login page*/
+.login-head{
+    color: rgb(120, 120, 120);
+    font-size: 24px;
+    margin-top: -100px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
+}
+.login-head span{
+    background-color: #444;
+    color: #FF8B19;
+    padding: 19px 7px;
+    box-shadow: inset 0px 5px 5px -3px #000;
+}
+
+.login-box{
+    display: inline-block;
+    padding: 20px 60px;
+}
+.login-box input[type=text],
+.login-box input[type=password]{
+    background-color: #444;
+    color: #e3e3e3;
+    box-shadow: inset 0px 5px 5px -3px #000;
+    border: none;
+    font-weight: bold;
+}
+.submit_btn,  a.submit_btn {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 12px;
+    color: #242424;
+    background:none;
+    border: none;
+    text-align: center;
+    outline: none !important;
+    font-weight: bold;
+}
+.submit_btn:hover,  a.submit_btn:hover {
+    text-decoration: underline;
+}

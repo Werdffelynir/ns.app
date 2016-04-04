@@ -1,18 +1,19 @@
 
 window.App = new NamespaceApplication({
-    url: '/ns.app/demo_com/',
-    urlServer: '/server.php',
-    urlLibs: '/ns.app/src/applibrary/',
-    urlTemplates: '/ns.app/demo_com/templates/',
-    name: 'Developer',
+    url: '/',
+    urlLibs: '//js.dev.loc/ns.app/src/applibrary/',
+    urlServer: '/server/api.php',
+    urlTemplates: '/templates/',
+    name: 'Developer NS.JS Framework',
     debug: true,
+    token: null,
     constructsType: false
 });
 
 
 // loadings styles
-App.style(App.url + 'css/desktop.css', null,initError);
-App.style(App.url + 'css/mobile.css',null,initError);
+//App.style(App.url + 'css/desktop.css', null,initError);
+//App.style(App.url + 'css/mobile.css',null,initError);
 //App.script(App.url + 'js/test.js',null,initError);
 
 
@@ -29,14 +30,17 @@ App.require('libs',
 
 App.require('dependence',
     [
-        // Modules
-        'js.app/module/api.js',
-        'js.app/module/linker.js',
-        'js.app/module/error.js',
+        // App Extensions
+        'js.app/extension/common.js',
+        'js.app/extension/linker.js',
+        //'js.app/extension/api.js',
+        //'js.app/extension/error.js',
 
         // Actions
         'js.app/action/user.js',
         'js.app/action/popup.js',
+        'js.app/action/render.js',
+        'js.app/action/content.js',
         'js.app/action/sidebar.js',
         'js.app/action/navigate.js',
 

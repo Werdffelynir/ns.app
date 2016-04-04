@@ -3,16 +3,26 @@ if(App.namespace){App.namespace('Action.User', function(App){
     /**
      * @namespace App.Action.User
      */
-    var o = {};
+    var act = {
+            node:null
+            , content:null
+        };
 
-    o.init = function(){};
+    act.init = function(node, content){
+        this.node = node;
+        this.content = content;
 
-    o.login = function(){};
-    o.logout = function(){};
-    o.register = function(){};
+        // style fixed
+        this.node.style.verticalAlign = 'middle';
+    };
 
-    o.isAuth = function(){return Util.Cookie('auth') == 1 && Util.Cookie('user')};
-    o.isAdmin = function(){return o.isAuth() && Util.Cookie('user').permission > 3};
+    act.login = function(){};
 
-    return o;
+    act.logout = function(){};
+    act.register = function(){};
+
+    act.isAuth = function(){return Util.Cookie('auth') == 1 && Util.Cookie('user')};
+    act.isAdmin = function(){return act.isAuth() && Util.Cookie('user').permission > 3};
+
+    return act;
 })}
