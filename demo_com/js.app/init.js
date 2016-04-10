@@ -1,10 +1,17 @@
+//# sourceMappingURL=http://example.com/path/to/your/sourcemap.map
 
 window.App = new NamespaceApplication({
-    url: '/',
-    urlLibs: '//js.dev.loc/ns.app/src/applibrary/',
-    urlServer: '/server/api.php',
-    urlTemplates: '/templates/',
+    //url: '/',
+    //urlLibs: '//js.dev.loc/ns.app/src/applibrary/',
+    //urlServer: '/server/api.php',
+    //urlTemplates: '/templates/',
+    url: '/ns.app/demo_com/',
+    urlLibs: '/ns.app/src/applibrary/',
+    urlServer: '/ns.app/demo_com/server/api.php',
+    urlTemplates: '/ns.app/demo_com/templates/',
+
     name: 'Developer NS.JS Framework',
+    environment: 'environment',
     debug: true,
     token: null,
     constructsType: false

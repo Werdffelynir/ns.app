@@ -3,8 +3,7 @@ if(App.namespace){App.namespace('Controller.Page', function(App){
     /**
      * @namespace App.Controller.Page
      */
-    var
-        ns = {}
+    var ns = {}
         , node = {}
         , User = App.Action.User
         , Popup = App.Action.Popup
