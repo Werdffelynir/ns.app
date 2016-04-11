@@ -669,6 +669,7 @@
     };
 
     util.Date = function(){};
+    
     util.Date.time = function(date){
         "use strict";
         return date instanceof Date ? date.getTime() : (new Date).getTime();
@@ -745,6 +746,7 @@
     util.IndexedDB.remove =  function(name, value){
 
     };
+    
     
     
     
