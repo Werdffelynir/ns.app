@@ -5,7 +5,9 @@
                 if(Util.isObj(item)){
 
                     var _user = App.data['users'][item['user_id']]
-                        ? App.data['users'][item['user_id']]
+                        ? App.data['users'][item['
+
+                        user_id']]
                         : {fullname:'User Name',photo:'user.png'},
                         _message = o.createMessage(_user, item);
 
@@ -181,7 +183,151 @@ VALUES (
 
 
 
+//
+//var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+//var IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
 
+var testData = [
+    { ssn: "444-44-4444", name: "Bill", age: 35, email: "bill@company.com" },
+    { ssn: "555-55-5555", name: "Donna", age: 32, email: "donna@home.org" }
+];
+
+
+
+/*
+ *
+ * @type {{db: null|IDBDatabase, request: null|IDBOpenDBRequest}}
+ */
+var idb = {
+    name: 'megastore',
+    version: 1,
+    db: null,
+    request: null
+};
+
+/*idb.request.onerror = function(event){
+    console.error('Database error: ', event.target.error.message)
+};
+idb.request.onsuccess = function(event){
+    idb.db = event.target.result;
+    console.error('Database onsuccess')
+};
+idb.request.onupgradeneeded = function(event){
+    console.log('onupgradeneeded:',event)
+};*/
+
+idb.open = function(callback){
+
+    idb.request = indexedDB.open(idb.name, idb.version);
+    idb.request.onerror = function(event){
+        console.error('Database error: ', event.target.error.message)
+    };
+    idb.request.onsuccess = function(event){
+        idb.db = event.target.result;
+        callback.call(idb.request, idb.db);
+        console.log('Database onsuccess')
+    };
+    idb.request.onupgradeneeded = function(event){
+        console.log('onupgradeneeded:',event)
+    };
+};
+
+
+
+idb._transaction = null;
+idb._storeName = null;
+idb._objectStore = null;
+
+idb.transaction = function(stores, type){
+    type = type || IDBTransaction.READ_WRITE;
+    stores = typeof stores === 'string' ? [stores] : stores;
+    return idb._transaction = idb.db.transaction(stores, type);
+};
+idb.store = function(store, callback){
+    idb.open(function(){
+        idb.transaction([store]);
+        idb._objectStore = idb._transaction.objectStore(store);
+        callback.call(idb.request, idb.db);
+        console.log('objectStore:', idb._objectStore);
+    });
+};
+
+//idb.db = function(){};
+idb.get = function(id){};
+
+idb.getAll = function(store, callback, count){
+
+    callback.call(idb.request, idb.db);
+
+};
+idb.put = function(data){};
+idb.update = function(id, data){};
+idb.remove = function(id){};
+idb.count = function(){};
+idb.lastId = function(){};
+
+//idb.store('item');
+idb.getAll('item', function(data){
+    console.log('getAll');
+});
+
+
+
+/*    var objectStore = idb.db.createObjectStore("item", { keyPath: "id", autoIncrement: true });
+ objectStore.createIndex("name", "name", { unique: false });
+ objectStore.createIndex("email", "email", { unique: false });
+ for (var i in testData) {
+ objectStore.add(testData[i]);
+ }*/
+/*idb.callSuccess = function(callback){
+    idb.request.onsuccess = function(event){
+        idb.db = event.target.result;
+
+        callback.call(idb.request, idb.db);
+    };
+};*/
+
+/*idb.getAll = function(callback){
+    idb.request.onsuccess = function(event){
+        idb.db = event.target.result;
+
+        var request = objectStore.getAll([query, count]);
+        if()
+        callback.call(idb.request, idb.db);
+    };
+};*/
+
+/*idb.request.onsuccess = function(event){
+    idb.db = event.target.result;
+    console.log('onsuccess:', idb.db);
+
+    var transaction = idb.db.transaction(["item"], IDBTransaction.READ_WRITE);
+    var objectStore = transaction.objectStore("item");
+    console.log('objectStore:', objectStore);
+};*/
+
+// IDBTransaction.READ_WRITE
+//idb.request.transaction = function(stores, type){
+//    type = type || IDBTransaction.READ_WRITE;
+//};
+
+
+
+
+
+
+
+/*
+ error : null
+ onblocked : null
+ onerror : null
+ onsuccess : null
+ onupgradeneeded : null
+ readyState : "done"
+ result : IDBDatabase
+ source : null
+ transaction : null
+*/
 
 
 

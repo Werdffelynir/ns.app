@@ -1,60 +1,75 @@
-//
-//var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-//var IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
 
-var testData = [
-    { ssn: "444-44-4444", name: "Bill", age: 35, email: "bill@company.com" },
-    { ssn: "555-55-5555", name: "Donna", age: 32, email: "donna@home.org" }
-];
-
-
-
-/**
- *
- * @type {{db: null|IDBDatabase, request: null|IDBOpenDBRequest}}
- */
 var idb = {
     name: 'megastore',
     version: 1,
+    openType: IDBTransaction.READ_WRITE,
+    schema: { keyPath: "id", autoIncrement: true },
+    onerror:function(event){console.error('Database error:',event.target.error.message)},
     db: null,
-    request: null
+    _store: null,
+    request: null,
+    _transaction: null,
+    _objectStore: null
 };
 
-idb.request = indexedDB.open(idb.name, idb.version);
-idb.request.onerror = function(event){
-    console.error('Database error: ', event);
-    console.error('Database error: ', event.target.error.message);
+//baseName 	  = "filesBase",
+//storeName 	  = "filesStore";
+
+idb.openIndexedDB = function(callback){
+    var db, request = idb.request = indexedDB.open(idb.name, idb.version);
+    request.onerror = idb.onerror;
+    request.onsuccess = function(event){
+        db = idb.db = event.target.result;
+        callback.call(event, db);
+    };
+    request.onupgradeneeded = function(event){
+        event.currentTarget.result.createObjectStore(idb.name, idb.schema);
+        idb.openIndexedDB(callback);
+    };
 };
 
-idb.request.onupgradeneeded = function(event){
-    idb.db = event.target.result;
-    console.log('onupgradeneeded:',event);
-
-
-    var objectStore = idb.db.createObjectStore("item", { keyPath: "id", autoIncrement: true });
-
-    objectStore.createIndex("name", "name", { unique: false });
-    objectStore.createIndex("email", "email", { unique: false });
-
-    for (var i in testData) {
-        objectStore.add(testData[i]);
-    }
-
+idb.getAll = function(store, callback){
+    idb.openIndexedDB(function(db){
+        var rows = [], request = db.transaction([store], idb.openType).objectStore(store);
+        request.openCursor().onerror = idb.onerror;
+        request.openCursor().onsuccess = function(event){
+            var cursor = event.target.result;
+            if(cursor){
+                rows.push(cursor.value);
+                cursor.continue();
+            }else{
+                callback.call(idb.request, rows);
+            }
+        };
+    });
 };
 
-idb.request.onsuccess = function(event){
-    idb.db = event.target.result;
-    console.log('onsuccess:', idb.db);
+idb.get = function(id, store, callback){
+    idb.openIndexedDB(function(db){
+        var request = db.transaction([store], idb.openType).objectStore(store).get(id);
+        request.onerror = idb.onError;
+        request.onsuccess = function(event) {
+            var cursor = event.target.result;
+            console.log(cursor);
+            console.log( event.target );
+            callback.call(event, request);
 
-    var transaction = idb.db.transaction(["item"], IDBTransaction.READ_WRITE);
-    var objectStore = transaction.objectStore("item");
-    console.log('objectStore:', objectStore);
+        };
+    });
 };
 
-// IDBTransaction.READ_WRITE
-//idb.request.transaction = function(stores, type){
-//    type = type || IDBTransaction.READ_WRITE;
-//};
+
+idb.clear = function(id, store, callback){
+    idb.openIndexedDB(function(db){
+        var request = db.transaction([store], idb.openType);
+        var objectStore = request.objectStore(store);
+        objectStore.clear();
+        objectStore.onerror = idb.onError;
+        objectStore.onsuccess = function(event) {
+            callback.call(event, request);
+        };
+    });
+};
 
 
 
@@ -62,14 +77,31 @@ idb.request.onsuccess = function(event){
 
 
 
-/*
- error : null
- onblocked : null
- onerror : null
- onsuccess : null
- onupgradeneeded : null
- readyState : "done"
- result : IDBDatabase
- source : null
- transaction : null
-*/
+idb.getAll('item', function(data){
+    console.log(data);
+});
+
+idb.get('Bill', 'item', function(data){
+    console.log(data);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
