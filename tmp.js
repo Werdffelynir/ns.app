@@ -246,6 +246,45 @@ function extend(destination, source){
 
 
 
+/*    var inherit = function(destination, source) {
+ var constructor = source.hasOwnProperty('constructor')
+ ? source.constructor
+ : function(){destination.apply(this,arguments)};
+ var F = function() {};
+ F.prototype = destination.prototype;
+ constructor.prototype = new F();
+ constructor.superclass = source.prototype;
+ constructor.prototype.constructor = constructor;
+ return constructor;
+ };*/
+
+function _extend(destination, source){
+    /*        var property;
+     for (property in source) {
+     if (source[property] && source[property].constructor && source[property].constructor === Object) {
+     destination[property] = destination[property] || {};
+     extend(destination[property], source[property]);
+     } else {
+     destination[property] = source[property];
+     }
+     }
+     return destination;*/
+
+    //console.log(source.prototype);
+
+//        for(var key in source) {
+//            if(source.hasOwnProperty(key)){
+//                destination[key] = source[key];
+//            }
+//        }
+//        var _constructor = destination.prototype.constructor;
+//        destination.prototype = Object.create(source.prototype);
+//        console.log(_constructor);
+//        destination.prototype.constructor = _constructor;
+}
+
+
+
 
 
 
@@ -256,6 +295,37 @@ function extend(destination, source){
 
 
 
+
+    /*
+     function Shape(x, y){
+     this.x = x;
+     this.y = y;
+     }
+     Shape.prototype.x = 0;
+     Shape.prototype.y = 0;
+     Shape.prototype.getPosition = function(){
+     return {x:this.x, y:this.y};
+     };
+
+     function Rectangle(x, y, width, height){
+     Shape.call(this, x, y);
+     this.height = height;
+     this.width = width;
+     }
+
+     Rectangle.prototype = Object.create(Shape.prototype);
+     Rectangle.prototype.constructor = Rectangle;
+
+     Rectangle.prototype.width = 0;
+     Rectangle.prototype.height = 0;
+
+     var rec = new Rectangle(10,10,100,200);
+     */
+
+
+
+
+    //
 
 
 

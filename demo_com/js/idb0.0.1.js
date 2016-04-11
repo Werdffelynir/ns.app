@@ -23,10 +23,16 @@
         };
 
     proto.open = function(callback){
-        this.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB;
+        this.indexedDB = window.indexedDB;// || window.webkitIndexedDB || window.mozIndexedDB;
+
+        console.log(this.indexedDB)
+
         var request = this.indexedDB.open();
         request.onerror = this.onerror;
-        request.onsuccess = function(event){};
+        request.onsuccess = function(event){
+            proto.db = event.target.result;
+            callback.call(request, proto.db);
+        };
         request.onupgradeneeded = function(event){};
     };
 
@@ -48,7 +54,7 @@
 
 
 var db = Idb({
-    name: 'megadb',
+    name: 'mega',
     version: 1,
     stores: {
         tasks: {
@@ -67,6 +73,10 @@ var db = Idb({
         }
     }
 });
+
+db.open(function(db){console.log(db)});
+
+
 
 //db.get({id:1},function(){});
 //db.get(1,function(){});

@@ -125,6 +125,16 @@
         return  [].slice.call(obj);
     };
 
+    util.cloneFunction = function(func) {
+        var temp = function temporary() { return func.apply(this, arguments); };
+        for(var key in this) {
+            if (this.hasOwnProperty(key)) {
+                temp[key] = this[key];
+            }
+        }
+        return temp;
+    };
+
     /**
      * Check on typeof is string a param
      * @param param
