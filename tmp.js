@@ -212,8 +212,28 @@ if (inst.isInit && path.length >= 5) {
 
 =============================================================================
 
+function extend(destination, source) {
+    var property;
+    for (property in source) {
+        if (source[property] && source[property].constructor && source[property].constructor === Object) {
+            destination[property] = destination[property] || {};
+            extend(destination[property], source[property]);
+        } else {
+            destination[property] = source[property];
+        }
+    }
+    return destination;
+}
 
 
+function extend(destination, source){
+    for(var key in source.prototype){
+        if(source.prototype.hasOwnProperty(key) && key !== 'constructor'){
+            destination.prototype[key] = source.prototype[key];
+        }
+    }
+    return destination;
+}
 
 
 

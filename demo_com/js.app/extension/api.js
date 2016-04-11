@@ -13,6 +13,7 @@ App.namespace('Static.Api', function(App){
      * @param key  Its execute method on server
      * @param func After request, a run function
      * @param args Arguments to key method
+     * @namespace App.Static.Api.request
      */
     o.request = function(key, func, args){
 
