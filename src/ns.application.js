@@ -29,6 +29,7 @@
                  *          for call and execute all constructor methods, use .constructsStart()
                  */
                 constructsType: 'runtime',
+                _lastKey: null,
                 _stackRequires: {},
                 _stackNodes: {},
                 _stackConstructs: []
@@ -100,7 +101,7 @@
             }
         }
 
-        if(typeof tmp === "object" && tmp.construct){
+        if(typeof tmp === "object" && tmp.construct) {
             args = Array.isArray(args) ? args : [];
             if(this.constructsType == 'runtime') {
                 tmp.construct.apply(tmp, args);
@@ -146,6 +147,8 @@
             return this._stackNodes;
     };
 
+
+
     /**
      * Designate a list of scripts for loading
      * @param key           list key (identifier)
@@ -155,6 +158,7 @@
      * @returns {proto}
      */
     proto.require = function(key, path, oncomplete, onerror){
+        this._lastKey = key;
         this._stackRequires[key] = {
             src:  Array.isArray(path) ? path : [path],
             oncomplete : oncomplete,
@@ -162,13 +166,13 @@
         };
         return this;
     };
-
     /**
      * Start loading the list of scripts by key (identifier)
      * @param key
      */
     proto.requireStart = function(key){
         var source;
+        key = key || this._lastKey;
         if(this._stackRequires[key]){
             this._recursive_load_script(0, key);
         }else{
@@ -415,6 +419,7 @@
             document.addEventListener('DOMContentLoaded', function(){callback.call({})}, false);
         }
     };
+
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      * STATIC METHODS
