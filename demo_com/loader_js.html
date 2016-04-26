@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.set{
+			display: inline-block;
+		}
+		.bar{
+			background-color: #DADADA;
+			width: 50px;
+			height: 50px;
+		}
+		.active{
+			background-color: #9A9A9A;
+		}
+	</style>
+</head>
+<body>
+	
+	<div class="set">
+		<div class="bar"></div>
+	</div>
+	<div class="set">
+		<div class="bar"></div>
+	</div>
+	<div class="set">
+		<div class="bar"></div>
+	</div>
+	<div class="set">
+		<div class="bar"></div>
+	</div>
+	<div class="set">
+		<div class="bar"></div>
+	</div>
+
+
+<script>
+	
+(function() { 
+	var index = 0, 
+		bars = document.querySelectorAll(".set>.bar"),
+		numBars = bars.length;
+
+	(function step() {
+
+		bars[(index - 1 + numBars) % numBars].classList.remove("active");
+
+		bars[index].classList.add("active");
+
+		index = (index + 1) % numBars;
+		console.log(index);
+
+		setTimeout(step, 250);
+	})();
+})();
+
+
+</script>
+</body>
+</html>
