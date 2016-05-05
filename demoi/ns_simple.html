@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+
+<script>
+
+    var MYAPP = MYAPP || {};
+    MYAPP.namespace = function (ns_string) {
+        var parts = ns_string.split('.'),
+                parent = MYAPP,
+                i;
+        // отбросить начальный префикс - имя глобального объекта
+        if (parent === "MYAPP") {
+            parts = parts.slice(1);
+        }
+        for (i = 0; i < parts.length; i += 1) {
+            // создать свойство, если оно отсутствует
+            if (typeof parent[parts[i]] === "undefined") {
+                parent[parts[i]] = {};
+                parent = parent[parts[i]];
+            }
+        }
+        return parent;
+    };
+
+    var module51 = MYAPP.namespace('modules.module51');
+    module51.m1 = function(){};
+    module51.m2 = function(){};
+    var module52 = MYAPP.namespace('MYAPP.modules.module52');
+    module52.tr12 = function(){};
+    module52.tr33 = function(){};
+    var moduleE412 =  MYAPP.namespace('MYAPP.modules2.moduleE412');
+    moduleE412.er4 = function(){};
+    moduleE412.er5 = function(){};
+
+    console.log(module51);
+    console.log(module52);
+    console.log(moduleE412);
+    console.log(MYAPP.modules2.moduleE412.er5);
+
+</script>
+</body>
+</html>
