@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    
+<script>
+
+    var Timer = {};
+    Timer.after = function(ms, callback, args, proto){
+        args = args || [];
+        proto = proto || callback.prototype;
+        setTimeout(function(){callback.apply(proto, args)}, ms);
+    };
+    Timer.before = function(ms, callback){
+        
+    };
+    Timer.interval = function(ms, callback, args, proto){
+        args = args || [];
+        proto = proto || callback.prototype;
+        setInterval(function(){callback.apply(proto, args)}, ms);
+    };
+    
+    
+    var singl = function (a, b){
+        console.log('torsingl',a,b);
+        b ++
+    }
+    singl.one = 1;
+    singl.two = function(){};
+    function normal(a,b){
+        console.log('normal',a,b);
+        console.log(this);
+    }
+    
+    //Timer.after(1000, singl, ['asda','asdsad']);
+    //Timer.after(2000, normal);
+    //var iter = 0;
+    //Timer.interval(1000, singl, ['asda', iter ]);
+    //Timer.interval(2000, normal);
+    
+    
+    
+    var arrMerge = function (arrBase, src) {
+        if( !Array.isArray(arrBase) || !Array.isArray(src) )
+            return false;
+        
+        for (var i = 0; i < src.length; i++)
+            arrBase.push(src[i])
+            
+        return arrBase;
+    };
+    
+    
+    var a = ['b','f','a','c'];
+    var b = ['l','f','g','n'];
+    
+    console.log(arrMerge(a, b));
+    
+    
+</script>    
+</body>
+</html>

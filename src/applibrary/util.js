@@ -105,6 +105,22 @@
     };
 
     /**
+     * Merge an array `src` into the array `arrBase`
+     * @param arrBase
+     * @param src
+     * @returns {*}
+     */
+    util.arrMerge = function (arrBase, src) {
+        if( !Array.isArray(arrBase) || !Array.isArray(src) )
+            return false;
+
+        for (var i = 0; i < src.length; i++)
+            arrBase.push(src[i])
+
+        return arrBase;
+    };
+
+    /**
      * Computes the difference of arrays
      * Compares arr1 against one or more other arrays and returns the values in arr1
      * that are not present in any of the other arrays.
@@ -122,7 +138,14 @@
     };
 
     util.objToArr = function (obj) {
-        return  [].slice.call(obj);
+        return [].slice.call(obj);
+    };
+
+    util.realObjToArr = function (obj) {
+        var arr = [];
+        for(var key in obj)
+            arr.push(obj[key])
+        return arr;
     };
 
     util.cloneFunction = function(func) {
@@ -381,40 +404,30 @@
                 left = left + parseInt(elem.offsetLeft, 10);
                 elem = elem.offsetParent;
             }
-            return {y: top, x: left, width: elem.offsetWidth, height: elem.offsetHeight};
+            return {x: left, y: top, width: elem.offsetWidth, height: elem.offsetHeight};
         }
     };
 
     /**
      * Returns the coordinates of the mouse on any element
+     * @param event
      * @param element
-     * @param event
      * @returns {{x: number, y: number}}
      */
-    util.getMouseElement = function (element, event) {
+    util.getMousePosition = function (event, element) {
+        var positions = {x: 0, y: 0};
+        element = element || document.body;
         if(element instanceof HTMLElement && event instanceof MouseEvent) {
-            var x = event.pageX - element.offsetLeft;
-            var y = event.pageY - element.offsetTop;
-            return {x: x, y: y};
-        }else
-            return false;
-    };
-
-    /**
-     * Returns the coordinates of the mouse on the canvas element
-     * @param canvas
-     * @param event
-     * @returns {{x: number, y: number}}
-     */
-    util.getMouseCanvas = function (canvas, event) {
-        if((canvas instanceof HTMLCanvasElement || canvas.getBoundingClientRect) && event instanceof MouseEvent){
-            var rect = canvas.getBoundingClientRect();
-            return {
-                x: event.clientX - rect.left,
-                y: event.clientY - rect.top
-            };
-        }else
-            return false;
+            if(element.getBoundingClientRect) {
+                var rect = element.getBoundingClientRect();
+                positions.x = event.clientX - rect.left;
+                positions.y = event.clientY - rect.top;
+            }else {
+                positions.x = event.pageX - element.offsetLeft;
+                positions.y = event.pageY - element.offsetTop;
+            }
+        }
+        return positions;
     };
 
     /**
@@ -739,28 +752,11 @@
     util.Storage.length = function () {
         return window.localStorage.length;
     };
-    
-    
 
-    util.IndexedDB =  function(name, value){
-        
-    };
-    util.IndexedDB.db = null;
-    
-    util.IndexedDB.get =  function(name, value){
 
-    };
-    util.IndexedDB.set =  function(name, value){
 
-    };
-    util.IndexedDB.remove =  function(name, value){
 
-    };
-    
-    
-    
-    
-    
+
     /**
      * возвращает cookie с именем name, если есть, если нет, то undefined
      * @param name
@@ -823,7 +819,7 @@
     
     util.getURLParameter = function(name) {
        var reg = (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search) || [, null])[1];
-	   return reg === null ? undefined : decodeURI(reg);
+       return reg === null ? undefined : decodeURI(reg);
     };
     
     /**
@@ -857,20 +853,66 @@
     };
     
 
-	/**
-	 * Calls the callback in a given interval until it returns true
-	 * @param {function} callback
-	 * @param {number} interval in milliseconds
-	 */
-	util.waitFor = function(callback, interval) {
-		var internalCallback = function() {
-			if(callback() !== true) {
-				setTimeout(internalCallback, interval);
-			}
-		};
-		internalCallback();
-	};
-    
+    /**
+     * Calls the callback in a given interval until it returns true
+     * @param {function} callback
+     * @param {number} interval in milliseconds
+     */
+    util.waitFor = function(callback, interval) {
+        var internalCallback = function() {
+            if(callback() !== true) {
+                setTimeout(internalCallback, interval);
+            }
+        };
+        internalCallback();
+    };
+
+    /**
+     * Remove item from array
+     * @param item
+     * @param stack
+     * @returns {Array}
+     */
+    util.rmInArray = function(item, stack) {
+        var newStack = [];
+        for(var i = 0; i < stack.length; i ++) {
+            if(stack[i] && stack[i] != item)
+                newStack.push(stack[i]);
+        }
+        return newStack;
+    };
+
+
+    util.toTranslit = function (text) {
+        return text.replace(/([а-яё])|([\s_-])|([^a-z\d])/gi,
+            function (all, ch, space, words, i) {
+                if (space || words)
+                    return space ? '-' : '';
+                var code = ch.charCodeAt(0),
+                    index = code == 1025 || code == 1105 ? 0 : code > 1071 ? code - 1071 : code - 1039,
+                    t = ['yo','a','b','v','g','d','e','zh','z','i','y','k','l','m','n','o','p', 'r','s','t','u','f','h','c','ch','sh','shch','','y','','e','yu','ya'];
+                return t[index];
+            });
+    };
+
+
+
+    /**
+     * execut callback function with elem and his parents
+     * @param elem
+     * @param callback
+     * @param limit
+     */
+    util.eachParent = function (elem, callback, limit) {
+        var i = 0;
+        limit = limit || 99;
+        while(elem.nodeType === Node.ELEMENT_NODE && i < limit ) {
+            callback.call({}, elem);
+            elem = elem.parentNode;
+            i ++;
+        }
+    };
+
 
     window.Util = util;
 

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	#monitor{
+		width: 800px;
+		height: 600px;
+		border: 2px solid #FDD;
+	}
+
+
+	</style>
+</head>
+<body>
+	
+	<div id="monitor"></div>
+
+
+
+<script>
+	'use strict'
+
+	var monitor = document.querySelector('#monitor');
+
+	var owner = (name, num) => 'Hello ' + name + ':' + num
+	var o1 = owner('Vasia', 182)
+	var o2 = owner('Vasia', 182)
+	var o3 = owner('Vasia', 182)
+
+	class Shape {
+
+
+		constructor(x, y) {
+			this.x = x;
+			this.y = y;
+			console.log(this);
+		}
+
+		draw() {
+			this.element = document.createElement('div');
+			this.element.style.position = 'absolute';
+			this.element.style.left = this.x + 'px';
+			this.element.style.top = this.y + 'px';
+			return this.element;
+		}
+
+		static point() {
+			return { x: this.x, y: this.y };
+		}
+
+	}
+
+
+	class Rectangle extends Shape{
+
+		constructor(x, y, width = 100, height = 100, backgroundColor = '#ABCBD2') {
+			super(x, y);
+			this.width = width;
+			this.height = height;
+			this.backgroundColor = backgroundColor;
+		}
+
+		draw() {
+			this.element = super.draw();
+			this.element.style.width = this.width + 'px';
+			this.element.style.height = this.height + 'px';
+			this.element.style.backgroundColor = this.backgroundColor;
+			return this.element;
+		}
+
+		// arguments
+		test(...args) {
+			return arguments;
+		}
+
+		// Getter/setter methods are supported in classes,
+  		// similar to their ES5 equivalents
+		get area() {
+			return this.height * this.width;
+		}
+
+		set area(value) {
+			this.area = value;
+		}
+
+	}
+
+	var s1 = new Shape(10, 25);
+	var rec1 = new Rectangle(50, 50, 100, 50, '#15D817');
+	var rec2 = new Rectangle(175, 50, 100, 50, '#FF0003');
+	var rec3 = new Rectangle(300, 50, 100, 50, '#5263D8');
+
+	monitor.appendChild( rec1.draw() )
+	monitor.appendChild( rec2.draw() )
+	monitor.appendChild( rec3.draw() )
+
+	console.log(rec1.test(1,2,3));
+
+
+</script>
+</body>
+</html>
