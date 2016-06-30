@@ -5,10 +5,10 @@
     <title>JavaScript Application</title>
 
     <link rel="stylesheet" href="../css/grid.css">
-    <link rel="stylesheet" href="css/client.css">
+    <link rel="stylesheet" href="css/main.css">
 
-    <script src="../src/applibrary/inc.js"></script>
-    <script src="js/init.js"></script>
+    <script src="../src/ns.application.js"></script>
+    <script src="js.app/init.js"></script>
 </head>
 <body>
 
