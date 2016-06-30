@@ -331,10 +331,53 @@ idb.getAll('item', function(data){
 
 
 
+
+//noinspection JSUnresolvedFunction
+idb.getAll = function(store, callback){
+    idb.openIndexedDB(function(db){
+        idb._store = db.transaction([store], idb.openType).objectStore(store);
+        var query, rows = [], getAll = idb._store.getAll ? idb._store.getAll : false;
+        if(getAll){
+            query = idb._store.getAll();
+            console.log(query);
+            callback.call(query, query.result);
+        }else{
+            idb._store.openCursor().onsuccess = function(event) {
+                var cursor = event.target.result;
+                if(cursor){
+                    rows.push(cursor.value);
+                    cursor.continue();
+                }else{
+                    callback.call(idb.request, rows);
+                }
+            };
+        }
+    })
+
+};
+
 ================================================================
 
 
+my_list = [1,2,3,4,5,6,7,8,9,0,['as','df','gh']]
+my_cort = ('a','b','c')
+my_dic = {
+    'k1':'jopa1',
+    'k2':'jopa2',
+    }
 
+
+my_list[0:0] = [0,0,0]
+my_list[1:0] = [4.5]
+my_list[3:3] = [10,11,12]
+
+
+print(my_list[-3:len(my_list)])
+
+
+print(my_cort)
+
+print(my_dic.fromkeys(['aa','bb','cc'],12))
 
 
 

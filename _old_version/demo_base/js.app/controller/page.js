@@ -27,8 +27,13 @@ if(App.namespace){App.namespace('Controller.Page', function(App){
             , help:           App.query('#app-help')
             , popup:          App.query('#app-popup')
             , page:           App.query('#app-page')
+            , header:         App.query('#app-header')
+            , topnav:         App.query('#app-topnav')
+            , mainnav:        App.query('#app-mainnav')
+            , wrapper:        App.query('#app-wrapper')
             , content:        App.query('#app-content')
             , sidebar:        App.query('#app-sidebar')
+            , footer:         App.query('#app-footer')
         });
 
         var str = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam eum officia recusandae? Ad, aspernatur autem consectetur culpa dolorem error eum laborum libero maiores officia pariatur perferendis saepe sed soluta voluptatum!';

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+
+<script>
+    (function(window){
+
+        var app = function(option){
+            if(!(this instanceof NSApplication)) return new NSApplication(option)
+
+            option = option || {};
+            for(var opt in option)
+                this[opt] = option[opt];
+
+        };
+        var proto = {};
+
+        proto.namespace = function(ns) {
+            var
+                    parts = ns.split('.'),
+                    parent = this,
+                    addPart = function(sub) {
+                        if (typeof parent[sub] !== "object") {
+                            parent[sub] = {};
+                            parent = parent[sub];
+                        }
+                        else
+                            parent = parent[sub];
+                    },
+                    i;
+
+            for (i = 0; i < parts.length; i ++)
+                addPart(parts[i])
+
+            return parent;
+        };
+
+        app.prototype = proto;
+        app.prototype.constructor = app;
+
+        window.NSApplication = app;
+
+    })(window);
+
+    var App = new NSApplication({
+        //name:'App'
+    });
+
+    // для подсказок
+    App.Mod = {};
+    App.Mod.Simple = {};
+    App.Mod.Raido = {};
+    App.Mod.Otal = {};
+
+    var simple = App.namespace('Mod.Simple');
+    simple.m1 = function(){};
+    simple.m2 = function(){};
+
+    var raido = App.namespace('Mod.Raido');
+    raido.poi = 123;
+    raido.jit = function(){};
+
+    var otal = App.namespace('Mod.Otal');
+    otal.tir = function(){};
+    otal.orion = function(){};
+
+
+
+
+
+    console.log(simple);
+    console.log(otal);
+    console.log(App.Mod);
+    console.log(App.Mod.Raido);
+
+</script>
+</body>
+</html>

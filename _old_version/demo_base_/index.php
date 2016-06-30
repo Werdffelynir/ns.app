@@ -12,25 +12,25 @@
 </head>
 <body>
 
-<div id="tips"></div>
-<div id="help"></div>
-<div id="popup"></div>
+<div id="app-tips"></div>
+<div id="app-help"></div>
+<div id="app-popup"></div>
 
-<div id="page">
+<div id="app-page">
 
-    <div id="header" class="tbl">
-        <div class="logo tbl_cell">JavaScript Application</div>
-        <div id="topnav" class="tbl_cell"></div>
+    <div id="app-header" class="tbl">
+        <div class="logo tbl_cell">JavaScript NS.Application</div>
+        <div id="app-topnav" class="tbl_cell"></div>
     </div>
 
-    <div id="navigation"></div>
+    <div id="app-mainnav"></div>
 
-    <div id="wrapper" class="tbl">
-        <div id="content" class="tbl_cell valign_top"></div>
-        <div id="sidebar" class="tbl_cell valign_top">sidebar</div>
+    <div id="app-wrapper" class="tbl">
+        <div id="app-content" class="tbl_cell valign_top">content</div>
+        <div id="app-sidebar" class="tbl_cell valign_top">sidebar</div>
     </div>
 
-    <div id="footer"></div>
+    <div id="app-footer"></div>
 
 </div>
 

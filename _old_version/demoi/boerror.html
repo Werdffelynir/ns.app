@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bo Error</title>
+</head>
+<body>
+   
+   <div id="btn">btn</div>
+   
+    
+    
+<script>
+	
+    
+    
+(function(){
+    
+    'use strict'
+    
+    var isDev = true;
+    
+    if(isDev){
+        
+        function confirmExit(){
+            alert("confirm exit is being called");
+            return false;
+        }
+        
+        btn.onclick = function(){
+            confirmExit()
+        };
+        
+        //confirmExit.call({});
+        
+    }
+})()  
+    
+</script>
+</body>
+</html>
