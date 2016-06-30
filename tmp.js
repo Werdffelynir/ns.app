@@ -200,9 +200,6 @@ if (inst.isInit && path.length >= 5) {
         }
         */
         
-        
-        
-
 
 
 
@@ -212,10 +209,10 @@ if (inst.isInit && path.length >= 5) {
 
 =============================================================================
 
+C:\py\Scripts\;C:\py\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\ProgramData\Oracle\Java\javapath;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Git\cmd;E:\server\modules\php\PHP-5.4;E:\server\modules\php\PHP-5.5;%AppData%/npm;%PROGRAMFILES(x86)%\nodejs\node_modules\.bin;%PROGRAMFILES(x86)%\nodejs;C:\Windows\Microsoft.NET\Framework\v4.0.30319;%USERPROFILE%\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;d:\programs\server sql utl\sqlite;C:\Program Files (x86)\Skype\Phone\;C:\Program Files (x86)\nodejs\;C:\Program Files (x86)\Brackets\command
 
 
-
-
+Паттерны масштаб. JS приложений
 
 
 
