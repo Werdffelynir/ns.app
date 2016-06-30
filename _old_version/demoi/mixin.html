@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mixin</title>
+</head>
+<body>
+
+<script>
+
+
+    function mixin(object) {
+        var mixins = Array.prototype.slice.call(arguments, 1);
+        for (var i = 0; i < mixins.length; ++i) {
+            for (var prop in mixins[i]) {
+                if (typeof object.prototype[prop] === "undefined") {
+                    object.prototype[prop] = mixins[i][prop];
+                }
+            }
+        }
+    }
+
+    /**
+     * а лету подменять методы в примеси, и эти изменения сразу будут доступны
+     * для всех объектов эту примесь использующих.
+     * @param object
+     */
+    function mixin2(object) {
+        var mixins = Array.prototype.slice.call(arguments, 1);
+        for (var i = 0; i < mixins.length; ++i) {
+            for (var prop in mixins[i]) {
+                if (typeof object.prototype[prop] === "undefined") {
+                    var bindMethod = function (mixin, prop) {
+                        return function(){mixin[prop].apply(this, arguments)}
+                    };
+                    object.prototype[prop] = bindMethod(mixins[i], prop);
+                }
+            }
+        }
+    }
+
+
+
+
+    var Shape = {};
+    Shape.x = 0;
+    Shape.y = 0;
+    Shape.getPosition = function () {
+        console.log('Shape this:',this);
+        return {x: this.x, y: this.y}
+    };
+    Shape.setPosition = function (x, y) {
+        this.x = x;
+        this.y = y
+    };
+
+    function Rectangle(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.height = height;
+        this.width = width;
+    }
+    Rectangle.prototype.classname = 'Rectangle';
+    Rectangle.prototype.width = 0;
+    Rectangle.prototype.height = 0;
+
+
+    mixin(Rectangle, Shape);
+
+
+    var rec = new Rectangle(10, 10, 100, 200);
+    rec.setPosition(25, 35);
+
+    console.log(rec);
+    console.log(rec.getPosition());
+
+
+
+</script>
+</body>
+</html>

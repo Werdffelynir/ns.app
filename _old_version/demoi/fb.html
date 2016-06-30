@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+   
+   <div id="btn">btn</div>
+    
+    
+    
+<script>
+    
+    btn.onclick = function(e){
+        openWin2();
+    };
+        
+        
+    // function for share on facebook
+	function openWin2() {
+		var myWin = open("http://www.facebook.com/sharer.php?u="+window.location.href,"displayWindow","width=520,height=300,left=350,top=170,status=no,toolbar=no,menubar=no");
+        
+        console.log(myWin);
+        
+        window.unload = null;
+        window.onbeforeunload = null;
+        window.confirm = null;
+        window.confirm = null;
+	}
+    
+</script>
+</body>
+</html>

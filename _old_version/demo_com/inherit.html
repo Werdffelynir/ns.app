@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+
+    function inherit(destination, source) {
+        var Func = function () {};
+        Func.prototype = source.prototype;
+        /** @namespace source.prototype.classname */
+        var superclass = source.prototype.classname ? source.prototype.classname:'classname',
+                func = new Func();
+        for (var prop in destination.prototype) func[prop] = destination.prototype[prop];
+        destination.prototype = func;
+        destination.prototype[superclass] = source.prototype;
+    }
+
+    function Shape(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    Shape.prototype.x = 0;
+    Shape.prototype.y = 0;
+    Shape.prototype.getPosition = function () {
+        return {x: this.x, y: this.y}
+    };
+    Shape.prototype.setPosition = function (x, y) {
+        this.x = x;
+        this.y = y
+    };
+    Shape.prototype.constructor = Shape;
+
+
+    function Rectangle(x, y, width, height) {
+        Shape.call(this, x, y);
+        this.height = height;
+        this.width = width;
+    }
+    Rectangle.prototype.classname = 'Rectangle';
+    Rectangle.prototype.width = 0;
+    Rectangle.prototype.height = 0;
+
+    inherit(Rectangle, Shape);
+
+    var shp = new Shape(150, 350);
+    var rec = new Rectangle(10, 10, 100, 200);
+
+    console.log(shp);
+    shp.setPosition(155, 355);
+    console.log(shp.getPosition());
+
+    console.log(rec);
+    rec.setPosition(25, 35);
+    console.log(rec.getPosition());
+
+</script>
+</body>
+</html>

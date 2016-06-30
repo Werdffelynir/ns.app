@@ -1,9 +1,44 @@
 /**
- *
+ * Static:
+ NamespaceApplication.version
+ NamespaceApplication.domLoaded ( callback )
+ NamespaceApplication.request ( method, url, callback, callbackError )
+ NamespaceApplication.assign ( stringData, params )
+ NamespaceApplication.script ( src, onload, onerror )
+ NamespaceApplication.style ( src, onload, onerror )
+ NamespaceApplication.file ( url, onload, onerror )
+
+ config = {
+    url: '/',
+    debug: true,
+    constructsType: 'runtime'
+}
+ ns = new NamespaceApplication( config )
+
+ merge ( objectBase, src )
+ setConfig ( config )
+ namespace ( namespace, callback, args )
+ constructsStart ( args )
+ node ( nodes )
+ require ( key, path, oncomplete, onerror )
+ requireStart ( key )
+ script ( src, onload, onerror )
+ style ( src, onload, onerror )
+ file ( url, onload, onerror )
+ request ( method, url, callback, callbackError )
+ assign ( stringData, params )
+ route ( urlPath, callback )
+ inject ( selector, data )
+ query ( selector, parent )
+ queryAll ( selector, parent )
+ each ( list, callback, tmp )
+ domLoaded ( callback )
+
  */
 (function (window){
 
     var
+        version = '0.0.2',
         /**
          * NamespaceApplication Prototype
          * @type {*}
@@ -53,7 +88,7 @@
             if (!(this instanceof NamespaceApplication))
                 return new NamespaceApplication(config);
 
-            this.version = '0.1.0';
+            this.version = version;
             this.setConfig(config);
         };
 
@@ -330,44 +365,14 @@
     };
 
     /**
-     * Query DOM Element by selector
-     *
-     * @param selector
-     * @param parent|callback
-     * @returns {Element}
-     */
-    proto.query = function(selector, parent){
-        var callback, elem, from = document;
-
-        if(typeof parent === 'function')
-            callback = parent;
-        else if(typeof parent === 'string')
-            from = document.querySelector(parent);
-        else if(typeof parent === 'object' && parent.nodeType === Node.ELEMENT_NODE)
-            from = parent;
-
-        if(from)
-            elem = from.querySelector(selector);
-
-        if(elem && typeof callback === 'function')
-            callback.call(this, elem);
-
-        // debug
-        if(this.debug && !elem)
-            console.error("Error query DOM Element by selector ", selector);
-
-        return elem;
-    };
-
-    /**
      * Query DOM Elements by selector
      * @param selector
-     * @param parent|callback
-     * @returns {Array.<T>}
+     * @param parent    callback
+     * @returns {*}
      */
     proto.queryAll = function(selector, parent){
 
-        var callback, elems, from = document;
+        var callback, _elemsList, elems, from = document;
 
         if(typeof parent === 'function')
             callback = parent;
@@ -376,8 +381,11 @@
         else if(typeof parent === 'object' && parent.nodeType === Node.ELEMENT_NODE)
             from = parent;
 
-        if(from)
-            elems = [].splice.call(from.querySelectorAll(selector));
+
+        if(from) {
+            elems = [].slice.call(from.querySelectorAll(selector));
+        }
+
 
         if(elems.length > 0 && typeof callback == 'function')
             callback.call(this, elems);
@@ -389,6 +397,20 @@
         return elems;
     };
 
+
+    /**
+     * Query DOM Element by selector
+     *
+     * @param selector
+     * @param parent|callback
+     * @returns {Element}
+     */
+    proto.query = function(selector, parent){
+        var elems = proto.queryAll(selector, parent);
+        if(elems && elems.length > 0)
+            return elems[0];
+        return null;
+    };
 
     /**
      * Apply an callback to each element of list
@@ -413,7 +435,7 @@
 
 
     /**
-     * Execute callback function if DOM is loaded
+     * Execute callback function if or when DOM is loaded
      * @param callback
      */
     proto.domLoaded = function(callback){
@@ -433,6 +455,8 @@
      * uses: NamespaceApplication.script()
      * uses: NamespaceApplication.style()
      * uses: NamespaceApplication.file()
+     *
+     * uses: NamespaceApplication.version
      */
     app.domLoaded = proto.domLoaded;
     app.request = proto.request;
@@ -440,6 +464,7 @@
     app.script = proto.script;
     app.style = proto.style;
     app.file = proto.file;
+    app.version = version;
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      * GLOBAL NAME

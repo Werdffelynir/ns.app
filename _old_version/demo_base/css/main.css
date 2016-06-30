@@ -1,0 +1,78 @@
+*{
+	font-family: "Fira Sans", "Source Sans Pro", Helvetica, Arial, sans-serif;
+	color: #686A8A; 
+}
+a{
+	color: #F2895F;
+	text-decoration: none;
+}
+a:hover{
+	color: #F2A15F;
+	text-decoration: underline;
+}
+#app-page{
+	width: 80%;
+	margin: 0 auto;
+}
+
+#app-header{
+	min-height: 100px;
+	border-bottom: 3px solid #333;
+	color: #D86300;
+}
+
+#app-content{}
+
+#app-sidebar{
+    width: 30%;
+	border-left: 3px solid #333;
+}
+
+#app-footer{
+	min-height: 100px;
+	border-top: 3px solid #333;
+}
+
+.logo{
+	font-size: 3em;
+	color: #686A8A; 
+	font-weight: bold;
+	text-shadow: 0px 0px 1px #A1A1A1;
+}
+
+
+
+
+
+
+/*
+#container{
+	min-height: 200px;
+}
+#container.log{
+	padding: 10px;
+	background-color: #333333;
+	font-family: "Ubuntu Condensed", "Ubuntu", "sans", "sans-serif";
+}
+#container.log h3{
+	margin-top: 10px;
+	border-bottom: 2px solid #8d9000;
+	color: #dfeb2c;
+	font-size: 125%;
+}
+#container.log p{
+	line-height: 20px;
+	margin-left: 20px;
+	color: #dfeb2c;
+	font-size: 105%;
+	font-family: cursive, monospace, "Ubuntu Mono";
+}
+#container.log pre{
+	width: 100%;
+	padding: 10px;
+	display: inline-block;
+	background-color: #1f1f1f;
+	color: #ddea27;
+	font-family: cursive, monospace, "Ubuntu Mono";
+}
+*/

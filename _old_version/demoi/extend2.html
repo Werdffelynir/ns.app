@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>extend.html</title>
+</head>
+<body>
+
+<script>
+
+
+/*    var extend = function (destination, source) {
+        for (var property in source) {
+            if (typeof source[property] === "object" && source[property] !== null) {
+                destination[property] = destination[property] || {};
+                extend(destination[property], source[property]);
+            } else {
+                destination[property] = source[property];
+            }
+        }
+        return destination;
+    };*/
+    var extend = function(destination, source) {
+        var property;
+        for (property in source) {
+            if (source[property] && source[property].constructor && source[property].constructor === Object) {
+                destination[property] = destination[property] || {};
+                util.extend(destination[property], source[property]);
+            } else {
+                destination[property] = source[property];
+            }
+        }
+        return destination;
+    };
+
+
+    function Shape(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    Shape.prototype.x = 0;
+    Shape.prototype.y = 0;
+    Shape.prototype.getPosition = function () {
+        return {x: this.x, y: this.y}
+    };
+    Shape.prototype.setPosition = function (x, y) {
+        this.x = x;
+        this.y = y
+    };
+    Shape.prototype.constructor = Shape;
+    Shape.xxx = 'xxx';
+
+    function Rectangle(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.height = height;
+        this.width = width;
+    }
+    Rectangle.prototype.width = 0;
+    Rectangle.prototype.height = 0;
+
+
+    extend(Rectangle.prototype, Shape.prototype);
+
+
+    var shp = new Shape(150, 350);
+    var rec = new Rectangle(10, 10, 100, 200);
+
+    console.log(shp);
+    shp.setPosition(155, 355);
+    console.log(shp.getPosition());
+
+
+    console.log(rec);
+    rec.setPosition(25, 35);
+    console.log(rec.getPosition());
+
+</script>
+</body>
+</html>

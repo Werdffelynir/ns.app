@@ -882,7 +882,10 @@
         return newStack;
     };
 
-
+    /**
+     * @param text
+     * @returns {string|void|XML}
+     */
     util.toTranslit = function (text) {
         return text.replace(/([а-яё])|([\s_-])|([^a-z\d])/gi,
             function (all, ch, space, words, i) {
@@ -894,25 +897,6 @@
                 return t[index];
             });
     };
-
-
-
-    /**
-     * execut callback function with elem and his parents
-     * @param elem
-     * @param callback
-     * @param limit
-     */
-    util.eachParent = function (elem, callback, limit) {
-        var i = 0;
-        limit = limit || 99;
-        while(elem.nodeType === Node.ELEMENT_NODE && i < limit ) {
-            callback.call({}, elem);
-            elem = elem.parentNode;
-            i ++;
-        }
-    };
-
 
     window.Util = util;
 
