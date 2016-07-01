@@ -16,5 +16,13 @@ App.namespace('Tool', function(App, mod){
      */
     _.page = function(){};
 
+
+    App.node = function(key, value){
+        if(typeof key === 'string' && value === undefined) {
+            return App.store('node.' + key);
+        } else
+            return App.store('node.' + key, value);
+    };
+
     return _;
 });

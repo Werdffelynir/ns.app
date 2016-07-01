@@ -159,9 +159,17 @@
      * if `object` is a not set - return all objects
      *
      * @param object
+     * @param keyWithValue
      * @returns {*}
      */
-    app.store = function (object) {
+    app.store = function (object, keyWithValue) {
+
+        if(typeof object === 'string' && keyWithValue !== undefined) {
+            var _object = {};
+            _object[object] = keyWithValue;
+            return this.store(_object);
+        }
+
         if (typeof object === 'object') {
             for (var key in object)
                 this._stackStorage[key] = object[key];
@@ -172,7 +180,15 @@
 
         else if (object === undefined)
             return this._stackStorage;
+
     };
+
+    /**
+     * Storage for static calls
+     * @type {{}}
+     * @private
+     */
+    app._stackStorage = {};
 
 
     /**

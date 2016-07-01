@@ -11,6 +11,7 @@ var App = new NamespaceApplication({
 
 
 
+
 App.require('libs', [
     '/ns.app/js/aj.js',
     '/ns.app/js/dom.js',
