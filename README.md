@@ -1,10 +1,49 @@
 # namespace Application
 
 
-## config
+```
+App = new NamespaceApplication(properties)
+
+App.version = version;
+App.domLoaded
+App.request
+App.script
+App.style
+App.file
+App.extend
+App.store
+App.route
+App.assign
+App.inject
+App.query;
+App.queryAll
+App.each
+App.prototype.namespace
+App.prototype.constructsStart
+App.prototype.require
+App.prototype.requireStart
+App.prototype.setProperties
+App.prototype.constructsStart
+
+NamespaceApplication.domLoaded
+NamespaceApplication.request
+NamespaceApplication.script
+NamespaceApplication.style
+NamespaceApplication.file
+NamespaceApplication.extend
+NamespaceApplication.store
+NamespaceApplication.route
+NamespaceApplication.assign
+NamespaceApplication.inject
+NamespaceApplication.query;
+NamespaceApplication.queryAll
+NamespaceApplication.each
+```
+
+## config properties
 
 ```js
-window.App = new NamespaceApplication({
+var App = new NamespaceApplication({
     url: '/',                  // Base application URL path
     name: 'My Application',    // Application name
     debug: true,               // Debug mod
@@ -21,7 +60,7 @@ window.App = new NamespaceApplication({
 ## methods
 
 ```js
-App.setConfig(config:Object):App
+App.setProperties(config:Object):App
 App.namespace(namespace:String, callback:Function):Object
 App.constructsStart(args:*):App
 App.require(key:String, path:Array, oncomplete:Function, onerror:Function):App
@@ -36,18 +75,22 @@ App.query(selector:String, callback:Function):HTMLElement
 App.queryAll(selector:String, callback:Function):Array
 App.each(list:Array|Object, callback:Function, tmp:Object):Array|Object
 App.inject(selector:String|Object, data:String|Object):HTMLElement
+App.extend (obj:Object, src:Object, callback:Function) )
 ```
 
 
 ## static methods
 
-```
+```js
 NamespaceApplication.request(method:String, url:String, callback:Function, callbackError:Function):XMLHttpRequest
 NamespaceApplication.assign(stringData:String, params:Object):String
 NamespaceApplication.script(src:String, onload:Function, onerror:Function):HTMLElement
 NamespaceApplication.style(src:String, onload:Function, onerror:Function):HTMLElement
 NamespaceApplication.file(url:String, onload:Function, onerror:Function):void
+NamespaceApplication.extend(obj:Object, src:Object, callback:Function):void
 ```
+
+
 
 
 ### App.namespace()

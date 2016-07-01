@@ -1,17 +1,14 @@
-if(App.namespace){App.namespace('Controller.Login', function(App){
+if(App.namespace){App.namespace('Controller.Page', function(App){
 
     /**
-     * @namespace App.Controller.Login
+     * @namespace App.Controller.Page
      */
     var _ = {}
         , node = {}
         ;
-
-    /**
-     * @namespace App.Controller.Login.construct
-     */
+            
     _.construct = function(){
-
+        console.log('App.Controller.Page.construct');
         App.domLoaded(afterDOMLoaded);
 
     };

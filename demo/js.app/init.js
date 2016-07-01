@@ -1,9 +1,9 @@
 
 
-window.App = new NamespaceApplication({
+var App = new NamespaceApplication({
     debug: true,
     constructsType: false,
-    url: '/ns.app/web_rev/',
+    url: '/ns.app/demo/',
     name: 'Developer NamespaceApplication.JS Framework',
     token: null,
     _fromApp: true
@@ -44,10 +44,16 @@ function initLibrary(list){
 }
 
 
-
+// start
 function initDependence(list){
     console.log('Application start!');
-    App.Controller.Page.construct();
+
+    App.route('/', App.Controller.Page.construct, true);
+    App.route('/#login', App.Controller.Login.construct, true);
+
+
+    //console.log(App.routePath());
+    //console.log(NamespaceApplication.routePath());
 }
 
 
