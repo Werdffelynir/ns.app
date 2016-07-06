@@ -1,14 +1,19 @@
 
 
 var App = new NamespaceApplication({
+    // application configs
+    path: '/ns.app/demo/',
     debug: true,
     constructsType: false,
-    url: '/ns.app/demo/',
+
+    // custom configs
     name: 'Developer NamespaceApplication.JS Framework',
-    token: null,
-    _fromApp: true
+    token: null
 });
 
+
+//App.path          /ns.app/demo/
+//App.uri('/page')  /ns.app/demo/page
 
 
 
@@ -21,11 +26,11 @@ App.require('libs', [
 
 
 App.require('dependence', [
-    App.url + 'js.app/extension/tool.js',
-    App.url + 'js.app/action/navigate.js',
-    App.url + 'js.app/action/sidebar.js',
-    App.url + 'js.app/controller/page.js',
-    App.url + 'js.app/controller/login.js'
+    App.path + 'js.app/extension/tool.js',
+    App.path + 'js.app/action/navigate.js',
+    App.path + 'js.app/action/sidebar.js',
+    App.path + 'js.app/controller/page.js',
+    App.path + 'js.app/controller/login.js'
 ], initDependence, initError);
 
 
@@ -49,8 +54,8 @@ function initLibrary(list){
 function initDependence(list){
     console.log('Application start!');
 
-    App.route('/', App.Controller.Page.construct, true);
-    App.route('/#login', App.Controller.Login.construct, true);
+    //App.route(App.uri(), App.Controller.Page.construct, true);
+    //App.route(App.uri('#login'), App.Controller.Login.construct, true);
 
 
     //console.log(App.routePath());

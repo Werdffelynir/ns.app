@@ -13,8 +13,8 @@
         if (!(this instanceof NamespaceApplication))
             return new NamespaceApplication(properties);
 
+        this.setProperties(properties);
 
-        this.version = version;
         this.domLoaded = app.domLoaded;
         this.request = app.request;
         this.script = app.script;
@@ -29,7 +29,6 @@
         this.query = app.query;
         this.queryAll = app.queryAll;
         this.each = app.each;
-        this.setProperties(properties);
 
     };
 
@@ -333,7 +332,12 @@
         /**
          * Base url
          */
-        url: '/',
+        path: '/',
+
+        /**
+         * Current script version
+         */
+        version: version,
 
         /**
          * Debug mod
@@ -503,6 +507,11 @@
         return this;
     };
 
+    app.prototype.uri = function (uri) {
+        var _uri = uri ? this.path + '/' + uri : this.path;
+        _uri = _uri.replace(/\/+/ig,'/');
+        return _uri.length > 1 && _uri.slice(0,1) != '/' ? '/' + _uri : _uri;
+    };
 
     /**
      * @type {app}

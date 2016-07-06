@@ -4,56 +4,104 @@
     <meta charset="UTF-8">
     <title>JavaScript Application</title>
 
+    <link rel="stylesheet" href="/ns.app/css/grid.css">
+    <link rel="stylesheet" href="/ns.app/demo/main.css">
+
     <script src="/ns.app/src/ns.application.js"></script>
     <script src="/ns.app/demo/js.app/init.js"></script>
 
-    <style>
-        header{}
-        nav{}
-        section{}
-        aside{}
-        footer{}
-    </style>
 </head>
 <body>
 
-<header>
-    <!-- header content goes in here -->
-    <span><i></i></span>
-    <input type="search">
-    <h2>This is my header.</h2>
+<div id="page">
 
+    <div id="header">
+        <div id="section">
+            <ul id="nav">
+                <li><a href="#home">home</a></li>
+                <li><a href="#readme">readme</a></li>
+                <li><a href="#examples">examples</a></li>
+                <li><a href="#download">download</a></li>
+                <li><a href="#login">login</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="content">
+        <div id="section">
+            <div class="tbl">
+                <div class="tbl_cell">
+                    <div id="main"></div>
+                </div>
+                <div class="tbl_cell">
+                    <div id="sidebar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="footer">
+        <div id="section">
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<header>
+    <div class="box">
+        <span><i></i></span>
+        <input type="search">
+        <h2>This is my header.</h2>
+    </div>
 </header>
 
 <nav>
-    <!-- navigation menu goes in here -->
-    <ul>
-        <li><a href="/ns.app/demo/">Home</a></li>
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="/ns.app/demo/#login">Login</a></li>
-    </ul>
+    <div class="box">
+        <ul>
+            <li><a href="/ns.app/demo/">Home</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="/ns.app/demo/#login">Login</a></li>
+        </ul>
+    </div>
 </nav>
 
-<section id="sidebar">
-    <!-- sidebar content goes in here -->
-    <form>
-        <input type="submit">
-        <input type="text">
-    </form>
-</section>
+<div class="box">
 
-<section id="main">
-    <!-- main page content goes in here -->
-</section>
+    <section id="sidebar">
+        sidebar content goes in here
+        <form>
+            <input type="submit">
+            <input type="text">
+        </form>
+    </section>
 
-<aside>
-    <!-- aside content goes in here -->
-</aside>
+    <section id="main">
+    </section>
 
-<footer>
-    <!-- footer content goes in here -->
-</footer>
+    <aside>
+    </aside>
+
+</div>
+
+
+<div class="box">
+    <footer>
+    </footer>
+</div>-->
 
 </body>
 </html>

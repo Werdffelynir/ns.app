@@ -1,0 +1,19 @@
+html, body{
+    background-color: #f7f7f7;
+}
+
+
+#page{}
+#header{
+    border-bottom: 1px solid #eeeeee;
+}
+#content{
+    background-color: #ffffff;
+}
+#main{}
+#sidebar{}
+#footer{}
+#section{
+    width: 80%;
+    margin: 0 auto;
+}
