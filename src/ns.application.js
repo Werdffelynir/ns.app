@@ -179,7 +179,6 @@
 
         else if (object === undefined)
             return this._stackStorage;
-
     };
 
     /**
